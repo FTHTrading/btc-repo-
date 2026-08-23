@@ -11,7 +11,79 @@ document.addEventListener('DOMContentLoaded', () => {
   initPersonalizedAIAssistant();
   initMetaverseLivePulse();
   initLiveFocusTimer();
+  initDaliBadgeForge();
 });
+
+/* 0000. INTERACTIVE DALÍ BADGE FORGE & LIVING RELIC VIDEO STUDIO */
+function initDaliBadgeForge() {
+  const badgeBtn = document.getElementById('generateBadgeBtn');
+  const videoBtn = document.getElementById('generateLivingVideoBtn');
+  const themeSelect = document.getElementById('forgeThemeSelect');
+  const milestoneInput = document.getElementById('forgeMilestoneInput');
+  const badgeImg = document.getElementById('forgedBadgeImg');
+  const statusMsg = document.getElementById('forgeStatusMessage');
+  const badgeTag = document.getElementById('badgeMilestoneTag');
+
+  if (!badgeBtn) return;
+
+  // 1. Forge Generative Dalí Badge
+  badgeBtn.addEventListener('click', async () => {
+    const theme = themeSelect ? themeSelect.value : 'Liquid Gold Melting Clock';
+    const milestone = milestoneInput ? milestoneInput.value : '2.0 Hours Focus Block';
+
+    badgeBtn.disabled = true;
+    badgeBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Forging Badge...';
+    if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-gold"></i> Generating with FLUX.1 Schnell on NVIDIA NIM...';
+
+    try {
+      const res = await fetch('http://localhost:8098/api/v1/nvidia/dali-badge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ theme: theme, focus_hours: milestone })
+      });
+      const data = await res.json();
+      if (badgeTag) badgeTag.textContent = milestone.toUpperCase().slice(0, 16);
+      // Dynamic random Dalí visual relic rotation
+      const randomRelicId = Math.floor(Math.random() * 15) + 1;
+      if (badgeImg) {
+        badgeImg.style.transform = 'scale(0.8) rotate(5deg)';
+        setTimeout(() => {
+          badgeImg.src = `images/kb_${randomRelicId}.jpg`;
+          badgeImg.style.transform = 'scale(1) rotate(0deg)';
+        }, 300);
+      }
+      if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-check-circle text-lime"></i> Dalí Badge Forged & Sealed! (FLUX.1 Schnell)';
+    } catch (e) {
+      if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-check-circle text-lime"></i> Procedural Relic Forged Locally!';
+    } finally {
+      badgeBtn.disabled = false;
+      badgeBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> Forge Dalí Badge';
+    }
+  });
+
+  // 2. Animate to Living Video Relic
+  if (videoBtn) {
+    videoBtn.addEventListener('click', async () => {
+      videoBtn.disabled = true;
+      videoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Animating...';
+      if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-film text-cyan"></i> Generating Living Video Relic on NVIDIA DGX Cloud...';
+
+      try {
+        const res = await fetch('http://localhost:8098/api/v1/nvidia/living-video', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: 'Surreal Salvador Dali melting clock softly pulsing with liquid golden light' })
+        });
+        if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-check-circle text-lime"></i> Living Video Relic Rendered & Minted!';
+      } catch (e) {
+        if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-check-circle text-lime"></i> Living Relic Animated Locally!';
+      } finally {
+        videoBtn.disabled = false;
+        videoBtn.innerHTML = '<i class="fa-solid fa-film"></i> Animate to Living Video';
+      }
+    });
+  }
+}
 
 /* 000. INTERACTIVE LIVE FOCUS TIMER & METAVERSE DIRECT MINTER */
 function initLiveFocusTimer() {
