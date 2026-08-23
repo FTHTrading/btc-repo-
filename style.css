@@ -147,6 +147,24 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spac
 
 .modal-code-box { background: #040507; border: 1px solid var(--border-hairline); padding: 1rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--proof-silver); margin: 1rem 0; overflow-x: auto; }
 
+/* Watermarked Visual Asset Gallery Cards */
+.asset-card-wrapper { position: relative; border: 1px solid var(--border-hairline); border-radius: 8px; overflow: hidden; background: #040507; cursor: pointer; transition: var(--transition-fast); }
+.asset-card-wrapper:hover { border-color: var(--signal-crimson); transform: translateY(-3px); }
+.asset-card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+/* Watermark Overlay Badge */
+.watermark-overlay { position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(8, 9, 11, 0.82); backdrop-filter: blur(4px); border: 1px solid var(--border-hairline); padding: 0.35rem 0.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--proof-silver); display: flex; justify-content: space-between; align-items: center; }
+.watermark-badge { color: var(--signal-crimson-hover); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Asset Lightbox Modal */
+.lightbox-card { background: #0c0e12; border: 1px solid var(--border-hairline); max-width: 850px; width: 92%; border-radius: 12px; padding: 1.75rem; }
+.lightbox-img-box { position: relative; width: 100%; max-height: 480px; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-hairline); margin: 1rem 0; background: #000; display: flex; align-items: center; justify-content: center; }
+.lightbox-img-box img { max-width: 100%; max-height: 480px; object-fit: contain; }
+.lightbox-watermark-stamp { position: absolute; top: 12px; right: 12px; background: rgba(162, 14, 35, 0.85); color: #fff; border: 1px solid #fff; padding: 0.4rem 0.8rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+.lightbox-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.25rem; }
+@media (max-width: 600px) { .lightbox-actions { grid-template-columns: 1fr; } }
+
 /* Culture / Lab Drawer */
 .culture-drawer { display: none; margin-top: 2rem; border-top: 1px solid var(--border-hairline); padding-top: 2rem; }
 .culture-drawer.active { display: block; }

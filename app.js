@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ALL COUCH NO CAGE — INSTITUTIONAL PROTOCOL ENGINE
+   ALL COUCH NO CAGE — INSTITUTIONAL PROTOCOL ENGINE & ASSET LIGHTBOX
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initTechnicalDrawer();
   initCultureDrawer();
   initWorkflowNav();
+  initWatermarkedGallery();
+  initAssetLightbox();
 });
 
 /* 1. EIP-712 SIGNING MODAL LOGIC */
@@ -92,7 +94,95 @@ function initHonestCalculator() {
   calculate();
 }
 
-/* 3. COLLAPSIBLE TECHNICAL METHODOLOGY DRAWER */
+/* 3. WATERMARKED GALLERY GENERATOR */
+function initWatermarkedGallery() {
+  const grid = document.getElementById('watermarkedGalleryGrid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+  for (let i = 1; i <= 15; i++) {
+    const card = document.createElement('div');
+    card.className = 'asset-card-wrapper';
+    card.dataset.id = i;
+    card.dataset.src = `images/kb_${i}.jpg`;
+    card.dataset.title = `Protocol Evidence Artifact #${i < 10 ? '0' + i : i}`;
+    card.dataset.hash = `0x8ace${(i * 1042).toString(16)}b7392a1042`;
+
+    card.innerHTML = `
+      <img src="images/kb_${i}.jpg" alt="Artifact ${i}" class="asset-card-img" />
+      <div class="watermark-overlay">
+        <span class="watermark-badge">UNYKORN PROTOCOL</span>
+        <span>EIP-712 #0${i}</span>
+      </div>
+    `;
+
+    card.addEventListener('click', () => openLightbox(card.dataset));
+    grid.appendChild(card);
+  }
+}
+
+/* 4. ASSET LIGHTBOX INSPECTOR & ACTIONS */
+let activeAssetData = null;
+
+function initAssetLightbox() {
+  const modal = document.getElementById('assetLightboxModal');
+  const closeBtn = document.getElementById('closeLightboxBtn');
+  const copyBtn = document.getElementById('copyHashBtn');
+  const attachBtn = document.getElementById('attachEvidenceBtn');
+
+  if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      if (!activeAssetData) return;
+      navigator.clipboard.writeText(activeAssetData.hash);
+      copyBtn.textContent = 'Evidence Hash Copied!';
+      copyBtn.style.color = '#10b981';
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy Evidence Seal Hash';
+        copyBtn.style.color = '';
+      }, 2000);
+    });
+  }
+
+  if (attachBtn) {
+    attachBtn.addEventListener('click', () => {
+      if (!activeAssetData) return;
+      const tierSelect = document.getElementById('calcEvidenceTier');
+      if (tierSelect) tierSelect.value = '6000'; // Set to Workflow-Linked
+      modal.classList.remove('active');
+
+      const calcSection = document.getElementById('calculator');
+      if (calcSection) calcSection.scrollIntoView({ behavior: 'smooth' });
+
+      // Trigger recalculation
+      const hoursInput = document.getElementById('calcHours');
+      if (hoursInput) hoursInput.dispatchEvent(new Event('input'));
+    });
+  }
+}
+
+function openLightbox(data) {
+  activeAssetData = data;
+  const modal = document.getElementById('assetLightboxModal');
+  const title = document.getElementById('lightboxTitle');
+  const img = document.getElementById('lightboxImg');
+  const hash = document.getElementById('lightboxHash');
+  const downloadLink = document.getElementById('downloadAssetBtn');
+
+  if (title) title.textContent = data.title;
+  if (img) img.src = data.src;
+  if (hash) hash.textContent = `Evidence Hash: ${data.hash}`;
+  if (downloadLink) {
+    downloadLink.href = data.src;
+    downloadLink.download = `UNYKORN_PROTOCOL_${data.id}.jpg`;
+  }
+
+  if (modal) modal.classList.add('active');
+}
+
+/* 5. COLLAPSIBLE TECHNICAL METHODOLOGY DRAWER */
 function initTechnicalDrawer() {
   const btn = document.getElementById('techToggleBtn');
   const content = document.getElementById('techContent');
@@ -105,7 +195,7 @@ function initTechnicalDrawer() {
   }
 }
 
-/* 4. OPTIONAL CULTURE / LAB MODE DRAWER */
+/* 6. OPTIONAL CULTURE / LAB MODE DRAWER */
 function initCultureDrawer() {
   const btn = document.getElementById('toggleCultureBtn');
   const drawer = document.getElementById('cultureDrawer');
@@ -119,7 +209,7 @@ function initCultureDrawer() {
   }
 }
 
-/* 5. 3-STAGE WORKFLOW STEP NAVIGATION */
+/* 7. 3-STAGE WORKFLOW STEP NAVIGATION */
 function initWorkflowNav() {
   const steps = document.querySelectorAll('.workflow-step');
   steps.forEach(step => {
