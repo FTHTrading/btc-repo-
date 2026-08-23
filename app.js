@@ -357,7 +357,7 @@ function openLightbox(data) {
   if (modal) modal.classList.add('active');
 }
 
-/* 4. NATURAL SOOTHING VOICE ENGINE & STORYTELLING */
+/* 4. NATURAL SOOTHING VOICE ENGINE & INTERACTIVE STORYTELLER */
 function initSoothingStoryNarration() {
   const playBtn = document.getElementById('playReadAlongBtn');
   const stopBtn = document.getElementById('stopReadAlongBtn');
@@ -406,8 +406,8 @@ function initSoothingStoryNarration() {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
-      gain.gain.setValueAtTime(0.005, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.04, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.1);
       gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
 
       osc.connect(gain);
@@ -423,7 +423,7 @@ function initSoothingStoryNarration() {
     const voices = window.speechSynthesis.getVoices();
     if (!voices || voices.length === 0) return null;
 
-    const keywords = ['rita', 'chatterbox', 'jenny', 'aria', 'sonia', 'ava', 'natural', 'neural', 'studio', 'female', 'samantha', 'google'];
+    const keywords = ['rita', 'chatterbox', 'jenny', 'aria', 'sonia', 'ava', 'natural', 'neural', 'studio', 'female', 'samantha', 'google', 'zira'];
     for (const kw of keywords) {
       const match = voices.find(v => v.name.toLowerCase().includes(kw) && v.lang.startsWith('en'));
       if (match) return match;
@@ -453,7 +453,6 @@ function initSoothingStoryNarration() {
     playGentleChime(currentIdx % 2 === 0 ? 528 : 432);
 
     if (!('speechSynthesis' in window)) {
-      // Visual only fallback if speech synthesis is blocked
       setTimeout(() => {
         currentIdx++;
         if (isPlaying) narrateChapter();
@@ -466,15 +465,15 @@ function initSoothingStoryNarration() {
     const voice = getSoothingVoice();
     if (voice) utterance.voice = voice;
 
-    utterance.rate = 0.86;
-    utterance.pitch = 0.98;
+    utterance.rate = 0.88;
+    utterance.pitch = 1.0;
 
     utterance.onend = () => {
       currentIdx++;
       if (isPlaying) setTimeout(narrateChapter, 800);
     };
 
-    utterance.onerror = (e) => {
+    utterance.onerror = () => {
       currentIdx++;
       if (isPlaying) setTimeout(narrateChapter, 800);
     };
@@ -500,12 +499,18 @@ function initSoothingStoryNarration() {
   }
 
   if (playBtn) {
-    playBtn.addEventListener('click', () => {
+    playBtn.addEventListener('click', (e) => {
+      e.preventDefault();
       if (isPlaying) stopStory(); else startStory();
     });
   }
 
-  if (stopBtn) stopBtn.addEventListener('click', stopStory);
+  if (stopBtn) {
+    stopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      stopStory();
+    });
+  }
 
   if ('speechSynthesis' in window) {
     window.speechSynthesis.onvoiceschanged = () => getSoothingVoice();
