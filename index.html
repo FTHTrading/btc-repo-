@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALL COUCH NO CAGE — Salvador Dalí Liquid Glass & Wasted Time Protocol</title>
-  <meta name="description" content="Verifiable interruption accounting protocol. Measure how ungrounded noise warps cognitive time geometry into permanent Polygon finality receipts." />
+  <title>ALL COUCH NO CAGE — Self-Sovereign Personal Experience Protocol</title>
+  <meta name="description" content="Self-Sovereign, first-person focus accounting protocol. Document cognitive recovery, track personal integrity sessions, and generate cryptographic receipts." />
   
   <!-- Google Fonts: Outfit (Display), Inter (Body), JetBrains Mono (Technical) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,6 +16,44 @@
 
   <!-- Liquid Glassmorphism Stylesheet -->
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Read-Along & Narration Bar Styles */
+    .narration-bar {
+      position: sticky;
+      top: 65px;
+      z-index: 95;
+      background: rgba(14, 17, 24, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 0.65rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.85rem;
+    }
+    .narration-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .narration-text {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 600px;
+    }
+    .read-highlight {
+      outline: 2px solid var(--accent-gold);
+      background: rgba(234, 179, 8, 0.08) !important;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+  </style>
 </head>
 <body>
 
@@ -34,7 +72,7 @@
 
       <div class="lightbox-img-box">
         <div style="position: absolute; top: 12px; right: 12px; background: rgba(234, 179, 8, 0.9); color: #000; padding: 0.4rem 0.85rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; border-radius: 4px; text-transform: uppercase;">
-          UNYKORN PROTOCOL • EIP-712 VERIFIED
+          UNYKORN PROTOCOL • EVIDENCE SEALED
         </div>
         <img id="lightboxImg" src="images/dali_clock.jpg" alt="Asset Preview" />
       </div>
@@ -42,7 +80,7 @@
       <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1.25rem;">
         <span>Format: High-Res Protocol Asset</span>
         <span id="lightboxHash" class="text-cyan">Evidence Hash: 0x8ace92e41b7392a...</span>
-        <span class="text-lime">Polygon PoS 137</span>
+        <span class="text-lime">Amoy Verification Stage</span>
       </div>
 
       <div class="lightbox-actions">
@@ -53,7 +91,7 @@
           <i class="fa-solid fa-copy text-cyan"></i> Copy Evidence Seal Hash
         </button>
         <button class="btn btn-cyan" id="attachEvidenceBtn">
-          <i class="fa-solid fa-calculator"></i> Attach to Impact Calculator
+          <i class="fa-solid fa-calculator"></i> Attach to Personal Calculator
         </button>
       </div>
     </div>
@@ -66,28 +104,46 @@
         <img src="images/official_logo.png" alt="UNYKORN PROTOCOL Logo" class="brand-logo-img" />
         <div class="brand-text">
           <span>ALL COUCH NO CAGE</span>
-          <span class="brand-sub">Wasted Time Protocol • UnyKorn LLC</span>
+          <span class="brand-sub">Self-Sovereign Focus Protocol • UnyKorn LLC</span>
         </div>
       </a>
 
       <ul class="nav-links">
         <li><a href="#overview" class="active">Overview</a></li>
-        <li><a href="#wasted-time">Wasted Time</a></li>
-        <li><a href="#dali-engine">Dalí Engine</a></li>
-        <li><a href="#calculator">Calculator</a></li>
+        <li><a href="#philosophy">Principles</a></li>
+        <li><a href="#calculator">Focus Ledger</a></li>
         <li><a href="#gallery">Visual Assets</a></li>
+        <li><a href="#contracts">Protocol Specs</a></li>
       </ul>
 
       <div class="nav-actions">
         <a href="#calculator" class="btn btn-gold btn-sm">
-          <i class="fa-solid fa-calculator"></i> Calculate Wasted Time
+          <i class="fa-solid fa-feather"></i> Commit Session
         </a>
       </div>
     </div>
   </header>
 
+  <!-- Interactive AI Read-Along & Narration Bar -->
+  <div class="narration-bar">
+    <div class="narration-controls">
+      <button class="btn btn-glass btn-sm" id="playReadAlongBtn">
+        <i class="fa-solid fa-volume-high text-gold" id="playIcon"></i> <span id="playBtnText">Read-Along Voice</span>
+      </button>
+      <button class="btn btn-glass btn-sm" id="stopReadAlongBtn" style="display: none;">
+        <i class="fa-solid fa-stop text-cyan"></i> Stop
+      </button>
+    </div>
+    <div class="narration-text" id="narrationStatusText">
+      <i class="fa-solid fa-waveform text-gold"></i> Ready to narrate protocol sections and interactive guides.
+    </div>
+    <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim);">
+      AI Assist: Enabled
+    </div>
+  </div>
+
   <!-- Product Truth Banner -->
-  <div class="truth-banner">
+  <div class="truth-banner" id="readSection1">
     <i class="fa-solid fa-quote-left" style="margin-right: 0.4rem;"></i>
     <span><strong>PRODUCT TRUTH:</strong> "All Couch No Cage is a self-sovereign personal experience protocol. A participant alone creates, controls, and may cryptographically seal their own records. Credits represent bounded internal utility created from self-consented sessions—not social approval, financial worth, or any judgment imposed by others."</span>
   </div>
@@ -95,25 +151,25 @@
   <!-- Salvador Dalí Liquid Glass Hero Section -->
   <section class="hero-section" id="overview">
     <div class="hero-grid">
-      <div class="hero-content">
+      <div class="hero-content" id="readSection2">
         <div class="hero-tag">
           <i class="fa-solid fa-hourglass-half"></i> Polygon-Compatible Architecture • EIP-712 Claim Format in Implementation
         </div>
 
         <h1 class="hero-title">
-          TIME STOLEN BY NOISE IS NOW <span class="gold-gradient">CRYPTOGRAPHICALLY SEALED</span>.
+          OWN YOUR FOCUS. <span class="gold-gradient">SEAL YOUR EXPERIENCE</span>.
         </h1>
 
         <p class="hero-desc">
-          Measure how ungrounded interruptions warp cognitive time geometry. Convert wasted hours into reproducible integer impact claims ($I = H \times R \times S \times F \times E$) designed for future rules-based $VTIME settlement after verified deployment.
+          A self-sovereign, first-person protocol for documenting cognitive recovery and focus commitments under a transparent, reproducible ruleset. All records remain user-owned, privacy-preserving, and non-monetary.
         </p>
 
         <div class="hero-ctas">
           <a href="#calculator" class="btn btn-gold btn-lg">
-            <i class="fa-solid fa-calculator"></i> Calculate Wasted Time
+            <i class="fa-solid fa-calculator"></i> Calculate Personal Focus Units
           </a>
           <a href="#gallery" class="btn btn-cyan btn-lg">
-            <i class="fa-solid fa-images"></i> Inspect Protocol Assets
+            <i class="fa-solid fa-images"></i> Inspect Visual Artifacts
           </a>
         </div>
       </div>
@@ -129,100 +185,41 @@
     </div>
   </section>
 
-  <!-- The Mechanics of Wasted Time (3 Liquid Glass Tiles) -->
-  <section class="section section-alt" id="wasted-time">
+  <!-- Core Protocol Principles (3 Liquid Glass Tiles) -->
+  <section class="section section-alt" id="philosophy">
     <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag gold-pill"><i class="fa-solid fa-layer-group"></i> Time Distortion Physics</div>
-        <h2>The Physics of Wasted Time</h2>
-        <p>Illustrative recovery scenario: an ungrounded interruption may create additional recovery time under a published, parameter-bounded ruleset.</p>
+      <div class="section-header" id="readSection3">
+        <div class="pill-tag gold-pill"><i class="fa-solid fa-shield-halved"></i> First-Person Invariants</div>
+        <h2>Core Protocol Principles</h2>
+        <p>Built exclusively on individual sovereignty, user-consented records, and non-extractive utility.</p>
       </div>
 
       <div class="wasted-time-grid">
         <div class="glass-panel tile-card">
-          <div class="tile-icon text-gold"><i class="fa-solid fa-hourglass-start"></i></div>
-          <h3 class="tile-title">01. Spacetime Expansion</h3>
-          <p class="tile-desc">Illustrative model: a 15-minute interruption may require extended cognitive context recovery. Total reference impact is calculated using parameterized integer multipliers.</p>
+          <div class="tile-icon text-gold"><i class="fa-solid fa-user-lock"></i></div>
+          <h3 class="tile-title">01. First-Person Agency</h3>
+          <p class="tile-desc">Participants alone start, commit, and finalize their focus sessions. No peer rankings, employer surveillance, manager ratings, or social scores are ever ingested.</p>
         </div>
 
         <div class="glass-panel tile-card">
-          <div class="tile-icon text-cyan"><i class="fa-solid fa-filter"></i></div>
-          <h3 class="tile-title">02. Noise Signal Isolation</h3>
-          <p class="tile-desc">Separates high-entropy opinion from evidence-backed engineering. Low-evidence claims carry a reduced 0.25 confidence multiplier under published BPS rules.</p>
+          <div class="tile-icon text-cyan"><i class="fa-solid fa-key"></i></div>
+          <h3 class="tile-title">02. Private by Default</h3>
+          <p class="tile-desc">Raw activity, journal notes, and biometric telemetry remain client-side encrypted. Only cryptographic hashes, ZK proofs, or minimal metadata are recorded.</p>
         </div>
 
         <div class="glass-panel tile-card">
-          <div class="tile-icon text-purple"><i class="fa-solid fa-fire"></i></div>
-          <h3 class="tile-title">03. Permanent Finality Seal</h3>
-          <p class="tile-desc">The planned settlement contract will execute a bounded, voluntary-stake burn and non-custodial receipt upon verified deployment and challenge resolution.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Hermetic Acoustic Sound BS Frequency Meter Section -->
-  <section class="section" id="dali-engine">
-    <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag cyan-pill"><i class="fa-solid fa-wave-square"></i> Acoustic Sound Analyzer</div>
-        <h2>Acoustic Sound Frequency & BS Meter</h2>
-        <p><em>"As above, so below; as within, so without."</em> Converts chaotic sound decibels into structured sacred crystal geometry.</p>
-      </div>
-
-      <div class="calc-grid glass-panel">
-        <div class="calc-inputs">
-          <h3><i class="fa-solid fa-sliders text-gold"></i> Sound Spectrum Analyzer</h3>
-          
-          <div class="form-group" style="margin-top: 1.25rem;">
-            <label>Noise Spectrum Frequency (Hz):</label>
-            <input type="range" id="soundFreqInput" min="100" max="20000" step="100" value="4320" style="width: 100%; accent-color: var(--accent-gold);" />
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; font-family: var(--font-mono);">
-              <span>100 Hz</span>
-              <span id="freqSliderVal" class="text-gold" style="font-weight: 700;">4,320 Hz</span>
-              <span>20,000 Hz</span>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Harmonic Distortion (THD):</label>
-              <select id="thdSelect">
-                <option value="15">15% THD (Mild Noise)</option>
-                <option value="45" selected>45% THD (High Entropy)</option>
-                <option value="85">85% THD (Extreme BS)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Harmonic Lock:</label>
-              <select id="hermeticModeSelect">
-                <option value="432">432 Hz (Sacred)</option>
-                <option value="528" selected>528 Hz (Transformation)</option>
-              </select>
-            </div>
-          </div>
-
-          <button class="btn btn-gold btn-block" id="transmuteFreqBtn">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Transmute Sound Entropy into $VTIME Burn
-          </button>
-        </div>
-
-        <div>
-          <img src="images/hermetic_meter.jpg" alt="Hermetic Sound Meter" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-glass); margin-bottom: 1rem;" />
-          <div style="background: rgba(0,0,0,0.8); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; text-align: center;">
-            <canvas id="audioCanvas" width="450" height="90" style="width: 100%; height: 90px; display: block;"></canvas>
-            <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.4rem; font-family: var(--font-mono);">
-              <i class="fa-solid fa-bolt text-gold"></i> Live Acoustic Frequency Waveform Oscillator
-            </div>
-          </div>
+          <div class="tile-icon text-purple"><i class="fa-solid fa-ban"></i></div>
+          <h3 class="tile-title">03. Non-Transferable Utility</h3>
+          <p class="tile-desc">$VTIME operates strictly as a closed-loop internal accounting credit for voluntary session staking and tool access. No cash value, no secondary trading, no speculative markets.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Personal Focus Accounting & Integrity Calculator Section -->
-  <section class="section section-alt" id="calculator">
+  <section class="section" id="calculator">
     <div class="section-container">
-      <div class="section-header">
+      <div class="section-header" id="readSection4">
         <div class="pill-tag purple-pill"><i class="fa-solid fa-calculator"></i> Self-Sovereign Accounting</div>
         <h2>Personal Focus & Integrity Ledger</h2>
         <p>Formula: <code>Personal Credit = min(Base_Session × Q_Local × A_User, Event_Cap, Daily_Cap)</code></p>
@@ -302,12 +299,12 @@
   </section>
 
   <!-- Shared Image Showcase Gallery Section -->
-  <section class="section" id="gallery">
+  <section class="section section-alt" id="gallery">
     <div class="section-container">
-      <div class="section-header">
+      <div class="section-header" id="readSection5">
         <div class="pill-tag gold-pill"><i class="fa-solid fa-images"></i> Watermarked Assets & On-Chain Proofs</div>
         <h2>Protocol Visual Asset Inspector</h2>
-        <p>Click any visual asset to inspect SHA-256 evidence seals, download watermarked assets, or verify on-chain mint receipts.</p>
+        <p>Click any visual asset to inspect SHA-256 evidence seals, download watermarked assets, or verify pre-deployment status.</p>
       </div>
 
       <!-- Live On-Chain Minting Status Panel -->
@@ -348,6 +345,40 @@
     </div>
   </section>
 
+  <!-- Contract Architecture & Specifications Section -->
+  <section class="section" id="contracts">
+    <div class="section-container">
+      <div class="section-header" id="readSection6">
+        <div class="pill-tag cyan-pill"><i class="fa-solid fa-code"></i> Smart Contract Specs</div>
+        <h2>Protocol Architecture & Invariants</h2>
+        <p>Five isolated, verified smart contracts and Rust deterministic scoring modules.</p>
+      </div>
+
+      <div class="glass-panel">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
+            <div style="font-family: var(--font-mono); color: var(--accent-gold); font-size: 0.9rem; font-weight: 800;">PersonalIntegrityVault.sol</div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.5;">
+              First-person, non-transferable $VTIME ledger. Enforces participant-only finalization, 100 VTIME event caps, and voluntary closure rituals.
+            </p>
+          </div>
+          <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
+            <div style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 0.9rem; font-weight: 800;">DaliInvariantAssetNFT.sol</div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.5;">
+              Strict 15-token ERC-721 collection binding SHA-256 evidence seals and IPFS metadata to on-chain token IDs with unique seal constraints.
+            </p>
+          </div>
+          <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
+            <div style="font-family: var(--font-mono); color: var(--accent-purple); font-size: 0.9rem; font-weight: 800;">TimeImpactLedger.sol</div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.5;">
+              EIP-712 typed signature verification and Merkle root settlement layer for research and team context-switch tracking.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-brand">
@@ -355,7 +386,7 @@
       <span>ALL COUCH NO CAGE • UnyKorn LLC</span>
     </div>
     <p class="footer-copy">
-      Polygon PoS (Chain ID 137) • Salvador Dalí Time Warp Engine • EIP-712 Verifiable Claims<br />
+      Self-Sovereign Focus Protocol • Non-Transferable Personal Integrity Ledger • Amoy Staging<br />
       Future Tech Holdings (FTH) • UnyKorn Global Finance • 5655 Peachtree Pkwy, Peachtree, GA 30099
     </p>
   </footer>
