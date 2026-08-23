@@ -1,12 +1,12 @@
 /* ==========================================================================
-   ALL COUCH NO CAGE — JAVASCRIPT APP ENGINE & READ-ALONG NARRATION
+   ALL COUCH NO CAGE — JAVASCRIPT APP ENGINE & SOOTHING STORY NARRATION
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   initFirstPersonCalculator();
   initWatermarkedGallery();
   initAssetLightbox();
-  initReadAlongSystem();
+  initSoothingStoryNarration();
 });
 
 /* 1. FIRST-PERSON FOCUS & INTEGRITY CALCULATOR */
@@ -27,7 +27,6 @@ function initFirstPersonCalculator() {
     const severityBps = parseInt(severitySelect.value) || 10000;
     const evidenceBps = parseInt(tierSelect.value) || 8000;
 
-    // First-person formula: C = min(hours * 10 * (severity / 10000) * (evidence / 10000), 100, remaining_daily)
     const baseUnits = hours * 15.0; // 15 units per hour baseline
     const adjusted = baseUnits * (severityBps / 10000) * (evidenceBps / 10000);
     const finalCredits = Math.min(adjusted, 100.0).toFixed(2);
@@ -125,8 +124,8 @@ function openLightbox(data) {
   if (modal) modal.classList.add('active');
 }
 
-/* 4. INTERACTIVE READ-ALONG SYSTEM (Web Speech API + UI Highlighting) */
-function initReadAlongSystem() {
+/* 4. SOOTHING STORYTELLING NARRATION SYSTEM (Harmonic Tone + Ambient Story Pace) */
+function initSoothingStoryNarration() {
   const playBtn = document.getElementById('playReadAlongBtn');
   const stopBtn = document.getElementById('stopReadAlongBtn');
   const statusText = document.getElementById('narrationStatusText');
@@ -138,77 +137,140 @@ function initReadAlongSystem() {
     return;
   }
 
-  const sectionsToRead = [
-    { id: 'readSection1', text: 'Product Truth. All Couch No Cage is a self-sovereign personal experience protocol. A participant alone creates, controls, and may cryptographically seal their own records.' },
-    { id: 'readSection2', text: 'Own your focus, seal your experience. A self-sovereign, first-person protocol for documenting cognitive recovery and focus commitments under a transparent ruleset.' },
-    { id: 'readSection3', text: 'Core Protocol Principles. First-Person Agency. Participants alone start, commit, and finalize focus sessions. No peer rankings or surveillance are ever ingested.' },
-    { id: 'readSection4', text: 'Personal Focus and Integrity Ledger. Compute self-consented focus units and non-monetary closed-loop VTIME utility credits.' },
-    { id: 'readSection5', text: 'Protocol Visual Asset Inspector. Inspect SHA-256 evidence seals and pre-deployment cataloged visual artifacts.' },
-    { id: 'readSection6', text: 'Smart Contract Architecture. Five verified smart contracts and deterministic Rust modules engineered for sovereign self-management.' }
+  // Soothing storytelling chapters
+  const storyChapters = [
+    {
+      id: 'readSection1',
+      title: 'Chapter 1: The Sovereign Flame',
+      text: 'Welcome traveler. You have stepped into All Couch No Cage. Here, time is not a commodity sold to the noise of the world. It is your sacred energy. A space where you alone command your focus, transform wasted moments, and seal your personal growth.'
+    },
+    {
+      id: 'readSection2',
+      title: 'Chapter 2: The Four Pillars of Reality',
+      text: 'Observe the four tiers of our architecture. First, your raw human energy and breath. Second, our deterministic Rust engine that models physical truths with mathematical elegance. Third, the internal fractional currency, V-TIME, that honors your deep work. And fourth, our AI cognitive guides, harmonizing team strength and protecting your momentum.'
+    },
+    {
+      id: 'readSection3',
+      title: 'Chapter 3: The Science of Living Light',
+      text: 'Look into the biophysics of human life. The steady rhythm of your heart, the subtle voltage of your mind across alpha and theta waves, and the warmth of cellular energy. These are the physical truths that ground our digital universe.'
+    },
+    {
+      id: 'readSection4',
+      title: 'Chapter 4: The Sacred Ledger of Focus',
+      text: 'This is your interactive focus ledger. Choose your session duration, declare your privacy mode, and stake your commitment. Every focused hour is an internal milestone, recorded by you, owned by you, and sealed on your terms.'
+    },
+    {
+      id: 'readSection5',
+      title: 'Chapter 5: The Invariant Gallery',
+      text: 'Before you stand the fifteen Salvador Dalí Invariant artifacts. Each visual holds an immutable cryptographic evidence seal, celebrating the triumph of focus over noise.'
+    }
   ];
 
   let currentIdx = 0;
   let isPlaying = false;
+  let audioCtx = null;
 
-  function speakNextSection() {
-    if (!isPlaying || currentIdx >= sectionsToRead.length) {
-      stopNarration();
+  // Gentle ambient harmonic chime (528 Hz transformation frequency)
+  function playGentleChime(freq = 528) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.06, audioCtx.currentTime + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 1.8);
+    } catch (e) {
+      // AudioContext fallback
+    }
+  }
+
+  // Select the most soothing, natural voice available
+  function getSoothingVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    return voices.find(v => v.lang.includes('en') && (v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Karen') || v.name.includes('Google') || v.name.includes('Daniel'))) 
+      || voices.find(v => v.lang.includes('en')) 
+      || voices[0];
+  }
+
+  function narrateChapter() {
+    if (!isPlaying || currentIdx >= storyChapters.length) {
+      stopStory();
       return;
     }
 
-    // Clear previous highlight
     document.querySelectorAll('.read-highlight').forEach(el => el.classList.remove('read-highlight'));
 
-    const item = sectionsToRead[currentIdx];
-    const el = document.getElementById(item.id);
+    const chapter = storyChapters[currentIdx];
+    const el = document.getElementById(chapter.id);
     if (el) {
       el.classList.add('read-highlight');
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     if (statusText) {
-      statusText.innerHTML = `<i class="fa-solid fa-volume-high text-gold"></i> Narrating: Section ${currentIdx + 1} of ${sectionsToRead.length}`;
+      statusText.innerHTML = `<i class="fa-solid fa-sparkles text-gold"></i> Story Mode: <strong style="color: var(--accent-gold);">${chapter.title}</strong> (${currentIdx + 1} of ${storyChapters.length})`;
     }
 
-    const utterance = new SpeechSynthesisUtterance(item.text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
+    playGentleChime(currentIdx % 2 === 0 ? 528 : 432);
+
+    const utterance = new SpeechSynthesisUtterance(chapter.text);
+    const chosenVoice = getSoothingVoice();
+    if (chosenVoice) utterance.voice = chosenVoice;
+
+    // Soothing, calm, storybook pacing
+    utterance.rate = 0.88; // Gentle, unhurried pace
+    utterance.pitch = 0.95; // Warm, grounded tone
 
     utterance.onend = () => {
       currentIdx++;
       if (isPlaying) {
-        setTimeout(speakNextSection, 400);
+        setTimeout(narrateChapter, 700); // Soothing pause between chapters
       }
     };
 
     utterance.onerror = () => {
-      stopNarration();
+      stopStory();
     };
 
     window.speechSynthesis.speak(utterance);
   }
 
-  function startNarration() {
+  function startStory() {
     window.speechSynthesis.cancel();
     isPlaying = true;
     currentIdx = 0;
-    if (playBtnText) playBtnText.textContent = 'Narrating...';
+    if (playBtnText) playBtnText.textContent = 'Listening to Story...';
     if (stopBtn) stopBtn.style.display = 'inline-flex';
-    speakNextSection();
+    narrateChapter();
   }
 
-  function stopNarration() {
+  function stopStory() {
     isPlaying = false;
     window.speechSynthesis.cancel();
     document.querySelectorAll('.read-highlight').forEach(el => el.classList.remove('read-highlight'));
-    if (playBtnText) playBtnText.textContent = 'Read-Along Voice';
+    if (playBtnText) playBtnText.textContent = 'Soothing Story Mode';
     if (stopBtn) stopBtn.style.display = 'none';
-    if (statusText) statusText.innerHTML = '<i class="fa-solid fa-waveform text-gold"></i> Read-Along Complete / Idle.';
+    if (statusText) statusText.innerHTML = '<i class="fa-solid fa-moon text-gold"></i> Story paused. Ready when you are.';
   }
 
   if (playBtn) playBtn.addEventListener('click', () => {
-    if (isPlaying) stopNarration(); else startNarration();
+    if (isPlaying) stopStory(); else startStory();
   });
 
-  if (stopBtn) stopBtn.addEventListener('click', stopNarration);
+  if (stopBtn) stopBtn.addEventListener('click', stopStory);
+
+  // Pre-load voices
+  window.speechSynthesis.onvoiceschanged = () => {
+    getSoothingVoice();
+  };
 }
