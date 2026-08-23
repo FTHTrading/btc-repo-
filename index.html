@@ -496,12 +496,18 @@
               <span id="liveTimerDisplay" style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-cyan); font-weight: 800;">00:00:00</span>
             </div>
 
-            <div style="display: flex; gap: 0.75rem;">
-              <button class="btn btn-gold btn-block" id="startLiveSessionBtn">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-gold btn-sm" id="startLiveSessionBtn" style="flex: 1;">
                 <i class="fa-solid fa-play"></i> Start Focus Block
               </button>
-              <button class="btn btn-cyan btn-block" id="completeAndMintBtn" style="display: none;">
-                <i class="fa-solid fa-fire"></i> Complete & Mint $VTIME
+              <button class="btn btn-glass btn-sm" id="pauseLiveSessionBtn" style="display: none; flex: 1;">
+                <i class="fa-solid fa-pause"></i> Pause
+              </button>
+              <button class="btn btn-gold btn-sm" id="resumeLiveSessionBtn" style="display: none; flex: 1;">
+                <i class="fa-solid fa-play"></i> Resume
+              </button>
+              <button class="btn btn-cyan btn-sm" id="completeAndMintBtn" style="display: none; flex: 1;">
+                <i class="fa-solid fa-fire"></i> Complete & Seal
               </button>
             </div>
             <div id="mintSuccessToast" style="display: none; margin-top: 0.75rem; color: var(--accent-lime); font-family: var(--font-mono); font-size: 0.8rem; text-align: center;">
@@ -517,7 +523,7 @@
               <span id="impactScoreBps" class="val-highlight gold-gradient">22.68 Units</span>
             </div>
             <div class="impact-val-item">
-              <span>Internal Fractional Currency Earned:</span>
+              <span>Internal Fractional Currency:</span>
               <span id="impactCentsVal" class="val-highlight cyan-gradient">22.68 VTIME</span>
             </div>
             <div class="impact-val-item">
@@ -527,7 +533,7 @@
           </div>
 
           <p class="text-dim" style="font-size: 0.8rem; margin-top: 1rem; line-height: 1.5;">
-            * Internal fractional token ($VTIME) awarded through verified focus and human experience metrics within the game ecosystem.
+            * Internal utility credit ($VTIME) awarded through verified focus and human experience metrics within the game ecosystem. Non-medical • Not transferable • No cash value.
           </p>
         </div>
       </div>
@@ -581,6 +587,42 @@
     </div>
   </section>
 
+  <!-- System Diagnostics Modal -->
+  <div class="modal-overlay" id="diagModal">
+    <div class="lightbox-card" style="max-width: 650px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-microchip"></i> System Diagnostics & Self-Repair</h3>
+        <button id="closeDiagBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span>Runtime Version:</span>
+          <span class="text-cyan">v2.4.0-production-hardened</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span>Client Error Boundary:</span>
+          <span class="text-lime">Active & Monitored</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span>Storage Integrity:</span>
+          <span class="text-lime">localStorage OK</span>
+        </div>
+      </div>
+
+      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 200px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList">
+        <!-- Telemetry Logs Rendered Here -->
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-glass btn-sm" id="clearStateBtn">
+          <i class="fa-solid fa-trash-can text-flame"></i> Reset Local State
+        </button>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">Safe Non-Destructive Storage</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-brand">
@@ -591,9 +633,15 @@
       Self-Mastery, Focus & Biophysical Time Protocol • Powered by Deterministic Rust Engines<br />
       Future Tech Holdings (FTH) • UnyKorn Global Finance • 5655 Peachtree Pkwy, Peachtree, GA 30099
     </p>
+    <div style="margin-top: 0.75rem;">
+      <a href="#" id="diagToggleBtn" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-gold); text-decoration: none;">
+        <i class="fa-solid fa-terminal"></i> Open System Diagnostics
+      </a>
+    </div>
   </footer>
 
-  <!-- Application Engine -->
+  <!-- Self-Healing Layer & Application Engine -->
+  <script src="self_healing_client.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
