@@ -285,43 +285,38 @@ function openLightbox(data) {
   if (modal) modal.classList.add('active');
 }
 
-/* 4. NATURAL SOOTHING VOICE ENGINE (Chatterbox / Rita / Neural Studio Matching) */
+/* 4. NATURAL SOOTHING VOICE ENGINE & STORYTELLING */
 function initSoothingStoryNarration() {
   const playBtn = document.getElementById('playReadAlongBtn');
   const stopBtn = document.getElementById('stopReadAlongBtn');
   const statusText = document.getElementById('narrationStatusText');
   const playBtnText = document.getElementById('playBtnText');
 
-  if (!('speechSynthesis' in window)) {
-    if (statusText) statusText.textContent = 'Web Speech API not supported in this browser.';
-    return;
-  }
-
   const storyChapters = [
     {
       id: 'readSection1',
       title: 'Chapter 1: The Sovereign Flame',
-      text: 'Welcome. You have entered All Couch No Cage. Here, time is not a commodity surrendered to the noise of the world. It is your sacred energy. A peaceful space where you command your focus, transform wasted moments, and seal your personal growth.'
+      text: 'Welcome traveler to All Couch No Cage. Here in the surreal persistence of memory, time is not sold to the noise of the world. It is your most precious sacred energy. You alone command your focus and transform wasted moments into golden finality.'
     },
     {
       id: 'readSection2',
       title: 'Chapter 2: The Four Pillars of Reality',
-      text: 'Here are the four pillars of our architecture. First, your natural human energy and breath. Second, our deterministic Rust engine that models physical truths with mathematical elegance. Third, the internal fractional currency, V-TIME, that honors your deep work. And fourth, our AI cognitive guides, harmonizing team strength and protecting your momentum.'
+      text: 'Observe the four surreal pillars of our architecture. First, your raw human energy and breath. Second, our deterministic Rust engine that models physical truths with mathematical elegance. Third, the internal fractional currency, V-TIME, that honors your deep work. And fourth, our AI cognitive guides, harmonizing team strength.'
     },
     {
       id: 'readSection3',
       title: 'Chapter 3: The Science of Living Light',
-      text: 'Reflect upon the biophysics of human life. The steady rhythm of your heart, the gentle voltage of your mind across alpha and theta waves, and the warmth of cellular energy. These are the physical truths that ground our digital universe.'
+      text: 'Look deeply into the biophysics of life. The steady rhythm of your heart, the subtle voltage of your mind across alpha and theta waves, and the warmth of cellular energy. These are the physical truths that ground our digital universe.'
     },
     {
       id: 'readSection4',
       title: 'Chapter 4: The Sacred Ledger of Focus',
-      text: 'This is your personal focus ledger. Choose your session duration, declare your privacy mode, and set your commitment. Every focused hour is an internal milestone, recorded by you, owned by you, and sealed on your terms.'
+      text: 'This is your interactive focus ledger. Choose your session duration, declare your privacy mode, and stake your commitment. Every focused hour is an internal milestone, recorded by you, owned by you, and sealed on your terms.'
     },
     {
       id: 'readSection5',
       title: 'Chapter 5: The Invariant Gallery',
-      text: 'Before you stand the fifteen Salvador Dalí Invariant artifacts. Each visual holds an immutable cryptographic evidence seal, celebrating the quiet triumph of focus over noise.'
+      text: 'Before you stand the fifteen Salvador Dalí Invariant artifacts. Each visual holds an immutable cryptographic evidence seal, celebrating the triumph of focus over noise.'
     }
   ];
 
@@ -329,10 +324,10 @@ function initSoothingStoryNarration() {
   let isPlaying = false;
   let audioCtx = null;
 
-  // Soft ambient chime (528 Hz / 432 Hz)
   function playGentleChime(freq = 528) {
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
 
@@ -340,7 +335,7 @@ function initSoothingStoryNarration() {
       osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
       gain.gain.setValueAtTime(0.005, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.035, audioCtx.currentTime + 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.04, audioCtx.currentTime + 0.1);
       gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
 
       osc.connect(gain);
@@ -348,34 +343,19 @@ function initSoothingStoryNarration() {
 
       osc.start();
       osc.stop(audioCtx.currentTime + 1.8);
-    } catch (e) {
-      // Audio fallback
-    }
+    } catch (e) {}
   }
 
-  // Prioritize Chatterbox / Rita / Jenny / Aria / Google Neural / Natural English Voices
   function getSoothingVoice() {
+    if (!('speechSynthesis' in window)) return null;
     const voices = window.speechSynthesis.getVoices();
     if (!voices || voices.length === 0) return null;
 
-    // 1. Exact Name Priority (Rita, Chatterbox, Jenny, Aria, Sonia, Ava, Serena)
-    const priorityKeywords = [
-      'rita', 'chatterbox', 'jenny', 'aria', 'sonia', 'ava', 'serena',
-      'natural', 'neural', 'studio', 'premium', 'google us english'
-    ];
-
-    for (const keyword of priorityKeywords) {
-      const match = voices.find(v => v.name.toLowerCase().includes(keyword) && v.lang.startsWith('en'));
+    const keywords = ['rita', 'chatterbox', 'jenny', 'aria', 'sonia', 'ava', 'natural', 'neural', 'studio', 'female', 'samantha', 'google'];
+    for (const kw of keywords) {
+      const match = voices.find(v => v.name.toLowerCase().includes(kw) && v.lang.startsWith('en'));
       if (match) return match;
     }
-
-    // 2. High-quality female / calm natural voice match
-    const femaleNatural = voices.find(v => 
-      v.lang.startsWith('en') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Victoria'))
-    );
-    if (femaleNatural) return femaleNatural;
-
-    // 3. Any standard English voice
     return voices.find(v => v.lang.startsWith('en')) || voices[0];
   }
 
@@ -394,38 +374,43 @@ function initSoothingStoryNarration() {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    const currentVoice = getSoothingVoice();
-    const voiceName = currentVoice ? currentVoice.name.split(' ')[0] : 'Natural Neural';
-
     if (statusText) {
-      statusText.innerHTML = `<i class="fa-solid fa-sparkles text-gold"></i> Story Voice (${voiceName}): <strong style="color: var(--accent-gold);">${chapter.title}</strong> (${currentIdx + 1} of ${storyChapters.length})`;
+      statusText.innerHTML = `<i class="fa-solid fa-sparkles text-gold"></i> Storytelling: <strong style="color: var(--accent-gold);">${chapter.title}</strong> (${currentIdx + 1} of ${storyChapters.length})`;
     }
 
     playGentleChime(currentIdx % 2 === 0 ? 528 : 432);
 
-    const utterance = new SpeechSynthesisUtterance(chapter.text);
-    if (currentVoice) utterance.voice = currentVoice;
+    if (!('speechSynthesis' in window)) {
+      // Visual only fallback if speech synthesis is blocked
+      setTimeout(() => {
+        currentIdx++;
+        if (isPlaying) narrateChapter();
+      }, 5000);
+      return;
+    }
 
-    // Calm, organic, soothing pace
-    utterance.rate = 0.85;  // Gentle, unhurried cadence
-    utterance.pitch = 0.98; // Natural, warm pitch
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(chapter.text);
+    const voice = getSoothingVoice();
+    if (voice) utterance.voice = voice;
+
+    utterance.rate = 0.86;
+    utterance.pitch = 0.98;
 
     utterance.onend = () => {
       currentIdx++;
-      if (isPlaying) {
-        setTimeout(narrateChapter, 800); // Relaxed pause between sections
-      }
+      if (isPlaying) setTimeout(narrateChapter, 800);
     };
 
-    utterance.onerror = () => {
-      stopStory();
+    utterance.onerror = (e) => {
+      currentIdx++;
+      if (isPlaying) setTimeout(narrateChapter, 800);
     };
 
     window.speechSynthesis.speak(utterance);
   }
 
   function startStory() {
-    window.speechSynthesis.cancel();
     isPlaying = true;
     currentIdx = 0;
     if (playBtnText) playBtnText.textContent = 'Listening to Story...';
@@ -435,20 +420,22 @@ function initSoothingStoryNarration() {
 
   function stopStory() {
     isPlaying = false;
-    window.speechSynthesis.cancel();
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     document.querySelectorAll('.read-highlight').forEach(el => el.classList.remove('read-highlight'));
     if (playBtnText) playBtnText.textContent = 'Soothing Story Mode';
     if (stopBtn) stopBtn.style.display = 'none';
     if (statusText) statusText.innerHTML = '<i class="fa-solid fa-moon text-gold"></i> Story paused. Ready when you are.';
   }
 
-  if (playBtn) playBtn.addEventListener('click', () => {
-    if (isPlaying) stopStory(); else startStory();
-  });
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) stopStory(); else startStory();
+    });
+  }
 
   if (stopBtn) stopBtn.addEventListener('click', stopStory);
 
-  window.speechSynthesis.onvoiceschanged = () => {
-    getSoothingVoice();
-  };
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => getSoothingVoice();
+  }
 }
