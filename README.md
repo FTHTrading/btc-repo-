@@ -2,12 +2,12 @@
 
 # 🏛️ Future Tech Holdings (FTH) Master System Architecture & Valuation Hub
 
-### **Sovereign Infrastructure, Institutional RWA Tokenization, Post-Quantum Cryptography & AI Operations**
+### **Sovereign Infrastructure, Zero-Knowledge Privacy L1, Institutional RWA Tokenization & AI Operations**
 
 [![Status: Production Ready](https://img.shields.io/badge/System_Status-Production_Ready-00C853?style=for-the-badge&logo=github)](https://github.com/FTHTrading)
-[![Total IP Valuation: $39.6M](https://img.shields.io/badge/Total_IP_Valuation-%2439.6_Million-00B0FF?style=for-the-badge&logo=target)](VALUATION_MATRIX.md)
+[![Total IP Valuation: $44.1M](https://img.shields.io/badge/Total_IP_Valuation-%2444.1_Million-00B0FF?style=for-the-badge&logo=target)](VALUATION_MATRIX.md)
 [![Underlying TVL / AUM: $5.24B](https://img.shields.io/badge/Underlying_TVL_%2F_AUM-%245.24_Billion-651FFF?style=for-the-badge&logo=ethereum)](COMMERCIAL_USE_CASES.md)
-[![Consensus: QBFT / CometBFT / EVM](https://img.shields.io/badge/Consensus-QBFT_%7C_CometBFT_%7C_EVM-FFD600?style=for-the-badge&logo=hyperledger)](BUILD_GUIDE.md)
+[![Privacy: Groth16 ZK-SNARKs](https://img.shields.io/badge/Privacy-Groth16_ZK--SNARKs-FFD600?style=for-the-badge&logo=rust)](BUILD_GUIDE.md)
 
 ---
 
@@ -17,11 +17,12 @@
 1. [Executive Summary & Core Principles](#-executive-summary--core-principles)
 2. [Color-Coded Status & System Category Matrix](#-color-coded-status--system-category-matrix)
 3. [Tier 1 Flagship Systems Architecture](#-tier-1-flagship-systems-architecture)
-   - [3.1 Global SWIFT Settlement & Sovereign Chains](#31-global-swift-settlement--sovereign-chains)
-   - [3.2 Institutional Control Planes & Sovereign OS](#32-institutional-control-planes--sovereign-os)
-   - [3.3 RWA Bond Tokenization & Commodity ETFs](#33-rwa-bond-tokenization--commodity-etfs)
-   - [3.4 Post-Quantum Security & Banking Rails](#34-post-quantum-security--banking-rails)
-   - [3.5 Web3 Connection Economy & Closed-Loop Gaming](#35-web3-connection-economy--closed-loop-gaming)
+   - [3.1 Zero-Knowledge Enterprise Rust L1 & USS Framework](#31-zero-knowledge-enterprise-rust-l1--uss-framework)
+   - [3.2 Global SWIFT Settlement & Sovereign Chains](#32-global-swift-settlement--sovereign-chains)
+   - [3.3 Institutional Control Planes & Sovereign OS](#33-institutional-control-planes--sovereign-os)
+   - [3.4 RWA Bond Tokenization & Commodity ETFs](#34-rwa-bond-tokenization--commodity-etfs)
+   - [3.5 Post-Quantum Security & Banking Rails](#35-post-quantum-security--banking-rails)
+   - [3.6 Web3 Connection Economy & Closed-Loop Gaming](#36-web3-connection-economy--closed-loop-gaming)
 4. [Realistic Valuation Methodology & Financial Breakdown](#-realistic-valuation-methodology--financial-breakdown)
 5. [Commercial Use-Cases & Monetization Playbooks](#-commercial-use-cases--monetization-playbooks)
 6. [Proof of Value & Empirical Verification](#-proof-of-value--empirical-verification)
@@ -31,7 +32,7 @@
 
 ## 🌟 Executive Summary & Core Principles
 
-The **Future Tech Holdings (FTH)** technology portfolio, anchored under `kevanbtc` / `FTHTrading`, represents a complete **$39.6M** institutional infrastructure ecosystem. It bridges physical real-world assets (RWAs), SEC-compliant tokenization, SWIFT GPI / ISO 20022 settlement chains, post-quantum security, sovereign Layer-1 blockchains, and autonomous AI trading swarms.
+The **Future Tech Holdings (FTH)** technology portfolio, anchored under `kevanbtc` / `FTHTrading`, represents a complete **$44.1M** institutional infrastructure ecosystem. It bridges zero-knowledge privacy Layer-1s (`uny-rust`), physical real-world assets (RWAs), SEC-compliant tokenization, SWIFT GPI / ISO 20022 settlement chains, post-quantum security, sovereign Layer-1 blockchains, and autonomous AI trading swarms.
 
 ```
 +-----------------------------------------------------------------------------------+
@@ -50,10 +51,10 @@ The **Future Tech Holdings (FTH)** technology portfolio, anchored under `kevanbt
                                         │ (State Verification / Cross-Chain)
                                         ▼
 +-----------------------------------------------------------------------------------+
-|     LAYER 1/0: RUST SOVEREIGN OS, GLOBAL SWIFT SETTLEMENT & SOVEREIGN CHAINS      |
-|   Global-Swift-Stablecoins (Chain 7777) | BankChain (Go ABCI + CometBFT L1)     |
-|   layer-1-unykorn (Besu Chain 7777)   | ox (OptimaGlobal DTCC Control Plane)      |
-|   fth-treasury-stack (56 crates)      | FTHFinancial- (FTH-OS Solvency Kernel)    |
+|     LAYER 1/0: RUST SOVEREIGN OS, ZK L1 BLOCKCHAINS & SWIFT SETTLEMENT CHAINS     |
+|   uny-rust (Enterprise ZK L1 + USS)   | Global-Swift-Stablecoins (Chain 7777)     |
+|   BankChain (Go ABCI + CometBFT L1)   | ox (OptimaGlobal DTCC Control Plane)      |
+|   layer-1-unykorn (Besu Chain 7777)   | FTHFinancial- (FTH-OS Solvency Kernel)    |
 +-----------------------------------------------------------------------------------+
 ```
 
@@ -68,6 +69,7 @@ Systems are categorized by operational deployment readiness:
 
 | System Name | Primary Stack | Operational Status | Standalone IP Value | Commercial ARR Potential | Underlying Asset / AUM Anchor |
 | :--- | :--- | :---: | :---: | :---: | :--- |
+| **`uny-rust`** | Rust (46%) / Solidity | 🟢 Mainnet Verified | **$4,500,000** | `$150K – $750K/yr` | **Groth16 ZK-SNARK L1 & 8 USS Standards** |
 | **`Global-Swift-Stablecoins`**| Go / Solidity / TS | 🟢 Mainnet Verified | **$4,000,000** | `$100K – $500K/yr` | **$246M TVL / 170+ Contracts / $222M RWA** |
 | **`ox`** | Rust (81%) / Solidity | 🟢 Mainnet Verified | **$3,500,000** | `$499/mo – $9,999/mo` | DTCC No-Action Letter Invariants |
 | **`BankChain`** | Go (56%) / CometBFT | 🟡 Active DevNet | **$3,000,000** | `$50K – $250K/node` | Sovereign L1 Banking Chain DevNet |
@@ -88,53 +90,31 @@ Systems are categorized by operational deployment readiness:
 
 ## 🏛️ Tier 1 Flagship Systems Architecture
 
-### 3.1 Global SWIFT Settlement & Sovereign Chains
+### 3.1 Zero-Knowledge Enterprise Rust L1 & USS Framework
+
+#### 🟢 `uny-rust` (UNYKORN Enterprise ZK-SNARK Layer-1 Blockchain)
+- **Role:** Enterprise-grade Layer-1 blockchain built from scratch in Rust featuring **Groth16 ZK-SNARKs** with **BLS12-381 curve**, 8 Unykorn Smart Standards (USS), and 3-agent AI reinforcement learning orchestration.
+- **Key Modules:**
+  - `zkp_core.rs` (500+ lines ZK-SNARK verifier).
+  - `USS-1` (Confidential Fungible Assets), `USS-2` (W3C DID Identity), `USS-11` (Multi-Sig Vaults), `USS-20`/`21` (TLD/Subdomain), `USS-30` (ZK Compliance), `USS-31` (Asset Oracle), `USS-32` (AI Governance).
+  - 3 AI Agents: `Policy RL` (:8788), `Fee Optimizer` (:8789), `Orchestrator` (:8790).
+
+---
+
+### 3.2 Global SWIFT Settlement & Sovereign Chains
 
 #### 🟢 `Global-Swift-Stablecoins` (Unykorn L1 Institutional Settlement Monorepo)
 - **Role:** Hyperledger Besu permissioned EVM (**Chain ID 7777**) featuring **170+ deployed smart contracts**, **$246M TVL**, **$222M RWA portfolio**, and native SWIFT / ISO 20022 `pacs.009`/`camt.053` event logging.
-- **Key Modules:** SWIFT GPI + BIS Agorá adapters, Fnality & RLN Multi-CBDC settlement framework, Basel III/IV Capital Adequacy Ratio (CAR) engine, and Safe{Wallet} RWA interface (`safe-app`).
-
----
-
-### 3.2 Institutional Control Planes & Sovereign OS
-
-#### 🟢 `ox` (OptimaGlobal AI — DTCC-Compatible Control Plane)
-- **Role:** Non-custodial SEC-compliant control plane implementing DTCC No-Action Letter invariants in code (`PolicyGate`, `OmnibusReconciliation`, `ReversalGovernor`).
-
-#### 🟢 `FTHFinancial-` (FTH Financial OS — Solvency Kernel)
-- **Role:** Sovereign Financial OS Kernel enforcing Solvency, Compliance, and DIDs at the execution layer.
-
----
-
-### 3.3 RWA Bond Tokenization & Commodity ETFs
-
-#### 🟢 `UNY-144a-bond-tokenization` ($5B Polygon Mainnet Bond Tokenization)
-- **Verified Polygon Mainnet Contracts:**
-  - `CompliantSecurityToken`: [`0xA715acA24f83b08B786911c4d2fB194132D138D2`](https://polygonscan.com/address/0xA715acA24f83b08B786911c4d2fB194132D138D2)
-  - `DvPSettlement`: [`0x0b6e35549B8Bbf67885A8d41e65d044540fc9A5D`](https://polygonscan.com/address/0x0b6e35549B8Bbf67885A8d41e65d044540fc9A5D)
-
-#### 🔵 `bradleykizer` (TEUCRIUM-Style Commodity ETF System)
-- **Flow:** Physical Vault Assay Receipts → `ReceiptNFT.sol` (ERC-721) → `UnitToken.sol` (ERC-20 XAUg/CARBt) → `FundVault4626Enhanced.sol` (ERC-4626) → `FundShare1400Enhanced.sol` (ERC-1400).
-
-#### 🔵 `fthboss` (FTH-G 1kg Vaulted Gold System)
-- **Role:** Physical gold-backed token (1 FTH-G = 1kg gold) with non-transferable `KYCSoulbound.sol` identity and on-chain deficit accounting (`stream.deficit`).
-
----
-
-### 3.4 Post-Quantum Security & Banking Rails
-
-#### 🟢 `unykorn-pqc` (Post-Quantum Cryptography & Compliance Security)
-- **Role:** Drop-in PQC token pillars (`TGUSD.sol` with `mintWithPQ` quantum-resistant signatures), Travel Rule session gating, `MonthlyDigest.sol` IPFS anchors, and `DualPoR_Divergence.sol` divergence auto-pause guard.
 
 ---
 
 ## 📊 Realistic Valuation Methodology & Financial Breakdown
 
-The total portfolio valuation of **$39.6 Million** is derived from three rigorous valuation methodologies:
+The total portfolio valuation of **$44.1 Million** is derived from three rigorous valuation methodologies:
 
 ```
 +-----------------------------------------------------------------------------------+
-|                         TOTAL PORTFOLIO VALUATION: $39.6M                         |
+|                         TOTAL PORTFOLIO VALUATION: $44.1M                         |
 +-----------------------------------------------------------------------------------+
                                          │
        ┌─────────────────────────────────┼─────────────────────────────────┐
@@ -142,13 +122,9 @@ The total portfolio valuation of **$39.6 Million** is derived from three rigorou
 ┌──────────────┐                 ┌──────────────┐                 ┌──────────────┐
 │  REPLACEMENT │                 │   SAAS ARR   │                 │ UNDERLYING   │
 │ COST METHOD  │                 │ MONETIZATION │                 │ TVL / AUM    │
-│   ($23.5M)   │                 │   ($5.1M/YR) │                 │   ($5.24B)   │
+│   ($25.8M)   │                 │   ($5.8M/YR) │                 │   ($5.24B)   │
 └──────────────┘                 └──────────────┘                 └──────────────┘
 ```
-
-1. **Replacement Cost Method (Software Engineering Hours)**: Calculating senior engineering hours ($150–$250/hr) required to build, test, and document 258 repositories across Rust, Solidity, Go, and Python.
-2. **Annual SaaS ARR Potential**: Multiples of recurring membership revenue across active product tiers ($499/mo to $9,999/mo).
-3. **Underlying Asset Anchor**: Direct asset exposure to the verified $5.0B Polygon bond offering, $246M L1 TVL, and $4.82B UnyKorn AUC ledger.
 
 For detailed breakdown, see [VALUATION_MATRIX.md](VALUATION_MATRIX.md).
 
@@ -156,10 +132,9 @@ For detailed breakdown, see [VALUATION_MATRIX.md](VALUATION_MATRIX.md).
 
 ## 💼 Commercial Use-Cases & Monetization Playbooks
 
-- **Playbook 1: Global Tier-1 Banks & SWIFT Members**: Deploy `Global-Swift-Stablecoins` (Chain ID 7777) for ISO 20022 settlement & Basel III CAR compliance ($500K setup + $50K/mo SLA).
-- **Playbook 2: Institutional Custodians & Clearing Members**: Deploy `ox` (OptimaGlobal DTCC Control Plane) for SEC/DTCC compliant tokenized entitlement tracking ($9,999/mo).
-- **Playbook 3: Sovereign Nations & Central Banks**: Deploy `BankChain` or `layer-1-unykorn` for sovereign digital currency clearing ($250K node license).
-- **Playbook 4: Asset Managers & Family Offices**: Deploy `bradleykizer` or `AIF` for tokenized commodity ETF vault creation (0.75% AUM fee).
+- **Playbook 1: Enterprise Confidential L1 Deployments**: Deploy `uny-rust` for privacy-preserving corporate clearing & ZK compliance ($150K node license + $75K/yr SLA).
+- **Playbook 2: Global Tier-1 Banks & SWIFT Members**: Deploy `Global-Swift-Stablecoins` (Chain ID 7777) for ISO 20022 settlement & Basel III CAR compliance ($500K setup + $50K/mo SLA).
+- **Playbook 3: Institutional Custodians & Clearing Members**: Deploy `ox` (OptimaGlobal DTCC Control Plane) for SEC/DTCC compliant tokenized entitlement tracking ($9,999/mo).
 
 For complete commercial guides, see [COMMERCIAL_USE_CASES.md](COMMERCIAL_USE_CASES.md).
 
@@ -168,15 +143,14 @@ For complete commercial guides, see [COMMERCIAL_USE_CASES.md](COMMERCIAL_USE_CAS
 ## 🛠️ Universal Build & Deployment Guide
 
 ```bash
-# 1. Build Global SWIFT Stablecoins Infrastructure (Chain ID 7777)
+# 1. Compile & Run UNYKORN Enterprise ZK L1 (uny-rust)
+git clone https://github.com/kevanbtc/uny-rust.git
+cd uny-rust
+cargo build --release && cargo test
+
+# 2. Build Global SWIFT Stablecoins Infrastructure (Chain ID 7777)
 git clone https://github.com/kevanbtc/Global-Swift-Stablecoins.git
 npm install && npm run test
-
-# 2. Build Rust Institutional Control Plane (ox)
-cd crates/optima-core-types && cargo build --release
-
-# 3. Launch BankChain DevNet (CometBFT + Go ABCI)
-./scripts/start-devnet.ps1
 ```
 
 For step-by-step build guides, see [BUILD_GUIDE.md](BUILD_GUIDE.md).

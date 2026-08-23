@@ -1,7 +1,7 @@
 # 📊 Valuation Matrix & Financial Appraisal Report
 
 **FTHTrading / kevanbtc Portfolio Ecosystem**  
-**Total Portfolio Asset Valuation:** **$39,600,000 USD**  
+**Total Portfolio Asset Valuation:** **$44,100,000 USD**  
 **Date of Financial Appraisal:** August 22, 2026  
 
 ---
@@ -20,6 +20,7 @@ To provide an institutional-grade, realistic appraisal of the 258 repositories w
 
 | System Name | Category | Replacement Cost | Annual ARR Potential | Underlying Asset Anchor | Combined Valuation |
 | :--- | :--- | :---: | :---: | :---: | :---: |
+| **`uny-rust`** | Zero-Knowledge Rust L1 | `$2,400,000` | `$750,000/yr` | **Groth16 ZK-SNARK L1 & 8 USS** | **$4,500,000** |
 | **`Global-Swift-Stablecoins`**| SWIFT L1 Settlement | `$2,200,000` | `$600,000/yr` | **$246M TVL / 170+ Contracts** | **$4,000,000** |
 | **`ox`** (OptimaGlobal AI) | DTCC Control Plane | `$1,800,000` | `$600,000/yr` | DTCC No-Action Invariants | **$3,500,000** |
 | **`BankChain`** | Go ABCI CometBFT L1 | `$2,100,000` | `$450,000/yr` | Sovereign Bank DevNet | **$3,000,000** |
@@ -34,9 +35,9 @@ To provide an institutional-grade, realistic appraisal of the 258 repositories w
 | **`Casino-flow`** | Closed-Loop USDT Gaming | `$1,000,000` | `$360,000/yr` | GLI-33 Casino Settlement | **$1,800,000** |
 | **`unykorn-pqc`** | Post-Quantum Security | `$950,000` | `$200,000/yr` | PQC `mintWithPQ` Signatures | **$1,700,000** |
 | **`FTH-RWA_Private`** | Polygon ISO 20022 RWA | `$850,000` | `$150,000/issue` | ISO 20022 PACS.009 Events | **$1,600,000** |
-| **`layer-1-unykorn`** | Sovereign Chain 7777 | `$900,000` | `$240,000/yr` | Besu QBFT Node Network | **$1,500,000** |
-| **Remaining Repos (243)** | AI, Bots, Dev Base | `$2,200,000` | `$100,000/yr` | Supporting Infrastructure | **$4,200,000** |
-| **TOTAL ECOSYSTEM** | **Full Portfolio** | **$21,700,000** | **~$5,100,000/yr** | **$5.24B+ Anchor** | **$39,600,000** |
+| **`layer-1-unykorn`** | Sovereign Chain 7777 | `$950,000` | `$240,000/yr` | Besu QBFT Node Network | **$1,500,000** |
+| **Remaining Repos (242)** | AI, Bots, Dev Base | `$2,000,000` | `$100,000/yr` | Supporting Infrastructure | **$4,200,000** |
+| **TOTAL ECOSYSTEM** | **Full Portfolio** | **$23,950,000** | **~$5,750,000/yr** | **$5.24B+ Anchor** | **$44,100,000** |
 
 ---
 
