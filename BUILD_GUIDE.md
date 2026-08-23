@@ -1,7 +1,7 @@
 # 🛠️ Universal Build & Deployment Guide
 
-**FTHTrading / kevanbtc Portfolio Ecosystem**  
-**Supported Runtimes:** Rust (Groth16 / BLS12-381), Go (Besu / CometBFT), Solidity (Foundry / Hardhat), Python (FastAPI), Node.js (TypeScript).  
+**FTHTrading / kevanbtc & unykornai Ecosystem**  
+**Supported Runtimes:** Python (CBDC / AI), Rust (Groth16 / ZK), C# (.NET XRPL Attestation), Go (Besu / CometBFT), Solidity (Foundry), TypeScript (Node.js / Electron / Desktop).  
 
 ---
 
@@ -9,42 +9,43 @@
 
 ### System Requirements
 - **OS:** Windows 10/11, macOS, Linux
-- **Rust**: 1.75+ with `cargo` (`rustup update stable`)
+- **Python**: 3.10+ (`python --version`)
+- **Rust**: 1.75+ (`rustup update stable`)
+- **.NET SDK**: 8.0+ for C# (`dotnet --version`)
 - **Go**: 1.21+ (`go version`)
-- **Foundry**: `forge`, `cast`, `anvil` (`foundryup`)
 - **Node.js**: 18.x or 20.x with `pnpm` / `npm`
-- **Docker**: Docker Desktop with Compose
 
 ---
 
 ## 2. Component Build Instructions
 
-### A. UNYKORN Zero-Knowledge Enterprise Rust L1 (`uny-rust`)
+### A. Sovereign CBDC Central Bank Engine (`unykornai/cbdc-2`)
 ```bash
-# Clone & compile Rust L1 node
+git clone https://github.com/unykornai/cbdc-2.git
+cd cbdc-2
+pip install -r requirements.txt
+python -m cbdc.main
+```
+
+### B. Institutional C# XRPL Attestation Engine (`unykornai/UnyXRPL.Attestation`)
+```bash
+git clone https://github.com/unykornai/UnyXRPL.Attestation.git
+cd UnyXRPL.Attestation
+dotnet build -c Release
+dotnet test
+```
+
+### C. Local Desktop AI Agent Surface (`unykornai/AionUi`)
+```bash
+git clone https://github.com/unykornai/AionUi.git
+cd AionUi
+pnpm install
+pnpm dev
+```
+
+### D. UNYKORN Zero-Knowledge Enterprise Rust L1 (`kevanbtc/uny-rust`)
+```bash
 git clone https://github.com/kevanbtc/uny-rust.git
 cd uny-rust
-cargo build --release
-
-# Run full test suite (ZK proofs + USS smart standards)
-cargo test
-
-# Launch single-node blockchain
-cargo run -p node
-
-# Launch 13-service Docker Stack (AI agents + IPFS + Postgres)
-docker-compose up -d
-```
-
-### B. Global SWIFT Stablecoins Infrastructure (`Global-Swift-Stablecoins` Chain ID 7777)
-```bash
-git clone https://github.com/kevanbtc/Global-Swift-Stablecoins.git
-cd Global-Swift-Stablecoins
-npm install && npm run test
-```
-
-### C. Rust Control Planes (`ox` & `FTHFinancial-`)
-```bash
-cd crates/optima-core-types
-cargo build --release
+cargo build --release && cargo test
 ```

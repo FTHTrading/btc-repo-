@@ -1,30 +1,38 @@
 # 💼 Commercial Use-Cases & Monetization Playbooks
 
-**FTHTrading / kevanbtc Portfolio Ecosystem**  
-**Target Enterprise Markets:** Enterprise Confidential Blockchains, Tier-1 Banks, SWIFT Members, Custodians, Clearing Houses, Sovereign Nations, Asset Managers, Casino Properties, and Family Offices.  
+**FTHTrading / kevanbtc & unykornai Ecosystem**  
+**Target Enterprise Markets:** Central Banks, Tier-1 Banks, SWIFT Members, XRPL Institutions, Custodians, Enterprise ZK Blockchains, Family Offices, and Casino Properties.  
 
 ---
 
-## Playbook 1: Enterprise Zero-Knowledge Confidential Blockchains
+## Playbook 1: Central Banks & Monetary Authorities
+
+### **Target Solution:** `cbdc-2` / `Cbdc` (Sovereign Central Bank Digital Currency Engine)
+- **Problem Solved:** Monetary authorities require dual-tier retail/wholesale CBDC rails with offline cryptographic voucher clearing, programmable interest distribution, and central bank ledger controls.
+- **Commercial Deployment:** Deploy `cbdc-2` central bank state machine with `optkas-bank-vi` bank ledger adapters and `cbdc-2-482f6` vault isolation.
+- **Monetization Engine:** $250,000 upfront setup fee + $50,000/year operational SLA per central bank node cluster.
+
+---
+
+## Playbook 2: Institutional XRPL & Multi-Chain Attestation
+
+### **Target Solution:** `UnyXRPL.Attestation` + `unykornai.github.io` (C# XRPL Rail)
+- **Problem Solved:** Financial institutions operating on EVM chains need verifiable proof of reserve attestations natively recorded on the XRP Ledger.
+- **Commercial Deployment:** Deploy C# `UnyXRPL.Attestation` services linking EVM state proofs to XRPL issuer (`rJLMST...`) and treasury (`rPF2M...`) accounts.
+- **Monetization Engine:** $50,000 per attestation integration + $5,000/month attestation feed license.
+
+---
+
+## Playbook 3: Enterprise Zero-Knowledge Confidential Blockchains
 
 ### **Target Solution:** `uny-rust` (UNYKORN Enterprise ZK-SNARK Layer-1)
 - **Problem Solved:** Institutions require confidential transactions and identity verification without leaking sensitive asset balances or customer PII on-chain.
-- **Commercial Deployment:** Deploy `uny-rust` with Groth16 ZK-SNARK verifiers (`zkp_core.rs`), USS smart standards (`USS-1` confidential tokens, `USS-2` W3C DID identity, `USS-30` ZK compliance), and 3-agent AI orchestration.
 - **Monetization Engine:** $150,000 upfront node licensing fee + $75,000/year enterprise support SLA.
-- **Client Value:** Hidden balances, ZK KYC proofs, and HSM-bound multi-sig vault security (`USS-11`).
 
 ---
 
-## Playbook 2: Tier-1 Banks & SWIFT Network Members
+## Playbook 4: ESG Carbon Offset & Tokenization Vaults
 
-### **Target Solution:** `Global-Swift-Stablecoins` (Unykorn L1 ISO 20022 Settlement Engine)
-- **Problem Solved:** Institutional banks processing cross-border payments need instant EVM finality while maintaining ISO 20022 `pacs.009` and `camt.053` compliance.
-- **Monetization Engine:** $500,000 upfront integration fee + $50,000/month infrastructure maintenance SLA.
-
----
-
-## Playbook 3: Institutional Custodians & Clearing Members
-
-### **Target Solution:** `ox` (OptimaGlobal AI — DTCC Control Plane)
-- **Problem Solved:** Regulated custodians need to move and record tokenized entitlements under SEC / DTCC No-Action letter rules without taking settlement liability.
-- **Monetization Engine:** $9,999/month Omnibus & Reconciliation Membership + $4,999/month Reversal Governance license.
+### **Target Solution:** `chaillink-carbon-credits` (Chainlink Carbon Credit Vaults)
+- **Problem Solved:** Corporations and carbon registries need verified tokenized carbon offsets backed by Chainlink Proof-of-Reserve.
+- **Monetization Engine:** $25,000 per carbon vault deployment + 0.50% retirement fee.
