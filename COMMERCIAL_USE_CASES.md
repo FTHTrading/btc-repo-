@@ -1,31 +1,32 @@
 # 💼 Commercial Use-Cases & Monetization Playbooks
 
 **FTHTrading / kevanbtc & unykornai Ecosystem**  
-**Target Enterprise Markets:** Sovereign Nations, Central Banks, Quantitative Hedge Funds, Institutional Asset Managers, Tier-1 Banks, SWIFT Members, XRPL Institutions, Custodians, and Family Offices.  
+**Target Enterprise Markets:** Sovereign Nations, Central Banks, Quantitative Hedge Funds, Institutional Asset Managers, Tier-1 Banks, SWIFT Members, XRPL Institutions, Media Platforms, and Family Offices.  
 
 ---
 
-## Playbook 1: Sovereign Financial OS & Execution-Time Solvency Kernel
+## Playbook 1: Deployed Polygon Mainnet Attention Economy Protocols
+
+### **Target Solution:** `Small-Dick` (All Couch No Cage 18-Contract Polygon Protocol)
+- **Problem Solved:** Digital creators, public figures, and Web3 builders require automated mechanisms to put a price on ungrounded criticism and convert it into deflationary on-chain assets (`$TIME`, `$VTIME`, `$ODNC`).
+- **Commercial Architecture:**
+  - 18 live verified smart contracts on Polygon PoS (Chain ID 137).
+  - 6 token standards (ERC-721, ERC-6551 Token Bound Accounts, ERC-20, ERC-1155, ERC-2981, ERC-2612).
+  - `$ODNC` zero-admin micro-dollar economy with proven conservation law `totalSupply + totalBurned == MAX_SUPPLY`.
+- **Monetization Engine:** 35/25/20/15/5 treasury split + 50% $VTIME burn per experience seal event.
+
+---
+
+## Playbook 2: Sovereign Financial OS & Execution-Time Solvency Kernel
 
 ### **Target Solution:** `FTHFinancial-` (FTH Financial OS Kernel Monorepo)
-- **Problem Solved:** Institutions and sovereign entities require execution-time solvency enforcement where no asset or liability transaction can execute without 100% cryptographic reserve proof backing.
-- **Commercial Deployment:** Deploy `FTHFinancial-` Rust workspace (12 crates) with `CONSTITUTION.md` rules and Tier access control (Bronze $10k -> Diamond $100k).
+- **Problem Solved:** Institutions require execution-time solvency enforcement where no transaction can execute without 100% cryptographic reserve proof backing.
 - **Monetization Engine:** $25,000/month base license fee + 0.10% transaction processing fee.
 
 ---
 
-## Playbook 2: Global Monetary Intelligence & Macro Feeds
+## Playbook 3: Global Monetary Intelligence & Macro Feeds
 
 ### **Target Solution:** `cbdc-2-76988` (GMIIE — Global Monetary Infrastructure Intelligence Engine)
-- **Problem Solved:** Central banks, sovereign wealth funds, and macro hedge funds require real-time comparative infrastructure maturity scoring across 16 sovereign monetary systems (Fed, ECB, BoE, PBOC, etc.) without relying on unverified narrative.
-- **Commercial Deployment:** Deploy GMIIE 5-Ring Analysis Engine with 12 Societal Impact Formulas and automated Celery Beat task schedulers.
-- **Monetization Engine:** $350,000/year institutional subscription + $50,000/year custom scenario simulation lab access.
-
----
-
-## Playbook 3: Multi-Asset AI Swarm Trading (Equities + Energy Futures)
-
-### **Target Solution:** `hydra` (UnykornX HydraGrid Multi-Asset AI Platform)
-- **Problem Solved:** Quantitative trading desks require unified execution across stock/ETF markets and energy futures (power, gas, oil spreads) managed by an AI swarm with Model Context Protocol (MCP) tools.
-- **Commercial Deployment:** Deploy 9-package HydraGrid monorepo (`engine-core`, `strategies-energy`, `swarm`, `risk`) on high-throughput API workers.
-- **Monetization Engine:** $450,000 upfront setup fee per swarm node + 15% performance fee on net trading alpha.
+- **Problem Solved:** Macro hedge funds and central banks require real-time comparative infrastructure maturity scoring across 16 sovereign monetary systems.
+- **Monetization Engine:** $350,000/year institutional subscription.
