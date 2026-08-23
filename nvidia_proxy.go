@@ -229,6 +229,8 @@ func main() {
 		port = "8098"
 	}
 
+	http.HandleFunc("/api/v1/metaverse/state", handleWorldState)
+	http.HandleFunc("/api/v1/metaverse/focus-block", handleSimulateFocusBlock)
 	http.HandleFunc("/api/v1/nvidia/architect", handleAutonomousArchitect)
 	http.HandleFunc("/api/v1/nvidia/assistant", handlePersonalizedAssistant)
 	http.HandleFunc("/api/v1/nvidia/nemotron", handleNemotronVoiceStory)
@@ -237,7 +239,7 @@ func main() {
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		enableCORS(&w)
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintf(w, `{"status":"online","models":["llama-3.3-70b-architect","personalized-assistant","nemotron-3-super-120b","deepseek-v4-flash","whisper-large-v3","riva-asr"]}`)
+		fmt.Fprintf(w, `{"status":"online","models":["metaverse-state-engine","llama-3.3-70b-architect","personalized-assistant","nemotron-3-super-120b","deepseek-v4-flash","whisper-large-v3","riva-asr"]}`)
 	})
 
 	log.Printf("NVIDIA Cloud AI Proxy Server running on http://localhost:%s", port)

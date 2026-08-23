@@ -9,7 +9,32 @@ document.addEventListener('DOMContentLoaded', () => {
   initAssetLightbox();
   initSoothingStoryNarration();
   initPersonalizedAIAssistant();
+  initMetaverseLivePulse();
 });
+
+/* 00. LIVE METAVERSE WORLD PULSE & HUD POLLER */
+function initMetaverseLivePulse() {
+  const hoursEl = document.getElementById('worldGlobalHours');
+  const vtimeEl = document.getElementById('worldTotalVtime');
+  const participantsEl = document.getElementById('worldParticipants');
+  const atmosphereEl = document.getElementById('worldAtmosphere');
+
+  async function pollWorldState() {
+    try {
+      const res = await fetch('http://localhost:8098/api/v1/metaverse/state');
+      const data = await res.json();
+      if (hoursEl) hoursEl.textContent = `${data.global_focus_hours.toFixed(2)} hrs`;
+      if (vtimeEl) vtimeEl.textContent = `${data.total_vtime_minted.toFixed(2)} VTIME`;
+      if (participantsEl) participantsEl.textContent = `${data.active_participants} Connected`;
+      if (atmosphereEl && data.current_atmosphere) atmosphereEl.textContent = `${data.current_atmosphere} (${data.frequency_hz} Hz)`;
+    } catch (e) {
+      // Local fallback simulation
+    }
+  }
+
+  setInterval(pollWorldState, 3000);
+  pollWorldState();
+}
 
 /* 0. INTERACTIVE PERSONALIZED AI ASSISTANT (NVIDIA NIM NEMOTRON-3 / DEEPSEEK) */
 function initPersonalizedAIAssistant() {
