@@ -1,14 +1,15 @@
 /* ==========================================================================
-   ALL COUCH NO CAGE — HONEST INTERRUPTION ENGINE & EIP-712 CLIENT LOGIC
+   ALL COUCH NO CAGE — SALVADOR DALI TIME & HERMETIC ACOUSTIC ENGINE
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   initInstitutionalModeToggle();
   initProofModal();
   initEip712Modal();
+  initHermeticSoundMeter();
+  initAudioCanvasOscillator();
   initHonestCalculator();
   initContractsGrid();
-  initArchetypesGrid();
   initVaultSealer();
   initWalletConnect();
 });
@@ -26,13 +27,12 @@ function initInstitutionalModeToggle() {
     document.body.classList.toggle('mode-uncensored', !isInstitutionalMode);
 
     if (isInstitutionalMode) {
-      heroDesc.textContent = "All Couch No Cage (FTHTrading Enterprise) calculates, attests, and seals costly interruptions using published integer BPS rulesets (I = H × R × S × F × E), EIP-712 wallet signatures, and enterprise workflow adapters.";
+      heroDesc.textContent = "All Couch No Cage (FTHTrading Enterprise) measures acoustic noise spectrums, warping distorted time geometry into verifiable, low-entropy on-chain audit receipts.";
     } else {
-      heroDesc.textContent = "Calculate, attest, and seal costly interruptions using published integer BPS rulesets (I = H × R × S × F × E), EIP-712 wallet signatures, and automated workflow evidence indexing.";
+      heroDesc.textContent = "All Couch No Cage measures chaotic acoustic noise spectrums, warping distorted time geometry into verifiable, low-entropy on-chain finality receipts.";
     }
 
     updateSealerOptions();
-    initArchetypesGrid();
   });
 }
 
@@ -52,7 +52,6 @@ function initProofModal() {
 
 function initEip712Modal() {
   const eipModal = document.getElementById('eip712Modal');
-  const openEipBtn = document.getElementById('openEip712Btn');
   const triggerBtn = document.getElementById('triggerEipSignBtn');
   const closeEipBtn = document.getElementById('closeEipModalBtn');
   const confirmBtn = document.getElementById('confirmSignBtn');
@@ -60,7 +59,6 @@ function initEip712Modal() {
   function open() { eipModal.classList.add('active'); }
   function close() { eipModal.classList.remove('active'); }
 
-  if (openEipBtn) openEipBtn.addEventListener('click', open);
   if (triggerBtn) triggerBtn.addEventListener('click', open);
   if (closeEipBtn) closeEipBtn.addEventListener('click', close);
   eipModal.addEventListener('click', (e) => { if (e.target === eipModal) close(); });
@@ -69,7 +67,7 @@ function initEip712Modal() {
     confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Requesting EIP-712 Wallet Signature...';
     setTimeout(() => {
       confirmBtn.innerHTML = '<i class="fa-solid fa-check"></i> EIP-712 Signature Verified & Committed to Polygon!';
-      confirmBtn.style.background = 'linear-gradient(135deg, #84cc16, #10b981)';
+      confirmBtn.style.background = 'linear-gradient(135deg, #eab308, #f97316)';
       setTimeout(() => {
         close();
         confirmBtn.innerHTML = '<i class="fa-solid fa-pen-nib"></i> Sign EIP-712 Claim with Wallet';
@@ -79,7 +77,109 @@ function initEip712Modal() {
   });
 }
 
-/* 3. HONEST IMPACT CALCULATOR (I = H * R * S * F * E) */
+/* 3. HERMETIC ACOUSTIC SOUND BS & FREQUENCY METER */
+let currentFreqHz = 4320;
+let currentThdPct = 45;
+
+function initHermeticSoundMeter() {
+  const slider = document.getElementById('soundFreqInput');
+  const sliderVal = document.getElementById('freqSliderVal');
+  const thdSelect = document.getElementById('thdSelect');
+  const hermeticSelect = document.getElementById('hermeticModeSelect');
+
+  const entropyEl = document.getElementById('entropyScore');
+  const crystalEl = document.getElementById('crystalTime');
+  const invariantEl = document.getElementById('hermeticInvariant');
+  const liveFreqVal = document.getElementById('liveFreqVal');
+  const transmuteBtn = document.getElementById('transmuteFreqBtn');
+
+  function update() {
+    currentFreqHz = parseInt(slider.value) || 4320;
+    currentThdPct = parseInt(thdSelect.value) || 45;
+    const hermeticHz = hermeticSelect.value || '528';
+
+    sliderVal.textContent = `${currentFreqHz.toLocaleString()} Hz`;
+    if (liveFreqVal) liveFreqVal.textContent = `${currentFreqHz.toLocaleString()} Hz`;
+
+    // Hermetic Formula: Entropy = (Freq / 200) * (THD / 100)
+    const entropy = ((currentFreqHz / 200) * (currentThdPct / 100)).toFixed(1);
+    const reclaimedHours = ((currentFreqHz / 1000) * 0.432).toFixed(2);
+
+    entropyEl.textContent = `${entropy} High Entropy`;
+    crystalEl.textContent = `${reclaimedHours} Hours Reclaimed`;
+    invariantEl.textContent = `${hermeticHz} Hz Harmonic Locked`;
+  }
+
+  slider.addEventListener('input', update);
+  thdSelect.addEventListener('change', update);
+  hermeticSelect.addEventListener('change', update);
+
+  transmuteBtn.addEventListener('click', () => {
+    transmuteBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles fa-spin"></i> Transmuting Sound Entropy into $VTIME...';
+    setTimeout(() => {
+      transmuteBtn.innerHTML = '<i class="fa-solid fa-check"></i> Transmutation Complete! (50 $VTIME Burned)';
+      transmuteBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      setTimeout(() => {
+        transmuteBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Transmute High-Entropy BS into $VTIME Burn';
+        transmuteBtn.style.background = '';
+      }, 3000);
+    }, 1200);
+  });
+
+  update();
+}
+
+/* 4. REAL-TIME ANIMATED CANVAS AUDIO WAVEFORM OSCILLATOR */
+function initAudioCanvasOscillator() {
+  const canvas = document.getElementById('audioCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let step = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#eab308';
+    ctx.beginPath();
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const mid = height / 2;
+
+    for (let x = 0; x < width; x++) {
+      // Modulate frequency based on slider and THD noise distortion
+      const freq = (currentFreqHz / 1000) * 0.05;
+      const noise = (Math.random() - 0.5) * (currentThdPct / 10);
+      const y = mid + Math.sin(x * freq + step) * 25 + noise;
+
+      if (x === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+
+    ctx.stroke();
+
+    // Draw secondary harmonic glow wave
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#06b6d4';
+    ctx.beginPath();
+    for (let x = 0; x < width; x++) {
+      const y = mid + Math.cos(x * 0.03 - step) * 15;
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    step += 0.08;
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+}
+
+/* 5. HONEST IMPACT CALCULATOR (I = H * R * S * F * E) */
 function initHonestCalculator() {
   const hoursInput = document.getElementById('calcHours');
   const rateInput = document.getElementById('calcRate');
@@ -98,13 +198,6 @@ function initHonestCalculator() {
     '10000': '100.0% (Independently Verified)'
   };
 
-  const tierNameMap = {
-    '2500': 'SELF_REPORTED',
-    '6000': 'WORKFLOW_LINKED',
-    '8500': 'PEER_ATTESTED',
-    '10000': 'INDEPENDENTLY_VERIFIED'
-  };
-
   function calculate() {
     const hours = parseFloat(hoursInput.value) || 0;
     const rateUsd = parseFloat(rateInput.value) || 0;
@@ -114,7 +207,6 @@ function initHonestCalculator() {
     const contextBps = parseInt(contextSelect.value) || 10000;
     const evidenceBps = parseInt(tierSelect.value) || 2500;
 
-    // Integer BPS Calculation: I = H * R * S * F * E
     const baseCents = (rateCents * (hours * 60)) / 60;
     const adjSeverity = (baseCents * severityBps) / 10000;
     const adjContext = (adjSeverity * contextBps) / 10000;
@@ -125,25 +217,6 @@ function initHonestCalculator() {
     scoreEl.textContent = `${scorePoints} Impact Points`;
     centsEl.textContent = `${finalCents.toLocaleString()} Cents ($${scorePoints})`;
     confidenceEl.textContent = tierTextMap[evidenceBps] || '25.0%';
-
-    // Dispatch async request to Go backend RPC service
-    fetch('http://localhost:8099/api/v1/claims/score', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        wallet: '0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A',
-        minutesLost: Math.round(hours * 60),
-        hourlyRateCents: rateCents,
-        severityBps: severityBps,
-        contextSwitchBps: contextBps,
-        evidenceTier: tierNameMap[evidenceBps],
-        evidenceRoot: '0x8a92e41b',
-        signature: '0xeip712...',
-        rulesetVersion: 'v1.0.0'
-      })
-    }).then(res => res.json())
-      .then(data => console.log('Go Backend RPC Response:', data))
-      .catch(err => console.log('Go RPC Connection Offline:', err));
   }
 
   hoursInput.addEventListener('input', calculate);
@@ -155,7 +228,7 @@ function initHonestCalculator() {
   calculate();
 }
 
-/* 4. 18-CONTRACT REGISTRY RENDERER */
+/* 6. 18-CONTRACT REGISTRY RENDERER */
 const contractsData = [
   { name: 'TimeImpactLedger.sol', std: 'EIP-712 / ERC-20', phase: 'foundation', desc: 'Core settlement contract storing Merkle roots, challenge windows, and EIP-712 signatures.', tests: '✅ 28/28 Pass' },
   { name: 'AllCouchNoCage.sol', std: 'ERC-721 / 2981', phase: 'foundation', desc: '6,551 armchair critic NFTs procedurally generated across 10 archetypes.', tests: '✅ 22/22 Pass' },
@@ -218,39 +291,7 @@ function initContractsGrid() {
   render('all');
 }
 
-/* 5. 10 CRITIC ARCHETYPES RENDERER */
-const archetypesData = [
-  { title: 'Time & Energy Waster', rarity: '5% Rarity', icon: 'fa-hourglass-half', desc: 'Issues final verdicts on code or architecture without viewing evidence.' },
-  { title: 'Backseat Umpire', rarity: '14% Rarity', icon: 'fa-bullhorn', desc: 'Calls plays from zero authority positions with empty git commit logs.' },
-  { title: 'Couch Scout', rarity: '13% Rarity', icon: 'fa-couch', desc: 'Scouting range strictly limited to local WiFi signal strength.' },
-  { title: 'Vibes-Based Analyst', rarity: '12% Rarity', icon: 'fa-brain', desc: 'Considers empirical benchmark data a personal offensive attack.' },
-  { title: 'Zero-Commit Max', rarity: '11% Rarity', icon: 'fa-code-commit', desc: 'Git log: 0 commits. Opinion log: 10,000 unverified claims.' },
-  { title: 'All Take No Tape', rarity: '11% Rarity', icon: 'fa-film', desc: 'Never reviewed game tape. Evidence is considered for the weak.' },
-  { title: 'Seatbelt Coach', rarity: '10% Rarity', icon: 'fa-car', desc: 'Coaching high-performance engines from the passenger seat.' },
-  { title: 'Commentary Cartel', rarity: '8% Rarity', icon: 'fa-users', desc: 'Organized commentary syndicate with purely theoretical experience.' },
-  { title: 'Proof-of-Opinion Validator', rarity: '9% Rarity', icon: 'fa-check-double', desc: 'Consensus mechanism relies exclusively on talking louder.' },
-  { title: 'Cheap Seats GM', rarity: '7% Rarity', icon: 'fa-ticket', desc: 'General manager of absolutely nothing, watching from the upper deck.' }
-];
-
-function initArchetypesGrid() {
-  const grid = document.getElementById('archetypesGrid');
-  grid.innerHTML = '';
-
-  archetypesData.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'archetype-card';
-    const title = isInstitutionalMode ? `${a.title} (Entity)` : a.title;
-    card.innerHTML = `
-      <div class="arch-icon"><i class="fa-solid ${a.icon}"></i></div>
-      <div class="arch-title">${title}</div>
-      <div class="arch-rarity">${a.rarity}</div>
-      <div class="arch-desc">${a.desc}</div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-/* 6. $VTIME VAULT SEALER LOGIC */
+/* 7. $VTIME VAULT SEALER LOGIC */
 const uncensoredPasses = [
   { val: 'Fuck The Noise', text: 'Fuck The Noise ("Your noise does not live in my head")' },
   { val: 'Fuck Your Opinion', text: 'Fuck Your Opinion ("Opinions without effort have 0 weight")' },
@@ -267,6 +308,7 @@ const institutionalPasses = [
 
 function updateSealerOptions() {
   const select = document.getElementById('finalityInstrument');
+  if (!select) return;
   select.innerHTML = '';
   const passes = isInstitutionalMode ? institutionalPasses : uncensoredPasses;
 
@@ -279,9 +321,7 @@ function updateSealerOptions() {
 }
 
 function initVaultSealer() {
-  const titleInput = document.getElementById('eventTitle');
   const severitySelect = document.getElementById('severityLevel');
-
   const totalFeeEl = document.getElementById('totalFee');
   const burnAmtEl = document.getElementById('burnAmt');
   const treasuryAmtEl = document.getElementById('treasuryAmt');
@@ -290,52 +330,55 @@ function initVaultSealer() {
   const feeMap = { '1': 10, '2': 25, '3': 50, '4': 100, '5': 250 };
 
   function update() {
-    const severity = severitySelect.value;
+    const severity = severitySelect ? severitySelect.value : '3';
     const total = feeMap[severity];
     const burn = total * 0.5;
     const treasury = total * 0.5;
 
-    totalFeeEl.textContent = `${total} $VTIME`;
-    burnAmtEl.textContent = `${burn} $VTIME`;
-    treasuryAmtEl.textContent = `${treasury} $VTIME`;
+    if (totalFeeEl) totalFeeEl.textContent = `${total} $VTIME`;
+    if (burnAmtEl) burnAmtEl.textContent = `${burn} $VTIME`;
+    if (treasuryAmtEl) treasuryAmtEl.textContent = `${treasury} $VTIME`;
   }
 
-  titleInput.addEventListener('input', update);
-  severitySelect.addEventListener('change', update);
+  if (severitySelect) severitySelect.addEventListener('change', update);
 
-  sealBtn.addEventListener('click', () => {
-    sealBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Executing Polygon Mainnet Burn...';
-    setTimeout(() => {
-      sealBtn.innerHTML = '<i class="fa-solid fa-check"></i> Permanently Sealed on Polygon! (Tx: 0x9f41...d82a)';
-      sealBtn.style.background = 'linear-gradient(135deg, #84cc16, #10b981)';
+  if (sealBtn) {
+    sealBtn.addEventListener('click', () => {
+      sealBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Executing Polygon Mainnet Burn...';
       setTimeout(() => {
-        sealBtn.innerHTML = '<i class="fa-solid fa-fire-flame-simple"></i> Execute Cryptographic Experience Seal';
-        sealBtn.style.background = '';
-      }, 3000);
-    }, 1200);
-  });
+        sealBtn.innerHTML = '<i class="fa-solid fa-check"></i> Permanently Sealed on Polygon! (Tx: 0x9f41...d82a)';
+        sealBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        setTimeout(() => {
+          sealBtn.innerHTML = '<i class="fa-solid fa-fire-flame-simple"></i> Execute Cryptographic Experience Seal';
+          sealBtn.style.background = '';
+        }, 3000);
+      }, 1200);
+    });
+  }
 
   updateSealerOptions();
   update();
 }
 
-/* 7. WALLET CONNECT MOCK HANDLER */
+/* 8. WALLET CONNECT HANDLER */
 function initWalletConnect() {
   const btn = document.getElementById('connectBtn');
   let connected = false;
 
-  btn.addEventListener('click', () => {
-    if (!connected) {
-      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
-      setTimeout(() => {
-        connected = true;
-        btn.innerHTML = '<i class="fa-solid fa-wallet"></i> 0xFTH...137 (Polygon)';
-        btn.style.background = 'linear-gradient(135deg, #84cc16, #10b981)';
-      }, 800);
-    } else {
-      connected = false;
-      btn.innerHTML = '<i class="fa-solid fa-wallet"></i> Connect Wallet';
-      btn.style.background = '';
-    }
-  });
+  if (btn) {
+    btn.addEventListener('click', () => {
+      if (!connected) {
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
+        setTimeout(() => {
+          connected = true;
+          btn.innerHTML = '<i class="fa-solid fa-wallet"></i> 0xFTH...137 (Polygon)';
+          btn.style.background = 'linear-gradient(135deg, #eab308, #f97316)';
+        }, 800);
+      } else {
+        connected = false;
+        btn.innerHTML = '<i class="fa-solid fa-wallet"></i> Connect Wallet';
+        btn.style.background = '';
+      }
+    });
+  }
 }

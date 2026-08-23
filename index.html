@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALL COUCH NO CAGE — Verifiable Interruption Cost Protocol</title>
-  <meta name="description" content="Verifiable interruption accounting protocol. Solidity EIP-712 settlement, Rust integer BPS scoring engine, Go protocol indexer." />
+  <title>ALL COUCH NO CAGE — Salvador Dalí Quantum Time & Hermetic Frequency Protocol</title>
+  <meta name="description" content="Verifiable interruption accounting protocol. Salvador Dali quantum time warping, Hermetic acoustic BS frequency meter, Polygon PoS contracts." />
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,13 +14,15 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Brutalist Stylesheet -->
+  <!-- Liquid Glass Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="mode-uncensored">
 
-  <!-- Background Grid -->
-  <div class="bg-grid"></div>
+  <!-- Animated Background Orbs -->
+  <div class="bg-glow bg-glow-gold"></div>
+  <div class="bg-glow bg-glow-cyan"></div>
+  <div class="bg-glow bg-glow-purple"></div>
 
   <!-- EIP-712 Signature Modal -->
   <div class="proof-modal" id="eip712Modal">
@@ -103,22 +105,21 @@
   <header class="navbar">
     <div class="nav-container">
       <div class="brand">
-        <div class="brand-logo">
-          <i class="fa-solid fa-shield-cat"></i>
-        </div>
+        <!-- Official Cybernetic Unykorn Logo Emblem -->
+        <img src="images/official_logo.png" alt="ALL COUCH NO CAGE UNYKORN PROTOCOL Logo" class="official-logo-img" />
         <div class="brand-text">
           <span class="brand-title">ALL COUCH NO CAGE</span>
-          <span class="brand-sub">FTHTrading • Honest Interruption Protocol</span>
+          <span class="brand-sub">FTHTrading • UnyKorn Protocol</span>
         </div>
       </div>
 
       <nav class="nav-links">
         <a href="#overview" class="active"><i class="fa-solid fa-terminal"></i> Overview</a>
+        <a href="#hermetic-sound"><i class="fa-solid fa-wave-square"></i> Sound BS Meter</a>
+        <a href="#dali-clock"><i class="fa-solid fa-hourglass"></i> Dalí Quantum Time</a>
         <a href="#honest-calculator"><i class="fa-solid fa-calculator"></i> Impact Engine</a>
-        <a href="#architecture"><i class="fa-solid fa-layer-group"></i> 4 Layers</a>
         <a href="#topology"><i class="fa-solid fa-cubes"></i> 18 Contracts</a>
         <a href="#sealer"><i class="fa-solid fa-fire"></i> Vault Sealer</a>
-        <a href="#critics"><i class="fa-solid fa-masks-theater"></i> Critics</a>
       </nav>
 
       <div class="nav-actions">
@@ -144,8 +145,8 @@
   </header>
 
   <!-- Product Truth Banner -->
-  <div class="truth-banner" style="background: rgba(132, 204, 22, 0.08); border-bottom: 1px solid rgba(132, 204, 22, 0.3); padding: 0.6rem 1rem; text-align: center; font-size: 0.85rem;">
-    <i class="fa-solid fa-quote-left text-lime"></i>
+  <div class="truth-banner" style="background: rgba(234, 179, 8, 0.08); border-bottom: 1px solid rgba(234, 179, 8, 0.3); padding: 0.6rem 1rem; text-align: center; font-size: 0.85rem;">
+    <i class="fa-solid fa-quote-left text-gold"></i>
     <strong class="text-main"> PRODUCT TRUTH:</strong>
     <span class="text-muted"> "We don’t price a human. We calculate and record the cost of an interruption under a published, challengeable ruleset."</span>
   </div>
@@ -156,48 +157,140 @@
     <div class="hero-overlay"></div>
     <div class="hero-container">
       <div class="hero-badge">
-        <span class="status-dot"></span> Polygon 137 • Solidity EIP-712 • Rust Integer BPS Engine • Go RPC Backend
+        <span class="status-dot"></span> Polygon 137 • Salvador Dalí Time Engine • Hermetic Acoustic Frequency Analyzer
       </div>
       
       <h1 class="hero-title">
-        EVIDENCE-BACKED <span class="text-lime">INTERruption ACCOUNTING</span>.<br />
-        WHERE FOCUS BECOMES <span class="text-orange">PROOF</span>.
+        YOUR WASTED TIME IS NOW <span class="gold-text">CURRENCY</span>.<br />
+        YOUR STOLEN ENERGY IS NOW <span class="cyan-text">ARCHITECTURE</span>.
       </h1>
 
       <p class="hero-desc dynamic-hero-desc">
-        Calculate, attest, and seal costly interruptions using published integer BPS rulesets ($I = H \times R \times S \times F \times E$), EIP-712 wallet signatures, and automated workflow evidence indexing.
+        All Couch No Cage measures chaotic acoustic noise spectrums, warping distorted time geometry into verifiable, low-entropy on-chain finality receipts.
       </p>
 
       <div class="hero-stats-grid">
         <div class="stat-card">
-          <div class="stat-icon text-lime"><i class="fa-solid fa-calculator"></i></div>
-          <div class="stat-val">I = H×R×S×F×E</div>
-          <div class="stat-lbl">Honest BPS Formula</div>
+          <div class="stat-icon text-gold"><i class="fa-solid fa-wave-square"></i></div>
+          <div class="stat-val" id="liveFreqVal">4,320 Hz</div>
+          <div class="stat-lbl">Hermetic Acoustic Resonance</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon text-cyan"><i class="fa-solid fa-file-signature"></i></div>
-          <div class="stat-val">EIP-712</div>
-          <div class="stat-lbl">Typed Data Signatures</div>
+          <div class="stat-icon text-cyan"><i class="fa-solid fa-clock"></i></div>
+          <div class="stat-val" id="warpIndexVal">1.42×</div>
+          <div class="stat-lbl">Dalí Quantum Time Distortion</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon text-purple"><i class="fa-solid fa-gear"></i></div>
-          <div class="stat-val">Rust + Go</div>
-          <div class="stat-lbl">Integer Engine & RPC Backend</div>
+          <div class="stat-icon text-purple"><i class="fa-solid fa-shield-cat"></i></div>
+          <div class="stat-val">18 Contracts</div>
+          <div class="stat-lbl">Polygon Mainnet (Chain 137)</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon text-gold"><i class="fa-solid fa-shield-halved"></i></div>
-          <div class="stat-val">4 Tiers</div>
-          <div class="stat-lbl">Evidence Confidence</div>
+          <div class="stat-icon text-lime"><i class="fa-solid fa-microchip"></i></div>
+          <div class="stat-val">$2.8M</div>
+          <div class="stat-lbl">Standalone IP Valuation</div>
         </div>
       </div>
 
       <div class="hero-ctas">
-        <a href="#honest-calculator" class="btn btn-gold btn-lg">
-          <i class="fa-solid fa-calculator"></i> Launch Impact Calculator
+        <a href="#hermetic-sound" class="btn btn-gold btn-lg">
+          <i class="fa-solid fa-wave-square"></i> Open Hermetic Sound BS Meter
         </a>
-        <button class="btn btn-outline btn-lg" id="openEip712Btn">
-          <i class="fa-solid fa-file-signature text-lime"></i> Sign EIP-712 Claim
-        </button>
+        <a href="#dali-clock" class="btn btn-flame btn-lg">
+          <i class="fa-solid fa-hourglass"></i> View Dalí Quantum Time Engine
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hermetic Acoustic Sound BS & Frequency Meter Section -->
+  <section class="section alt-bg" id="hermetic-sound">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag gold-pill"><i class="fa-solid fa-wave-square"></i> Hermetic Sound Measurement</div>
+        <h2>Hermetic Acoustic Frequency & Sound BS Meter</h2>
+        <p><em>"As above, so below; as within, so without."</em> Converts chaotic, high-entropy noise decibels into structured crystal time geometry.</p>
+      </div>
+
+      <div class="calculator-box liquid-card">
+        <div class="calc-form">
+          <h3><i class="fa-solid fa-sliders text-gold"></i> Acoustic Noise Frequency Analyzer</h3>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-volume-high text-gold"></i> Noise Spectrum Frequency (Hz):</label>
+            <input type="range" id="soundFreqInput" min="100" max="20000" step="100" value="4320" style="width: 100%; accent-color: var(--accent-gold);" />
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem;">
+              <span>100 Hz (Sub-Bass)</span>
+              <span id="freqSliderVal" class="text-gold" style="font-weight: 700;">4,320 Hz</span>
+              <span>20,000 Hz (Ultra-High BS)</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Harmonic Distortion (THD):</label>
+              <select id="thdSelect">
+                <option value="15">15% THD (Mild Noise)</option>
+                <option value="45" selected>45% THD (High Entropy Opinion)</option>
+                <option value="85">85% THD (Extreme Armchair BS)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Hermetic Resonance Mode:</label>
+              <select id="hermeticModeSelect">
+                <option value="432">432 Hz (Sacred Harmonic)</option>
+                <option value="528" selected>528 Hz (Transformation Grid)</option>
+                <option value="639">639 Hz (Focus Convergence)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="yield-summary">
+            <div class="yield-item"><span>Acoustic BS Entropy Score:</span><strong id="entropyScore" class="text-orange">78.4 High Entropy</strong></div>
+            <div class="yield-item"><span>Reclaimed Crystal Time:</span><strong id="crystalTime" class="text-gold">1.85 Hours Reclaimed</strong></div>
+            <div class="yield-item"><span>Hermetic Conversion Invariant:</span><strong id="hermeticInvariant" class="text-cyan">528 Hz Harmonic Locked</strong></div>
+          </div>
+
+          <button class="btn btn-gold btn-block" id="transmuteFreqBtn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Transmute High-Entropy BS into $VTIME Burn
+          </button>
+        </div>
+
+        <div class="calc-explanation">
+          <img src="images/hermetic_meter.jpg" alt="Hermetic Sound Frequency Meter" class="section-art-img" style="margin-bottom: 1rem;" />
+          <!-- Live HTML5 Audio Waveform Canvas -->
+          <div style="background: rgba(0,0,0,0.8); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; text-align: center;">
+            <canvas id="audioCanvas" width="450" height="100" style="width: 100%; height: 100px; display: block;"></canvas>
+            <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.4rem; font-family: var(--font-mono);">
+              <i class="fa-solid fa-bolt text-gold"></i> Live Acoustic Frequency Waveform Oscillator
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Salvador Dalí Quantum Time Engine Section -->
+  <section class="section" id="dali-clock">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag cyan-pill"><i class="fa-solid fa-hourglass"></i> Quantum Time Geometry</div>
+        <h2>Salvador Dalí Quantum Time Engine</h2>
+        <p>Time is not linear when distorted by ungrounded noise. The Dalí Quantum Engine warps, measures, and locks time distortion on-chain.</p>
+      </div>
+
+      <div class="topology-banner liquid-card">
+        <img src="images/dali_clock.jpg" alt="Salvador Dalí Quantum Time Watch" class="section-art-img" />
+        <div class="topology-info">
+          <h3><i class="fa-solid fa-hourglass-half text-cyan"></i> The Physics of Distorted Time</h3>
+          <p class="text-muted" style="margin: 0.5rem 0 1rem;">When an ungrounded interruption strikes a high-velocity engineering workflow, time expands non-linearly. A 10-minute noise event causes 90 minutes of cognitive recovery context switching.</p>
+          <div class="proof-grid">
+            <div class="proof-item"><span>Declared Interruption:</span> <strong class="text-gold">15 Minutes</strong></div>
+            <div class="proof-item"><span>Context-Switch Recovery:</span> <strong class="text-orange">75 Minutes</strong></div>
+            <div class="proof-item"><span>Total Spacetime Distortion:</span> <strong class="text-cyan">90 Minutes (1.5 Hours)</strong></div>
+            <div class="proof-item"><span>Dalí Warp Factor:</span> <strong class="text-purple">6.0× Multiplication</strong></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -283,32 +376,8 @@
     </div>
   </section>
 
-  <!-- 4-System Layer Architecture Section -->
-  <section class="section" id="architecture">
-    <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag text-purple"><i class="fa-solid fa-layer-group"></i> Multi-Language Architecture</div>
-        <h2>4 Verifiable System Layers</h2>
-        <p>Built with Solidity 0.8.24, Rust 2021, Go 1.22, and TypeScript/React.</p>
-      </div>
-
-      <div class="topology-banner liquid-card">
-        <img src="images/topology.jpg" alt="4 System Layers Architecture" class="section-art-img" />
-        <div class="topology-info">
-          <h3><i class="fa-solid fa-code text-purple"></i> Production Multi-Language Matrix</h3>
-          <ul class="layer-list">
-            <li><strong class="text-lime">1. Settlement Layer (Solidity):</strong> <code>TimeImpactLedger.sol</code>, EIP-712 typed signatures, Merkle commitments, 3-day challenge windows.</li>
-            <li><strong class="text-cyan">2. Protocol API Layer (Go):</strong> REST/gRPC server (Port 8099), GitHub/Jira workflow adapters, Polygon event indexer.</li>
-            <li><strong class="text-orange">3. Evidence & Scoring Engine (Rust):</strong> Deterministic u64 integer BPS engine (`impact_value_cents`) & Merkle receipt generator.</li>
-            <li><strong class="text-gold">4. Client UX (TypeScript):</strong> Wallet signatures, disclosure UX, score explanation, appeal/dispute resolution.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 18-Contract System Topology Section -->
-  <section class="section alt-bg" id="topology">
+  <section class="section" id="topology">
     <div class="section-container">
       <div class="section-header">
         <div class="pill-tag text-purple"><i class="fa-solid fa-cubes"></i> Smart Contracts</div>
@@ -331,7 +400,7 @@
   </section>
 
   <!-- $VTIME Vault Containment Chamber Section -->
-  <section class="section" id="sealer">
+  <section class="section alt-bg" id="sealer">
     <div class="section-container">
       <div class="section-header">
         <div class="pill-tag text-orange"><i class="fa-solid fa-fire"></i> Finality Chamber</div>
@@ -384,45 +453,15 @@
     </div>
   </section>
 
-  <!-- Critic Archetypes Museum Gallery Section -->
-  <section class="section alt-bg" id="critics">
-    <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag text-purple"><i class="fa-solid fa-masks-theater"></i> Identity Layer</div>
-        <h2>10 Critic Archetypes Museum Gallery</h2>
-        <p>6,551 procedurally generated critic avatars assigned ERC-6551 Token Bound Accounts.</p>
-      </div>
-
-      <div class="topology-banner liquid-card" style="margin-bottom: 2rem;">
-        <img src="images/zero_commit_max.jpg" alt="Zero-Commit Max Spotlight" class="section-art-img" style="max-height: 380px; object-fit: contain; background: #000;" />
-        <div class="topology-info">
-          <div class="pill-tag text-lime"><i class="fa-solid fa-star"></i> FEATURED ARCHETYPE</div>
-          <h3>Zero-Commit Max</h3>
-          <p class="text-muted" style="margin: 0.5rem 0 1rem;">An arrogant commentator reclining in an oversized gaming chair, surrounded by zero-commit git log panels and shattered speech bubbles.</p>
-          <div class="proof-grid">
-            <div class="proof-item"><span>Git Commit Count:</span> <strong class="text-orange">0 Commits</strong></div>
-            <div class="proof-item"><span>Opinion Log:</span> <strong class="text-purple">10,000 Claims</strong></div>
-            <div class="proof-item"><span>ERC-6551 TBA Account:</span> <span class="mono-link">0x6551...8810</span></div>
-            <div class="proof-item"><span>Rarity:</span> <strong class="text-gold">11% Rarity</strong></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="archetypes-grid" id="archetypesGrid">
-        <!-- Archetypes injected via JS -->
-      </div>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
-        <i class="fa-solid fa-shield-cat text-lime"></i>
-        <span>ALL COUCH NO CAGE • FTHTrading</span>
+        <img src="images/official_logo.png" alt="ALL COUCH NO CAGE UNYKORN PROTOCOL Logo" class="official-logo-img" style="height: 32px;" />
+        <span>ALL COUCH NO CAGE • FTHTrading • UnyKorn Protocol</span>
       </div>
       <p class="footer-copy">
-        Verifiable Interruption Protocol • Polygon Mainnet (137) • EIP-712 Signed Claims • Rust BPS Engine • Go RPC Backend<br />
+        Verifiable Interruption Protocol • Polygon Mainnet (137) • Dalí Quantum Time Engine • Hermetic Acoustic Frequency Analyzer<br />
         Future Tech Holdings (FTH) • UnyKorn Global Finance • 5655 Peachtree Pkwy, Peachtree, GA 30099
       </p>
     </div>
