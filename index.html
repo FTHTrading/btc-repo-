@@ -424,9 +424,27 @@
             <input type="number" id="voluntaryStakeInput" value="10" min="0" max="100" />
           </div>
 
-          <button class="btn btn-gold btn-block" id="triggerEipSignBtn" style="margin-top: 1rem;">
-            <i class="fa-solid fa-pen-nib"></i> Sign & Seal Focus Block
-          </button>
+          <!-- Interactive Live Session Timer & Direct Mint Trigger -->
+          <div style="margin-top: 1.5rem; background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-gold); font-weight: 700;">
+                <i class="fa-solid fa-stopwatch"></i> LIVE FOCUS SESSION TIMER
+              </span>
+              <span id="liveTimerDisplay" style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-cyan); font-weight: 800;">00:00:00</span>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;">
+              <button class="btn btn-gold btn-block" id="startLiveSessionBtn">
+                <i class="fa-solid fa-play"></i> Start Focus Block
+              </button>
+              <button class="btn btn-cyan btn-block" id="completeAndMintBtn" style="display: none;">
+                <i class="fa-solid fa-fire"></i> Complete & Mint $VTIME
+              </button>
+            </div>
+            <div id="mintSuccessToast" style="display: none; margin-top: 0.75rem; color: var(--accent-lime); font-family: var(--font-mono); font-size: 0.8rem; text-align: center;">
+              <i class="fa-solid fa-check-circle"></i> Focus Block Sealed! $VTIME Credited to Internal Ledger.
+            </div>
+          </div>
         </div>
 
         <div class="calc-results-box">
