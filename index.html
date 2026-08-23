@@ -89,7 +89,7 @@
   <!-- Product Truth Banner -->
   <div class="truth-banner">
     <i class="fa-solid fa-quote-left" style="margin-right: 0.4rem;"></i>
-    <span><strong>PRODUCT TRUTH:</strong> "We don’t price a human. We calculate and record the cost of an interruption under a published, challengeable ruleset."</span>
+    <span><strong>PRODUCT TRUTH:</strong> "All Couch No Cage is a self-sovereign personal experience protocol. A participant alone creates, controls, and may cryptographically seal their own records. Credits represent bounded internal utility created from self-consented sessions—not social approval, financial worth, or any judgment imposed by others."</span>
   </div>
 
   <!-- Salvador Dalí Liquid Glass Hero Section -->
@@ -219,84 +219,82 @@
     </div>
   </section>
 
-  <!-- Wasted Time & Interruption Impact Calculator Section -->
+  <!-- Personal Focus Accounting & Integrity Calculator Section -->
   <section class="section section-alt" id="calculator">
     <div class="section-container">
       <div class="section-header">
-        <div class="pill-tag purple-pill"><i class="fa-solid fa-calculator"></i> Scoring Engine</div>
-        <h2>Wasted Time & Impact Calculator</h2>
-        <p>Formula: <code>Impact Score = Hours (H) × Rate (R) × Severity (S) × Recurrence (F) × Evidence Confidence (E)</code></p>
+        <div class="pill-tag purple-pill"><i class="fa-solid fa-calculator"></i> Self-Sovereign Accounting</div>
+        <h2>Personal Focus & Integrity Ledger</h2>
+        <p>Formula: <code>Personal Credit = min(Base_Session × Q_Local × A_User, Event_Cap, Daily_Cap)</code></p>
       </div>
 
       <div class="glass-panel calc-grid">
         <div class="calc-inputs">
-          <h3><i class="fa-solid fa-sliders text-cyan"></i> BPS Parameter Inputs</h3>
+          <h3><i class="fa-solid fa-sliders text-cyan"></i> Personal Session Parameters</h3>
 
           <div class="form-row" style="margin-top: 1rem;">
             <div class="form-group">
-              <label>Hours Disrupted (H):</label>
+              <label>Session Duration (Hours):</label>
               <input type="number" id="calcHours" value="1.5" step="0.1" min="0.1" max="24" />
             </div>
             <div class="form-group">
-              <label>Reference Hourly Rate ($ USD):</label>
-              <input type="number" id="calcRate" value="150" min="10" step="10" />
+              <label>Privacy & Proof Mode:</label>
+              <select id="privacyModeSelect">
+                <option value="private" selected>Private Journal (Local Only)</option>
+                <option value="proof">Proof Receipt (Hash on-chain)</option>
+                <option value="zk">Selective ZK Proof (Predicate only)</option>
+              </select>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Recovery Multiplier (S):</label>
+              <label>Self-Chosen Recovery Band:</label>
               <select id="calcSeverity">
-                <option value="10000">1.0× (Minor Distraction)</option>
-                <option value="12000">1.2× (Unsolicited Review)</option>
-                <option value="14000" selected>1.4× (Standard Interruption)</option>
-                <option value="18000">1.8× (Workflow Blockage)</option>
-                <option value="25000">2.5× (Critical System Halt)</option>
+                <option value="10000">1.0× (Standard Flow)</option>
+                <option value="12000">1.2× (Moderate Context Shift)</option>
+                <option value="14000" selected>1.4× (Deep Architecture Block)</option>
+                <option value="18000">1.8× (High Complexity Synthesis)</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Recurrence Factor (F):</label>
-              <select id="calcContext">
-                <option value="10000">1.0× (Single Event)</option>
-                <option value="12000" selected>1.2× (Medium Recurrence)</option>
-                <option value="15000">1.5× (High Friction Recurrence)</option>
+              <label>Local Integrity Status:</label>
+              <select id="calcEvidenceTier">
+                <option value="8000">80% (Completed Session)</option>
+                <option value="9000" selected>90% (Zero Interruption Flow)</option>
+                <option value="10000">100% (Hardware-Attested Focus)</option>
               </select>
             </div>
           </div>
 
           <div class="form-group">
-            <label>Evidence Confidence Level (E):</label>
-            <select id="calcEvidenceTier">
-              <option value="2500">Self-Reported (E = 0.25 • 2,500 BPS)</option>
-              <option value="6000" selected>Workflow-Linked (E = 0.60 • GitHub/Jira adapter)</option>
-              <option value="8500">Peer-Attested (E = 0.85 • Signed co-worker review)</option>
-              <option value="10000">Independently Verified (E = 1.00 • Full audit)</option>
-            </select>
+            <label>Voluntary Session Stake (VTIME):</label>
+            <input type="number" id="voluntaryStakeInput" value="10" min="0" max="100" />
           </div>
 
           <button class="btn btn-gold btn-block" id="triggerEipSignBtn" style="margin-top: 1rem;">
-            <i class="fa-solid fa-pen-nib"></i> Generate & Sign EIP-712 Record
+            <i class="fa-solid fa-pen-nib"></i> Sign First-Person Session Commitment
           </button>
         </div>
 
         <div class="calc-results-box">
           <div class="impact-display-box">
             <div class="impact-val-item">
-              <span>Calculated Impact Score:</span>
-              <span id="impactScoreBps" class="val-highlight gold-gradient">226.80 Points</span>
+              <span>Personal Impact Units:</span>
+              <span id="impactScoreBps" class="val-highlight gold-gradient">22.68 Units</span>
             </div>
             <div class="impact-val-item">
-              <span>Reference USD Value:</span>
-              <span id="impactCentsVal" class="val-highlight cyan-gradient">$226.80 USD</span>
+              <span>Internal Utility Credits Eligible:</span>
+              <span id="impactCentsVal" class="val-highlight cyan-gradient">22.68 VTIME</span>
             </div>
             <div class="impact-val-item">
-              <span>Evidence Confidence:</span>
-              <span id="confidenceDisplay" class="text-muted">60.0% (Workflow-Linked)</span>
+              <span>Remaining Daily Credit Cap:</span>
+              <span id="confidenceDisplay" class="text-muted">277.32 / 300 VTIME</span>
             </div>
           </div>
 
           <p class="text-dim" style="font-size: 0.8rem; margin-top: 1rem; line-height: 1.5;">
-            * Reference impact score represents evidence-weighted points evaluated in Rust u64 integer BPS, NOT an objective price on a human being.
+            * Closed-loop, non-monetary internal utility credits created from self-consented sessions. No cash value • Not transferable • Not a credit score.
           </p>
         </div>
       </div>
