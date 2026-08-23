@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>time.unykorn.ai — Sovereign Attention & Time Economy Portal</title>
-  <meta name="description" content="Official UnyKorn LLC & FTHTrading Sovereign Portal for $TIME, $VTIME, $ODNC, and All Couch No Cage Protocol." />
+  <title>ALL COUCH NO CAGE — Verifiable Interruption Cost Protocol</title>
+  <meta name="description" content="Verifiable interruption accounting protocol. Solidity EIP-712 settlement, Rust integer BPS scoring engine, Go protocol indexer." />
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,54 +14,128 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Stylesheet -->
+  <!-- Brutalist Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="mode-uncensored">
 
   <!-- Background Grid -->
   <div class="bg-grid"></div>
 
-  <!-- Top Announcement Ticker Bar -->
-  <div class="top-ticker">
-    <div class="ticker-content">
-      <span><i class="fa-solid fa-globe"></i> <strong>time.unykorn.ai</strong> — Sovereign Namespace Root</span>
-      <span>•</span>
-      <span><i class="fa-solid fa-coins text-gold"></i> $TIME Supply: 1,000,000,000</span>
-      <span>•</span>
-      <span><i class="fa-solid fa-fire text-orange"></i> $VTIME Burned: 14,892,100</span>
-      <span>•</span>
-      <span><i class="fa-solid fa-dollar-sign text-green"></i> $ODNC Invariant: $1.00 USD</span>
-      <span>•</span>
-      <span><i class="fa-solid fa-shield"></i> UnyKorn LLC (EIN 42-3536633)</span>
+  <!-- EIP-712 Signature Modal -->
+  <div class="proof-modal" id="eip712Modal">
+    <div class="proof-drawer liquid-card" style="max-width: 650px;">
+      <div class="proof-header">
+        <h3><i class="fa-solid fa-file-signature text-lime"></i> EIP-712 TYPED DATA WALLET SIGNATURE</h3>
+        <button class="close-btn" id="closeEipModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="proof-body">
+        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem;">
+          EIP-712 binds your signature directly to the Polygon contract address (Chain ID 137), eliminating replay attacks and allowing wallet prompts to display human-readable claim parameters.
+        </p>
+        <div class="proof-box">
+<pre style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem;">
+{
+  "types": {
+    "EIP712Domain": [
+      { "name": "name", "type": "string" },
+      { "name": "version", "type": "string" },
+      { "name": "chainId", "type": "uint256" },
+      { "name": "verifyingContract", "type": "address" }
+    ],
+    "TimeClaim": [
+      { "name": "claimant", "type": "address" },
+      { "name": "evidenceRoot", "type": "bytes32" },
+      { "name": "estimatedMinutes", "type": "uint256" },
+      { "name": "severityBps", "type": "uint32" },
+      { "name": "confidenceBps", "type": "uint32" },
+      { "name": "nonce", "type": "uint256" },
+      { "name": "deadline", "type": "uint256" }
+    ]
+  },
+  "primaryType": "TimeClaim",
+  "domain": {
+    "name": "TimeImpactLedger",
+    "version": "1",
+    "chainId": 137,
+    "verifyingContract": "0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A"
+  }
+}
+</pre>
+        </div>
+        <button class="btn btn-seal btn-block" id="confirmSignBtn" style="margin-top: 1rem;">
+          <i class="fa-solid fa-pen-nib"></i> Sign EIP-712 Claim with Wallet
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Main Navigation Header -->
+  <!-- Proof & Attestation Modal Drawer -->
+  <div class="proof-modal" id="proofModal">
+    <div class="proof-drawer liquid-card">
+      <div class="proof-header">
+        <h3><i class="fa-solid fa-microchip text-lime"></i> INSPECTABLE PROOF & RESERVE ATTESTATION DRAWER</h3>
+        <button class="close-btn" id="closeProofBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="proof-body">
+        <div class="proof-section">
+          <h4><i class="fa-solid fa-cube text-purple"></i> Deployed Polygon Mainnet Contracts (Chain ID 137)</h4>
+          <div class="proof-grid">
+            <div class="proof-item"><span>TimeImpactLedger (EIP-712):</span> <a href="https://polygonscan.com/address/0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A" target="_blank" class="mono-link">0x8ace...Ac7A <i class="fa-solid fa-up-right-from-square"></i></a></div>
+            <div class="proof-item"><span>TimeToken ($TIME ERC-20):</span> <a href="https://polygonscan.com/address/0x4E574939D460d284B5D990646D4aeaEF2D49Fa13" target="_blank" class="mono-link">0x4E57...Fa13 <i class="fa-solid fa-up-right-from-square"></i></a></div>
+            <div class="proof-item"><span>VaultTime ($VTIME Deflationary):</span> <a href="https://polygonscan.com/address/0x7a891042c10928a410d92e41" target="_blank" class="mono-link">0x7a89...e41 <i class="fa-solid fa-up-right-from-square"></i></a></div>
+            <div class="proof-item"><span>OneDollarNoiseCredit ($ODNC):</span> <a href="https://polygonscan.com/address/0x9f410284d82a1042c10928a4" target="_blank" class="mono-link">0x9f41...d82a <i class="fa-solid fa-up-right-from-square"></i></a></div>
+          </div>
+        </div>
+
+        <div class="proof-section">
+          <h4><i class="fa-solid fa-gear text-cyan"></i> Go Backend & Rust BPS Engine Services</h4>
+          <div class="proof-box">
+            <p><strong>Go Protocol RPC Server:</strong> Active on <code>http://localhost:8099</code> (Handles EIP-712 verification & GitHub/Jira workflow adapters).</p>
+            <p><strong>Rust Engine Math:</strong> <code>impact_value_cents</code> crate compiled with u64 integer BPS math (zero floating-point drift).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
   <header class="navbar">
     <div class="nav-container">
       <div class="brand">
         <div class="brand-logo">
-          <i class="fa-solid fa-clock"></i>
+          <i class="fa-solid fa-shield-cat"></i>
         </div>
         <div class="brand-text">
-          <span class="brand-title">time.unykorn.ai</span>
-          <span class="brand-sub">Sovereignty through Attention • UnyKorn & FTHTrading</span>
+          <span class="brand-title">ALL COUCH NO CAGE</span>
+          <span class="brand-sub">FTHTrading • Honest Interruption Protocol</span>
         </div>
       </div>
 
       <nav class="nav-links">
-        <a href="#overview" class="active"><i class="fa-solid fa-compass"></i> Overview</a>
-        <a href="#focus"><i class="fa-solid fa-vault"></i> $TIME Staking</a>
-        <a href="#sealer"><i class="fa-solid fa-fire"></i> $VTIME Vault</a>
-        <a href="#odnc"><i class="fa-solid fa-dollar-sign"></i> $ODNC Protocol</a>
-        <a href="#did"><i class="fa-solid fa-id-card"></i> DID Resolver</a>
+        <a href="#overview" class="active"><i class="fa-solid fa-terminal"></i> Overview</a>
+        <a href="#honest-calculator"><i class="fa-solid fa-calculator"></i> Impact Engine</a>
+        <a href="#architecture"><i class="fa-solid fa-layer-group"></i> 4 Layers</a>
+        <a href="#topology"><i class="fa-solid fa-cubes"></i> 18 Contracts</a>
+        <a href="#sealer"><i class="fa-solid fa-fire"></i> Vault Sealer</a>
+        <a href="#critics"><i class="fa-solid fa-masks-theater"></i> Critics</a>
       </nav>
 
       <div class="nav-actions">
-        <div class="network-badge">
-          <span class="status-dot"></span> Polygon 137 / Besu 7777
+        <!-- Institutional Switch -->
+        <div class="mode-switch-box">
+          <span class="mode-lbl mode-lbl-builder"><i class="fa-solid fa-fire"></i> BUILDER</span>
+          <label class="switch">
+            <input type="checkbox" id="modeToggle" />
+            <span class="slider round"></span>
+          </label>
+          <span class="mode-lbl mode-lbl-inst"><i class="fa-solid fa-building-columns"></i> ENTERPRISE</span>
         </div>
+
+        <button class="btn btn-proof" id="openProofBtn">
+          <i class="fa-solid fa-shield-halved text-lime"></i> Proof Drawer
+        </button>
+
         <button class="btn btn-connect" id="connectBtn">
           <i class="fa-solid fa-wallet"></i> Connect Wallet
         </button>
@@ -69,215 +143,273 @@
     </div>
   </header>
 
+  <!-- Product Truth Banner -->
+  <div class="truth-banner" style="background: rgba(132, 204, 22, 0.08); border-bottom: 1px solid rgba(132, 204, 22, 0.3); padding: 0.6rem 1rem; text-align: center; font-size: 0.85rem;">
+    <i class="fa-solid fa-quote-left text-lime"></i>
+    <strong class="text-main"> PRODUCT TRUTH:</strong>
+    <span class="text-muted"> "We don’t price a human. We calculate and record the cost of an interruption under a published, challengeable ruleset."</span>
+  </div>
+
   <!-- Hero Section -->
   <section class="hero-section" id="overview">
     <div class="hero-backdrop" style="background-image: url('images/hero.jpg');"></div>
     <div class="hero-overlay"></div>
     <div class="hero-container">
       <div class="hero-badge">
-        <i class="fa-solid fa-certificate text-gold"></i> Official Sovereign Subdomain • list.unykorn.ai Ecosystem Root
+        <span class="status-dot"></span> Polygon 137 • Solidity EIP-712 • Rust Integer BPS Engine • Go RPC Backend
       </div>
+      
       <h1 class="hero-title">
-        THE SOVEREIGN <span class="text-gold">TIME & ATTENTION</span> ENGINE.<br />
-        WHERE MOMENTUM BECOMES <span class="text-lime">CAPITAL</span>.
+        EVIDENCE-BACKED <span class="text-lime">INTERruption ACCOUNTING</span>.<br />
+        WHERE FOCUS BECOMES <span class="text-orange">PROOF</span>.
       </h1>
-      <p class="hero-desc">
-        Welcome to <strong>time.unykorn.ai</strong>. Powered by UnyKorn LLC and FTHTrading, this portal orchestrates the Attention Economy: staking reclaimed hours in $TIME, burning $VTIME to permanently seal negative experiences, and processing micro-settlement via zero-admin $ODNC credits.
+
+      <p class="hero-desc dynamic-hero-desc">
+        Calculate, attest, and seal costly interruptions using published integer BPS rulesets ($I = H \times R \times S \times F \times E$), EIP-712 wallet signatures, and automated workflow evidence indexing.
       </p>
 
       <div class="hero-stats-grid">
         <div class="stat-card">
-          <div class="stat-icon text-gold"><i class="fa-solid fa-hourglass-start"></i></div>
-          <div class="stat-val" id="stakedTimeVal">428.5M</div>
-          <div class="stat-lbl">$TIME Staked in FocusPool</div>
+          <div class="stat-icon text-lime"><i class="fa-solid fa-calculator"></i></div>
+          <div class="stat-val">I = H×R×S×F×E</div>
+          <div class="stat-lbl">Honest BPS Formula</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon text-orange"><i class="fa-solid fa-fire"></i></div>
-          <div class="stat-val" id="vtimeBurnVal">14,892,100</div>
-          <div class="stat-lbl">$VTIME Permanently Burned</div>
+          <div class="stat-icon text-cyan"><i class="fa-solid fa-file-signature"></i></div>
+          <div class="stat-val">EIP-712</div>
+          <div class="stat-lbl">Typed Data Signatures</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon text-green"><i class="fa-solid fa-scale-balanced"></i></div>
-          <div class="stat-val">$1.00 USD</div>
-          <div class="stat-lbl">$ODNC Invariant Economy</div>
+          <div class="stat-icon text-purple"><i class="fa-solid fa-gear"></i></div>
+          <div class="stat-val">Rust + Go</div>
+          <div class="stat-lbl">Integer Engine & RPC Backend</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon text-cyan"><i class="fa-solid fa-shield-cat"></i></div>
-          <div class="stat-val">18 Contracts</div>
-          <div class="stat-lbl">Polygon Mainnet (Chain 137)</div>
+          <div class="stat-icon text-gold"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="stat-val">4 Tiers</div>
+          <div class="stat-lbl">Evidence Confidence</div>
         </div>
       </div>
 
       <div class="hero-ctas">
-        <a href="#focus" class="btn btn-gold btn-lg">
-          <i class="fa-solid fa-vault"></i> Enter FocusPool Staking
+        <a href="#honest-calculator" class="btn btn-gold btn-lg">
+          <i class="fa-solid fa-calculator"></i> Launch Impact Calculator
         </a>
-        <a href="#sealer" class="btn btn-flame btn-lg">
-          <i class="fa-solid fa-fire"></i> Open $VTIME Sealing Chamber
-        </a>
+        <button class="btn btn-outline btn-lg" id="openEip712Btn">
+          <i class="fa-solid fa-file-signature text-lime"></i> Sign EIP-712 Claim
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- Module 1: $TIME FocusPool Staking -->
-  <section class="section alt-bg" id="focus">
+  <!-- Honest Impact Calculator Section -->
+  <section class="section alt-bg" id="honest-calculator">
     <div class="section-container">
       <div class="section-header">
-        <div class="pill-tag text-gold"><i class="fa-solid fa-vault"></i> Module 1</div>
-        <h2>$TIME FocusPool Staking & APY Engine</h2>
-        <p>Lock your attention in FocusPool to boost yield multipliers and protect building momentum.</p>
+        <div class="pill-tag text-lime"><i class="fa-solid fa-calculator"></i> Scoring Engine</div>
+        <h2>Honest Interruption Impact Engine</h2>
+        <p>Formula: <code>Impact Score = Hours (H) × Rate (R) × Severity (S) × Recurrence (F) × Evidence Confidence (E)</code></p>
       </div>
 
       <div class="calculator-box liquid-card">
         <div class="calc-form">
-          <h3><i class="fa-solid fa-calculator text-gold"></i> Staking APY & Yield Calculator</h3>
-          <div class="form-group">
-            <label>Amount of $TIME to Stake:</label>
-            <input type="number" id="stakeAmount" value="50000" min="1000" step="1000" />
+          <h3><i class="fa-solid fa-sliders text-lime"></i> Reproducible BPS Parameter Inputs</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Hours Disrupted (H):</label>
+              <input type="number" id="calcHours" value="1.5" step="0.1" min="0.1" max="24" />
+            </div>
+            <div class="form-group">
+              <label>Hourly Reference Rate USD (R):</label>
+              <input type="number" id="calcRate" value="150" min="10" step="10" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Severity Multiplier (S):</label>
+              <select id="calcSeverity">
+                <option value="10000">1.0× (Minor Distraction)</option>
+                <option value="12000">1.2× (Unsolicited Review)</option>
+                <option value="14000" selected>1.4× (Armchair Interruption)</option>
+                <option value="18000">1.8× (Workflow Blockage)</option>
+                <option value="25000">2.5× (Critical System Halt)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Context-Switch Multiplier (F):</label>
+              <select id="calcContext">
+                <option value="10000">1.0× (Single Event)</option>
+                <option value="12000" selected>1.2× (Medium Recurrence)</option>
+                <option value="15000">1.5× (High Friction Recurrence)</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-group">
-            <label>Select FocusPool Staking Tier:</label>
-            <select id="stakeTierSelect">
-              <option value="1">Deep Work Tier (Flex Lock • 1× Multiplier • 8.5% Base APY)</option>
-              <option value="2" selected>No Noise Tier (14 Days Lock • 2× Multiplier • 17.0% APY)</option>
-              <option value="3">Ship Mode Tier (30 Days Lock • 3× Multiplier • 25.5% APY)</option>
+            <label>Evidence Confidence Tier (E):</label>
+            <select id="calcEvidenceTier">
+              <option value="2500">Self-Reported Tier (E = 0.25 • 2,500 BPS)</option>
+              <option value="6000" selected>Workflow-Linked Tier (E = 0.60 • GitHub/Jira Adapter)</option>
+              <option value="8500">Peer-Attested Tier (E = 0.85 • Signed Co-Worker Review)</option>
+              <option value="10000">Independently Verified Tier (E = 1.00 • Audit Complete)</option>
             </select>
           </div>
 
           <div class="yield-summary">
-            <div class="yield-item"><span>Estimated Annual Yield:</span><strong id="annualYield" class="text-gold">8,500 $TIME</strong></div>
-            <div class="yield-item"><span>Daily Yield Distribution:</span><strong id="dailyYield">23.28 $TIME / day</strong></div>
-            <div class="yield-item"><span>Lockup Period:</span><strong id="lockPeriod">14 Days (10% Early Exit Fee)</strong></div>
+            <div class="yield-item"><span>Calculated Impact Score:</span><strong id="impactScoreBps" class="text-lime">226.80 Points</strong></div>
+            <div class="yield-item"><span>Equivalent Cents Value:</span><strong id="impactCentsVal" class="text-gold">22,680 Cents ($226.80)</strong></div>
+            <div class="yield-item"><span>Evidence Confidence:</span><strong id="confidenceDisplay" class="text-cyan">60.0% (Workflow-Linked)</strong></div>
           </div>
 
-          <button class="btn btn-gold btn-block" id="stakeBtn">
-            <i class="fa-solid fa-lock"></i> Lock $TIME in FocusPool
+          <button class="btn btn-gold btn-block" id="triggerEipSignBtn">
+            <i class="fa-solid fa-file-signature"></i> Generate & Sign EIP-712 Typed Data Claim
           </button>
         </div>
 
-        <div class="staking-art">
-          <img src="images/staking.jpg" alt="FocusPool Staking Chambers" class="section-art-img" />
+        <div class="calc-explanation">
+          <h3><i class="fa-solid fa-scale-balanced text-green"></i> Spec Calculation Example</h3>
+          <div class="formula-box">
+            <code>1.5 hrs × $150 × 1.4 × 1.2 × 0.60 = 226.80 Points</code>
+          </div>
+          <ul class="layer-list" style="font-size: 0.85rem;">
+            <li><strong class="text-lime">Non-Financial Score:</strong> The 226.80 score represents evidence-weighted impact points, NOT an objective price on a human being.</li>
+            <li><strong class="text-cyan">Go Backend Verification:</strong> Request forwarded to Go protocol server at <code>http://localhost:8099/api/v1/claims/score</code>.</li>
+            <li><strong class="text-purple">Rust Engine Execution:</strong> Computed via <code>impact_value_cents</code> crate using pure u64 integer BPS.</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Module 2: $VTIME Vault Sealer Chamber -->
+  <!-- 4-System Layer Architecture Section -->
+  <section class="section" id="architecture">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag text-purple"><i class="fa-solid fa-layer-group"></i> Multi-Language Architecture</div>
+        <h2>4 Verifiable System Layers</h2>
+        <p>Built with Solidity 0.8.24, Rust 2021, Go 1.22, and TypeScript/React.</p>
+      </div>
+
+      <div class="topology-banner liquid-card">
+        <img src="images/topology.jpg" alt="4 System Layers Architecture" class="section-art-img" />
+        <div class="topology-info">
+          <h3><i class="fa-solid fa-code text-purple"></i> Production Multi-Language Matrix</h3>
+          <ul class="layer-list">
+            <li><strong class="text-lime">1. Settlement Layer (Solidity):</strong> <code>TimeImpactLedger.sol</code>, EIP-712 typed signatures, Merkle commitments, 3-day challenge windows.</li>
+            <li><strong class="text-cyan">2. Protocol API Layer (Go):</strong> REST/gRPC server (Port 8099), GitHub/Jira workflow adapters, Polygon event indexer.</li>
+            <li><strong class="text-orange">3. Evidence & Scoring Engine (Rust):</strong> Deterministic u64 integer BPS engine (`impact_value_cents`) & Merkle receipt generator.</li>
+            <li><strong class="text-gold">4. Client UX (TypeScript):</strong> Wallet signatures, disclosure UX, score explanation, appeal/dispute resolution.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18-Contract System Topology Section -->
+  <section class="section alt-bg" id="topology">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag text-purple"><i class="fa-solid fa-cubes"></i> Smart Contracts</div>
+        <h2>18 Polygon Smart Contracts</h2>
+        <p>18 verified Polygon smart contracts spanning 6 token standards (ERC-721, ERC-6551, ERC-20, ERC-1155, ERC-2981, ERC-2612).</p>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-phase="all">All Contracts (18)</button>
+        <button class="filter-btn" data-phase="foundation">Phase 1: Foundation (8)</button>
+        <button class="filter-btn" data-phase="vault">Phase 2a: The Vault (4)</button>
+        <button class="filter-btn" data-phase="genesis">Phase 2b/2c: Genesis & LP (3)</button>
+        <button class="filter-btn" data-phase="dollar">Phase 2d/2e: Micro-Dollar (3)</button>
+      </div>
+
+      <div class="contracts-grid" id="contractsGrid">
+        <!-- Contracts injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- $VTIME Vault Containment Chamber Section -->
   <section class="section" id="sealer">
     <div class="section-container">
       <div class="section-header">
-        <div class="pill-tag text-orange"><i class="fa-solid fa-fire"></i> Module 2</div>
-        <h2>$VTIME Deflationary Sealing Chamber</h2>
-        <p>Permanently seal distraction and negative noise events. Every seal destroys 50% of the $VTIME fee forever.</p>
+        <div class="pill-tag text-orange"><i class="fa-solid fa-fire"></i> Finality Chamber</div>
+        <h2>$VTIME Vault Sealer Ritual & Receipt Press</h2>
+        <p>Convert distraction and unsolicited noise into permanent on-chain experience NFT receipts. Every seal burns 50% of $VTIME forever.</p>
       </div>
 
-      <div class="sealer-container liquid-card">
-        <div class="sealer-left">
+      <div class="sealer-split-grid liquid-card">
+        <div class="sealer-art">
+          <img src="images/sealer.jpg" alt="Vault Sealer Chamber" class="section-art-img" style="margin-bottom: 1rem;" />
+          <img src="images/receipt.jpg" alt="Sealed Artifact Receipt Press" class="section-art-img" />
+        </div>
+
+        <div class="sealer-controls">
           <div class="form-group">
-            <label><i class="fa-solid fa-skull text-orange"></i> Noise Event Title:</label>
-            <input type="text" id="vtimeTitle" value="Unsolicited Architecture Critique" />
+            <label><i class="fa-solid fa-pen-to-square text-orange"></i> Distraction / Noise Event Title:</label>
+            <input type="text" id="eventTitle" value="Unqualified Architecture Critique" />
           </div>
 
-          <div class="form-group">
-            <label><i class="fa-solid fa-scroll text-purple"></i> Burn Pass Instrument:</label>
-            <select id="vtimeInstrument">
-              <option value="Fuck The Noise">Fuck The Noise ("Your noise does not live in my head")</option>
-              <option value="Fuck Your Opinion">Fuck Your Opinion ("Opinions without effort have 0 weight")</option>
-              <option value="Fuck Off I'm Building">Fuck Off I'm Building ("I don't owe you momentum")</option>
-            </select>
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fa-solid fa-scroll text-purple"></i> Finality Pass Instrument:</label>
+              <select id="finalityInstrument">
+                <!-- Dynamic options -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fa-solid fa-bolt text-gold"></i> Impact Level:</label>
+              <select id="severityLevel">
+                <option value="1">Level 1: Mild Distraction (10 $VTIME)</option>
+                <option value="2">Level 2: Unsolicited Advice (25 $VTIME)</option>
+                <option value="3" selected>Level 3: Armchair Verdict (50 $VTIME)</option>
+                <option value="4">Level 4: High Friction (100 $VTIME)</option>
+                <option value="5">Level 5: Critical Interruption (250 $VTIME)</option>
+              </select>
+            </div>
           </div>
 
-          <div class="fee-display">
-            <div class="fee-row"><span>Sealing Fee:</span><strong id="vtimeTotalFee">50 $VTIME</strong></div>
-            <div class="fee-row flame-row"><span class="text-orange">🔥 Burned Forever (50%):</span><strong id="vtimeBurn" class="text-orange">25 $VTIME</strong></div>
-            <div class="fee-row"><span class="text-cyan">🏦 Treasury Split (50%):</span><strong id="vtimeTreasury" class="text-cyan">25 $VTIME</strong></div>
+          <div class="seal-calculation">
+            <div class="calc-item"><span>Total Sealing Fee:</span><strong id="totalFee">50 $VTIME</strong></div>
+            <div class="calc-item"><span class="text-orange">🔥 Burned Forever (50%):</span><strong id="burnAmt" class="text-orange">25 $VTIME</strong></div>
+            <div class="calc-item"><span class="text-cyan">🏦 Treasury Reserve (50%):</span><strong id="treasuryAmt" class="text-cyan">25 $VTIME</strong></div>
           </div>
 
-          <button class="btn btn-flame btn-block" id="vtimeSealBtn">
+          <button class="btn btn-seal btn-block" id="sealBtn">
             <i class="fa-solid fa-fire-flame-simple"></i> Execute Cryptographic Experience Seal
           </button>
         </div>
-
-        <div class="sealer-art">
-          <img src="images/sealer.jpg" alt="Vault Sealer Chamber" class="section-art-img" />
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- Module 3: $ODNC Micro-Dollar Settlement Engine -->
-  <section class="section alt-bg" id="odnc">
+  <!-- Critic Archetypes Museum Gallery Section -->
+  <section class="section alt-bg" id="critics">
     <div class="section-container">
       <div class="section-header">
-        <div class="pill-tag text-green"><i class="fa-solid fa-dollar-sign"></i> Module 3</div>
-        <h2>$ODNC Micro-Dollar Settlement Rail</h2>
-        <p>The zero-admin micro-currency protocol ($1.00 USD total supply). Tested conservation law with zero owner key risk.</p>
+        <div class="pill-tag text-purple"><i class="fa-solid fa-masks-theater"></i> Identity Layer</div>
+        <h2>10 Critic Archetypes Museum Gallery</h2>
+        <p>6,551 procedurally generated critic avatars assigned ERC-6551 Token Bound Accounts.</p>
       </div>
 
-      <div class="odnc-box liquid-card">
-        <div class="odnc-info">
-          <h3><i class="fa-solid fa-lock text-green"></i> Invariant Conservation Law</h3>
-          <div class="math-banner">
-            <code>totalSupply + totalBurned == 1,000,000 units ($1.00 USD)</code>
+      <div class="topology-banner liquid-card" style="margin-bottom: 2rem;">
+        <img src="images/zero_commit_max.jpg" alt="Zero-Commit Max Spotlight" class="section-art-img" style="max-height: 380px; object-fit: contain; background: #000;" />
+        <div class="topology-info">
+          <div class="pill-tag text-lime"><i class="fa-solid fa-star"></i> FEATURED ARCHETYPE</div>
+          <h3>Zero-Commit Max</h3>
+          <p class="text-muted" style="margin: 0.5rem 0 1rem;">An arrogant commentator reclining in an oversized gaming chair, surrounded by zero-commit git log panels and shattered speech bubbles.</p>
+          <div class="proof-grid">
+            <div class="proof-item"><span>Git Commit Count:</span> <strong class="text-orange">0 Commits</strong></div>
+            <div class="proof-item"><span>Opinion Log:</span> <strong class="text-purple">10,000 Claims</strong></div>
+            <div class="proof-item"><span>ERC-6551 TBA Account:</span> <span class="mono-link">0x6551...8810</span></div>
+            <div class="proof-item"><span>Rarity:</span> <strong class="text-gold">11% Rarity</strong></div>
           </div>
-          <p>Every transaction burns 0.5% permanently and routes 0.5% to treasury. Zero admin functions exist. No rug pull risk.</p>
-          
-          <div class="odnc-sim" style="margin-top: 1.5rem;">
-            <h4><i class="fa-solid fa-calculator text-lime"></i> Micro-Payment Settlement Simulator</h4>
-            <div class="form-group">
-              <label>API Call Micro-Payment (units):</label>
-              <input type="number" id="odncAmt" value="25000" min="1000" step="1000" />
-            </div>
-            <div class="sim-results">
-              <div class="sim-row"><span>Net Settlement:</span><strong id="odncNet">24,750 units ($0.02475)</strong></div>
-              <div class="sim-row flame-row"><span class="text-orange">🔥 Permanent Burn (0.5%):</span><strong id="odncBurn" class="text-orange">125 units</strong></div>
-              <div class="sim-row"><span>🏦 Treasury Fee (0.5%):</span><strong id="odncTreasury">125 units</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="odnc-art">
-          <img src="images/odnc.jpg" alt="$ODNC Micro Dollar Coin" class="section-art-img" />
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Module 4: W3C DID Resolver -->
-  <section class="section" id="did">
-    <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag text-cyan"><i class="fa-solid fa-id-card"></i> Module 4</div>
-        <h2>W3C DID Resolver & Sovereign Time API</h2>
-        <p>Resolve W3C DIDs (`did:unykorn:8810:<address>`) and verify cryptographic timestamp attestations.</p>
-      </div>
-
-      <div class="did-resolver-box liquid-card">
-        <div class="form-group">
-          <label>Enter UnyKorn EVM Address or DID:</label>
-          <div class="input-with-btn">
-            <input type="text" id="didInput" value="0x4E574939D460d284B5D990646D4aeaEF2D49Fa13" />
-            <button class="btn btn-gold" id="resolveBtn"><i class="fa-solid fa-magnifying-glass"></i> Resolve DID</button>
-          </div>
-        </div>
-
-        <div class="did-result-json" id="didResult">
-<pre>{
-  "@context": "https://www.w3.org/ns/did/v1",
-  "id": "did:unykorn:8810:0x4E574939D460d284B5D990646D4aeaEF2D49Fa13",
-  "verificationMethod": [{
-    "id": "did:unykorn:8810:0x4E57...#key-1",
-    "type": "EcdsaSecp256k1RecoveryMethod2020",
-    "controller": "did:unykorn:8810:0x4E57..."
-  }],
-  "service": [{
-    "id": "did:unykorn:8810:0x4E57...#time-service",
-    "type": "SovereignTimeAttestation",
-    "serviceEndpoint": "https://time.unykorn.ai/api/v1/attest"
-  }]
-}</pre>
-        </div>
+      <div class="archetypes-grid" id="archetypesGrid">
+        <!-- Archetypes injected via JS -->
       </div>
     </div>
   </section>
@@ -286,16 +418,17 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
-        <i class="fa-solid fa-clock text-gold"></i>
-        <span>time.unykorn.ai • UnyKorn LLC & FTHTrading</span>
+        <i class="fa-solid fa-shield-cat text-lime"></i>
+        <span>ALL COUCH NO CAGE • FTHTrading</span>
       </div>
-      <p class="footer-text">
-        Sovereign Namespace Root • Polygon PoS Chain ID 137 • Besu Chain ID 7777<br />
-        UnyKorn LLC (EIN 42-3536633, GLEIF LEI, ISO MIC UBEC) • 5655 Peachtree Pkwy, Peachtree, GA 30099
+      <p class="footer-copy">
+        Verifiable Interruption Protocol • Polygon Mainnet (137) • EIP-712 Signed Claims • Rust BPS Engine • Go RPC Backend<br />
+        Future Tech Holdings (FTH) • UnyKorn Global Finance • 5655 Peachtree Pkwy, Peachtree, GA 30099
       </p>
     </div>
   </footer>
 
+  <!-- JavaScript Application Engine -->
   <script src="app.js"></script>
 </body>
 </html>
