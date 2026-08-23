@@ -6,6 +6,7 @@ pub mod infra_reserve;
 pub mod biosignal_zk;
 pub mod biophysical_metrics;
 pub mod biophysical_typed;
+pub mod team_assistant_engine;
 #[cfg(test)]
 pub mod biophysical_tests;
 
