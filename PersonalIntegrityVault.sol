@@ -3,13 +3,14 @@ pragma solidity ^0.8.24;
 
 /**
  * @title PersonalIntegrityVault
- * @notice Self-Sovereign, First-Person Focus Accounting & Personal Integrity Credit ($VTIME).
+ * @notice Self-Sovereign, First-Person Focus Accounting & Non-Transferable Personal Integrity Credit ($VTIME).
  * @dev Strict first-person invariants:
- *      1. Participant ALONE initiates, commits, and self-finalizes their sessions.
- *      2. NO third-party verifiers, employer scores, peer reviews, or social reputation.
- *      3. Anti-replay protection: localProofHash and sessionCommitment can only be minted once.
- *      4. Strict event caps and daily mint caps per participant.
- *      5. Non-financial closed-loop utility credit with voluntary burns/closure rituals.
+ *      1. NON-TRANSFERABLE closed-loop internal utility credit (transfers strictly blocked).
+ *      2. Participant ALONE initiates, commits, and self-finalizes their sessions.
+ *      3. Anti-replay protection: sessionCommitment, localProofHash, and score commitments can only be used once.
+ *      4. Strict session timing bounds (5 minutes minimum, 24 hours maximum).
+ *      5. Strict event caps (100 VTIME max per event) and daily mint caps (300 VTIME max per day).
+ *      6. Non-monetary internal utility credit with voluntary burns/closure rituals.
  */
 contract PersonalIntegrityVault {
     string public name = "Personal Integrity Credit";
@@ -18,7 +19,6 @@ contract PersonalIntegrityVault {
 
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
 
     // Daily and per-event credit limits (in whole token units with 18 decimals)
     uint256 public constant MAX_CREDITS_PER_EVENT = 100 * 1e18; // 100 units max per event
@@ -44,6 +44,7 @@ contract PersonalIntegrityVault {
     bool public paused;
 
     mapping(bytes32 => PersonalSession) public sessions;
+    mapping(bytes32 => bool) public usedSessionCommitments;
     mapping(bytes32 => bool) public usedProofs;
     mapping(address => mapping(uint256 => uint256)) public dailyMinted; // participant => dayIndex => amount
 
@@ -70,7 +71,6 @@ contract PersonalIntegrityVault {
     event StakeReleased(address indexed participant, uint256 amount);
     event ProtocolPaused(bool isPaused);
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
 
     modifier onlyAdmin() {
         require(msg.sender == protocolAdmin, "not admin");
@@ -91,7 +91,7 @@ contract PersonalIntegrityVault {
         emit ProtocolPaused(_paused);
     }
 
-    /// @notice 1. Participant starts and commits to an opt-in focus session
+    /// @notice 1. Participant starts and commits to an opt-in focus session with one-time session commitment
     function commitPersonalSession(
         bytes32 sessionId,
         bytes32 sessionCommitment,
@@ -100,7 +100,10 @@ contract PersonalIntegrityVault {
     ) external whenNotPaused {
         require(sessionId != bytes32(0), "invalid session ID");
         require(sessionCommitment != bytes32(0), "invalid session commitment");
+        require(!usedSessionCommitments[sessionCommitment], "session commitment already used");
         require(sessions[sessionId].status == SessionStatus.None, "session already exists");
+
+        usedSessionCommitments[sessionCommitment] = true;
 
         if (voluntaryStake > 0) {
             require(balanceOf[msg.sender] >= voluntaryStake, "insufficient balance for voluntary stake");
@@ -124,7 +127,7 @@ contract PersonalIntegrityVault {
         emit PersonalSessionCommitted(sessionId, msg.sender, sessionCommitment, voluntaryStake, rulesetHash);
     }
 
-    /// @notice 2. Participant ALONE self-finalizes their session with their own local proof hash
+    /// @notice 2. Participant ALONE self-finalizes their session within timing bounds
     function finalizePersonalSession(
         bytes32 sessionId,
         bytes32 localProofHash,
@@ -135,11 +138,13 @@ contract PersonalIntegrityVault {
         require(session.status == SessionStatus.Committed, "session not committable");
         require(localProofHash != bytes32(0), "missing local proof hash");
         require(!usedProofs[localProofHash], "proof hash already used");
+        require(requestedCredits > 0, "zero credit request");
 
         uint64 duration = uint64(block.timestamp) - session.startedAt;
         require(duration >= MIN_SESSION_DURATION, "session duration below minimum");
+        require(duration <= MAX_SESSION_DURATION, "session duration above maximum");
 
-        // Enforce event cap and daily cap
+        // Enforce event cap and daily cap: C = min(requested, 100 VTIME, C_daily_remaining)
         uint256 currentDay = block.timestamp / 1 days;
         uint256 currentDayTotal = dailyMinted[msg.sender][currentDay];
         require(currentDayTotal < DAILY_CREDIT_CAP, "daily mint cap reached");
@@ -215,30 +220,16 @@ contract PersonalIntegrityVault {
         }
     }
 
-    function transfer(address to, uint256 value) external returns (bool) {
-        require(to != address(0), "invalid recipient");
-        require(balanceOf[msg.sender] >= value, "insufficient balance");
-
-        balanceOf[msg.sender] -= value;
-        balanceOf[to] += value;
-        emit Transfer(msg.sender, to, value);
-        return true;
+    // Explicit Non-Transferability Invariants (Closed-Loop Personal Utility Only)
+    function transfer(address, uint256) external pure returns (bool) {
+        revert("VTIME is a non-transferable personal integrity credit");
     }
 
-    function approve(address spender, uint256 value) external returns (bool) {
-        allowance[msg.sender][spender] = value;
-        emit Approval(msg.sender, spender, value);
-        return true;
+    function approve(address, uint256) external pure returns (bool) {
+        revert("VTIME is a non-transferable personal integrity credit");
     }
 
-    function transferFrom(address from, address to, uint256 value) external returns (bool) {
-        require(balanceOf[from] >= value, "insufficient balance");
-        require(allowance[from][msg.sender] >= value, "insufficient allowance");
-
-        allowance[from][msg.sender] -= value;
-        balanceOf[from] -= value;
-        balanceOf[to] += value;
-        emit Transfer(from, to, value);
-        return true;
+    function transferFrom(address, address, uint256) external pure returns (bool) {
+        revert("VTIME is a non-transferable personal integrity credit");
     }
 }
