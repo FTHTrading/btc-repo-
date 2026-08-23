@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>time.unykorn.ai — Sovereign Attention & Time Economy Portal</title>
+  <meta name="description" content="Official UnyKorn LLC & FTHTrading Sovereign Portal for $TIME, $VTIME, $ODNC, and All Couch No Cage Protocol." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background Grid -->
+  <div class="bg-grid"></div>
+
+  <!-- Top Announcement Ticker Bar -->
+  <div class="top-ticker">
+    <div class="ticker-content">
+      <span><i class="fa-solid fa-globe"></i> <strong>time.unykorn.ai</strong> — Sovereign Namespace Root</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-coins text-gold"></i> $TIME Supply: 1,000,000,000</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-fire text-orange"></i> $VTIME Burned: 14,892,100</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-dollar-sign text-green"></i> $ODNC Invariant: $1.00 USD</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-shield"></i> UnyKorn LLC (EIN 42-3536633)</span>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-logo">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">time.unykorn.ai</span>
+          <span class="brand-sub">Sovereignty through Attention • UnyKorn & FTHTrading</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#overview" class="active"><i class="fa-solid fa-compass"></i> Overview</a>
+        <a href="#focus"><i class="fa-solid fa-vault"></i> $TIME Staking</a>
+        <a href="#sealer"><i class="fa-solid fa-fire"></i> $VTIME Vault</a>
+        <a href="#odnc"><i class="fa-solid fa-dollar-sign"></i> $ODNC Protocol</a>
+        <a href="#did"><i class="fa-solid fa-id-card"></i> DID Resolver</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="network-badge">
+          <span class="status-dot"></span> Polygon 137 / Besu 7777
+        </div>
+        <button class="btn btn-connect" id="connectBtn">
+          <i class="fa-solid fa-wallet"></i> Connect Wallet
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="overview">
+    <div class="hero-backdrop" style="background-image: url('images/hero.jpg');"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-container">
+      <div class="hero-badge">
+        <i class="fa-solid fa-certificate text-gold"></i> Official Sovereign Subdomain • list.unykorn.ai Ecosystem Root
+      </div>
+      <h1 class="hero-title">
+        THE SOVEREIGN <span class="text-gold">TIME & ATTENTION</span> ENGINE.<br />
+        WHERE MOMENTUM BECOMES <span class="text-lime">CAPITAL</span>.
+      </h1>
+      <p class="hero-desc">
+        Welcome to <strong>time.unykorn.ai</strong>. Powered by UnyKorn LLC and FTHTrading, this portal orchestrates the Attention Economy: staking reclaimed hours in $TIME, burning $VTIME to permanently seal negative experiences, and processing micro-settlement via zero-admin $ODNC credits.
+      </p>
+
+      <div class="hero-stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon text-gold"><i class="fa-solid fa-hourglass-start"></i></div>
+          <div class="stat-val" id="stakedTimeVal">428.5M</div>
+          <div class="stat-lbl">$TIME Staked in FocusPool</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon text-orange"><i class="fa-solid fa-fire"></i></div>
+          <div class="stat-val" id="vtimeBurnVal">14,892,100</div>
+          <div class="stat-lbl">$VTIME Permanently Burned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon text-green"><i class="fa-solid fa-scale-balanced"></i></div>
+          <div class="stat-val">$1.00 USD</div>
+          <div class="stat-lbl">$ODNC Invariant Economy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon text-cyan"><i class="fa-solid fa-shield-cat"></i></div>
+          <div class="stat-val">18 Contracts</div>
+          <div class="stat-lbl">Polygon Mainnet (Chain 137)</div>
+        </div>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="#focus" class="btn btn-gold btn-lg">
+          <i class="fa-solid fa-vault"></i> Enter FocusPool Staking
+        </a>
+        <a href="#sealer" class="btn btn-flame btn-lg">
+          <i class="fa-solid fa-fire"></i> Open $VTIME Sealing Chamber
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 1: $TIME FocusPool Staking -->
+  <section class="section alt-bg" id="focus">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag text-gold"><i class="fa-solid fa-vault"></i> Module 1</div>
+        <h2>$TIME FocusPool Staking & APY Engine</h2>
+        <p>Lock your attention in FocusPool to boost yield multipliers and protect building momentum.</p>
+      </div>
+
+      <div class="calculator-box liquid-card">
+        <div class="calc-form">
+          <h3><i class="fa-solid fa-calculator text-gold"></i> Staking APY & Yield Calculator</h3>
+          <div class="form-group">
+            <label>Amount of $TIME to Stake:</label>
+            <input type="number" id="stakeAmount" value="50000" min="1000" step="1000" />
+          </div>
+
+          <div class="form-group">
+            <label>Select FocusPool Staking Tier:</label>
+            <select id="stakeTierSelect">
+              <option value="1">Deep Work Tier (Flex Lock • 1× Multiplier • 8.5% Base APY)</option>
+              <option value="2" selected>No Noise Tier (14 Days Lock • 2× Multiplier • 17.0% APY)</option>
+              <option value="3">Ship Mode Tier (30 Days Lock • 3× Multiplier • 25.5% APY)</option>
+            </select>
+          </div>
+
+          <div class="yield-summary">
+            <div class="yield-item"><span>Estimated Annual Yield:</span><strong id="annualYield" class="text-gold">8,500 $TIME</strong></div>
+            <div class="yield-item"><span>Daily Yield Distribution:</span><strong id="dailyYield">23.28 $TIME / day</strong></div>
+            <div class="yield-item"><span>Lockup Period:</span><strong id="lockPeriod">14 Days (10% Early Exit Fee)</strong></div>
+          </div>
+
+          <button class="btn btn-gold btn-block" id="stakeBtn">
+            <i class="fa-solid fa-lock"></i> Lock $TIME in FocusPool
+          </button>
+        </div>
+
+        <div class="staking-art">
+          <img src="images/staking.jpg" alt="FocusPool Staking Chambers" class="section-art-img" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 2: $VTIME Vault Sealer Chamber -->
+  <section class="section" id="sealer">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag text-orange"><i class="fa-solid fa-fire"></i> Module 2</div>
+        <h2>$VTIME Deflationary Sealing Chamber</h2>
+        <p>Permanently seal distraction and negative noise events. Every seal destroys 50% of the $VTIME fee forever.</p>
+      </div>
+
+      <div class="sealer-container liquid-card">
+        <div class="sealer-left">
+          <div class="form-group">
+            <label><i class="fa-solid fa-skull text-orange"></i> Noise Event Title:</label>
+            <input type="text" id="vtimeTitle" value="Unsolicited Architecture Critique" />
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-scroll text-purple"></i> Burn Pass Instrument:</label>
+            <select id="vtimeInstrument">
+              <option value="Fuck The Noise">Fuck The Noise ("Your noise does not live in my head")</option>
+              <option value="Fuck Your Opinion">Fuck Your Opinion ("Opinions without effort have 0 weight")</option>
+              <option value="Fuck Off I'm Building">Fuck Off I'm Building ("I don't owe you momentum")</option>
+            </select>
+          </div>
+
+          <div class="fee-display">
+            <div class="fee-row"><span>Sealing Fee:</span><strong id="vtimeTotalFee">50 $VTIME</strong></div>
+            <div class="fee-row flame-row"><span class="text-orange">🔥 Burned Forever (50%):</span><strong id="vtimeBurn" class="text-orange">25 $VTIME</strong></div>
+            <div class="fee-row"><span class="text-cyan">🏦 Treasury Split (50%):</span><strong id="vtimeTreasury" class="text-cyan">25 $VTIME</strong></div>
+          </div>
+
+          <button class="btn btn-flame btn-block" id="vtimeSealBtn">
+            <i class="fa-solid fa-fire-flame-simple"></i> Execute Cryptographic Experience Seal
+          </button>
+        </div>
+
+        <div class="sealer-art">
+          <img src="images/sealer.jpg" alt="Vault Sealer Chamber" class="section-art-img" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 3: $ODNC Micro-Dollar Settlement Engine -->
+  <section class="section alt-bg" id="odnc">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag text-green"><i class="fa-solid fa-dollar-sign"></i> Module 3</div>
+        <h2>$ODNC Micro-Dollar Settlement Rail</h2>
+        <p>The zero-admin micro-currency protocol ($1.00 USD total supply). Tested conservation law with zero owner key risk.</p>
+      </div>
+
+      <div class="odnc-box liquid-card">
+        <div class="odnc-info">
+          <h3><i class="fa-solid fa-lock text-green"></i> Invariant Conservation Law</h3>
+          <div class="math-banner">
+            <code>totalSupply + totalBurned == 1,000,000 units ($1.00 USD)</code>
+          </div>
+          <p>Every transaction burns 0.5% permanently and routes 0.5% to treasury. Zero admin functions exist. No rug pull risk.</p>
+          
+          <div class="odnc-sim" style="margin-top: 1.5rem;">
+            <h4><i class="fa-solid fa-calculator text-lime"></i> Micro-Payment Settlement Simulator</h4>
+            <div class="form-group">
+              <label>API Call Micro-Payment (units):</label>
+              <input type="number" id="odncAmt" value="25000" min="1000" step="1000" />
+            </div>
+            <div class="sim-results">
+              <div class="sim-row"><span>Net Settlement:</span><strong id="odncNet">24,750 units ($0.02475)</strong></div>
+              <div class="sim-row flame-row"><span class="text-orange">🔥 Permanent Burn (0.5%):</span><strong id="odncBurn" class="text-orange">125 units</strong></div>
+              <div class="sim-row"><span>🏦 Treasury Fee (0.5%):</span><strong id="odncTreasury">125 units</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="odnc-art">
+          <img src="images/odnc.jpg" alt="$ODNC Micro Dollar Coin" class="section-art-img" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 4: W3C DID Resolver -->
+  <section class="section" id="did">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag text-cyan"><i class="fa-solid fa-id-card"></i> Module 4</div>
+        <h2>W3C DID Resolver & Sovereign Time API</h2>
+        <p>Resolve W3C DIDs (`did:unykorn:8810:<address>`) and verify cryptographic timestamp attestations.</p>
+      </div>
+
+      <div class="did-resolver-box liquid-card">
+        <div class="form-group">
+          <label>Enter UnyKorn EVM Address or DID:</label>
+          <div class="input-with-btn">
+            <input type="text" id="didInput" value="0x4E574939D460d284B5D990646D4aeaEF2D49Fa13" />
+            <button class="btn btn-gold" id="resolveBtn"><i class="fa-solid fa-magnifying-glass"></i> Resolve DID</button>
+          </div>
+        </div>
+
+        <div class="did-result-json" id="didResult">
+<pre>{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:unykorn:8810:0x4E574939D460d284B5D990646D4aeaEF2D49Fa13",
+  "verificationMethod": [{
+    "id": "did:unykorn:8810:0x4E57...#key-1",
+    "type": "EcdsaSecp256k1RecoveryMethod2020",
+    "controller": "did:unykorn:8810:0x4E57..."
+  }],
+  "service": [{
+    "id": "did:unykorn:8810:0x4E57...#time-service",
+    "type": "SovereignTimeAttestation",
+    "serviceEndpoint": "https://time.unykorn.ai/api/v1/attest"
+  }]
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <i class="fa-solid fa-clock text-gold"></i>
+        <span>time.unykorn.ai • UnyKorn LLC & FTHTrading</span>
+      </div>
+      <p class="footer-text">
+        Sovereign Namespace Root • Polygon PoS Chain ID 137 • Besu Chain ID 7777<br />
+        UnyKorn LLC (EIN 42-3536633, GLEIF LEI, ISO MIC UBEC) • 5655 Peachtree Pkwy, Peachtree, GA 30099
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
