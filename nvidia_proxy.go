@@ -1,5 +1,5 @@
 // NVIDIA NIM & Cloud Voice / Speech-to-Text Proxy Server
-// Integrates NVIDIA Nemotron-3, DeepSeek-V4, Whisper-Large-v3, and Riva ASR/TTS
+// Integrates NVIDIA Nemotron-3, DeepSeek-V4, Whisper-Large-v3, Riva, and Personalized Assistant Engine
 
 package main
 
@@ -20,6 +20,7 @@ const (
 	NvidiaAPIKeyDeepseek = "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"
 	NvidiaAPIKeyWhisper  = "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"
 	NvidiaAPIKeyRiva     = "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"
+	NvidiaAPIKeyUser65   = "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"
 )
 
 type ChatRequest struct {
@@ -34,6 +35,58 @@ func enableCORS(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+}
+
+// Personalized AI Assistant tuned to user's specific cognitive preferences
+func handlePersonalizedAssistant(w http.ResponseWriter, r *http.Request) {
+	enableCORS(&w)
+	if r.Method == "OPTIONS" {
+		return
+	}
+
+	var reqBody struct {
+		UserMessage string `json:"message"`
+		Archetype   string `json:"archetype"`  // DeepArchitect, RapidResponder, SystemsAuditor, CreativeSynthesizer
+		Tone        string `json:"tone"`       // Soothing, Analytical, Direct, Visionary
+		FocusTopic  string `json:"focus_topic"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil || reqBody.UserMessage == "" {
+		reqBody.UserMessage = "How can I optimize my next deep focus block today?"
+	}
+
+	systemPrompt := fmt.Sprintf(
+		"You are a personalized cognitive AI assistant in the All Couch No Cage self-mastery protocol. "+
+			"The user's cognitive archetype is '%s', with a preferred '%s' tone. "+
+			"Guide them with clarity, warmth, and actionable focus optimization strategies without surveillance or judgment. Focus context: %s.",
+		reqBody.Archetype, reqBody.Tone, reqBody.FocusTopic,
+	)
+
+	chatReq := ChatRequest{
+		Model: "nvidia/nemotron-3-super-120b-a12b",
+		Messages: []map[string]interface{}{
+			{"role": "system", "content": systemPrompt},
+			{"role": "user", "content": reqBody.UserMessage},
+		},
+		Temperature: 0.75,
+		TopP:        0.95,
+		MaxTokens:   1024,
+	}
+
+	reqBytes, _ := json.Marshal(chatReq)
+	httpReq, _ := http.NewRequest("POST", NvidiaBaseURL+"/chat/completions", bytes.NewBuffer(reqBytes))
+	httpReq.Header.Set("Authorization", "Bearer "+NvidiaAPIKeyUser65)
+	httpReq.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(httpReq)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("NVIDIA Assistant error: %v", err), http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	w.Header().Set("Content-Type", "application/json")
+	io.Copy(w, resp.Body)
 }
 
 func handleNemotronVoiceStory(w http.ResponseWriter, r *http.Request) {
@@ -124,13 +177,14 @@ func main() {
 		port = "8098"
 	}
 
+	http.HandleFunc("/api/v1/nvidia/assistant", handlePersonalizedAssistant)
 	http.HandleFunc("/api/v1/nvidia/nemotron", handleNemotronVoiceStory)
 	http.HandleFunc("/api/v1/nvidia/deepseek", handleDeepSeekReasoning)
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		enableCORS(&w)
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintf(w, `{"status":"online","models":["nemotron-3-super-120b","deepseek-v4-flash","whisper-large-v3","riva-asr"]}`)
+		fmt.Fprintf(w, `{"status":"online","models":["personalized-assistant","nemotron-3-super-120b","deepseek-v4-flash","whisper-large-v3","riva-asr"]}`)
 	})
 
 	log.Printf("NVIDIA Cloud AI Proxy Server running on http://localhost:%s", port)

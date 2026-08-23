@@ -8,7 +8,56 @@ document.addEventListener('DOMContentLoaded', () => {
   initWatermarkedGallery();
   initAssetLightbox();
   initSoothingStoryNarration();
+  initPersonalizedAIAssistant();
 });
+
+/* 0. INTERACTIVE PERSONALIZED AI ASSISTANT (NVIDIA NIM NEMOTRON-3 / DEEPSEEK) */
+function initPersonalizedAIAssistant() {
+  const askBtn = document.getElementById('askAssistantBtn');
+  const input = document.getElementById('assistantPromptInput');
+  const archetypeSelect = document.getElementById('assistantArchetype');
+  const toneSelect = document.getElementById('assistantTone');
+  const responseBox = document.getElementById('assistantResponseBox');
+  const responseText = document.getElementById('assistantResponseText');
+  const statusSpan = document.getElementById('responseStatus');
+
+  if (!askBtn || !input) return;
+
+  askBtn.addEventListener('click', async () => {
+    const message = input.value.trim();
+    if (!message) return;
+
+    askBtn.disabled = true;
+    askBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Consulting AI...';
+    responseBox.style.display = 'block';
+    responseText.textContent = 'Generating personalized cognitive guidance...';
+    if (statusSpan) statusSpan.textContent = 'Connecting to NVIDIA NIM...';
+
+    try {
+      const res = await fetch('http://localhost:8098/api/v1/nvidia/assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: message,
+          archetype: archetypeSelect ? archetypeSelect.value : 'DeepArchitect',
+          tone: toneSelect ? toneSelect.value : 'Soothing',
+          focus_topic: 'Deep focus and context-switch optimization'
+        })
+      });
+
+      const data = await res.json();
+      const content = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : 'Guidance received.';
+      responseText.textContent = content;
+      if (statusSpan) statusSpan.textContent = 'Response Complete • NVIDIA Nemotron-3 Super 120B';
+    } catch (e) {
+      responseText.textContent = 'Focus deeply on your single highest leverage task. Minimize external notifications, establish clear boundaries, and allow your natural cognitive flow to build momentum without friction.';
+      if (statusSpan) statusSpan.textContent = 'Local Fallback Mode';
+    } finally {
+      askBtn.disabled = false;
+      askBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> Consult AI';
+    }
+  });
+}
 
 /* 1. FIRST-PERSON FOCUS & INTEGRITY CALCULATOR */
 function initFirstPersonCalculator() {

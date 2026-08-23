@@ -284,6 +284,58 @@
     </div>
   </section>
 
+  <!-- Interactive Personalized AI Guide Section -->
+  <section class="section" id="ai-assistant">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag purple-pill"><i class="fa-solid fa-microchip-ai"></i> NVIDIA AI Engine</div>
+        <h2>Personalized Cognitive AI Guide</h2>
+        <p>Interactive self-mastery guidance tuned dynamically to your cognitive archetype, energy rhythm, and preferred tone.</p>
+      </div>
+
+      <div class="glass-panel" style="max-width: 800px; margin: 0 auto;">
+        <div class="form-row" style="margin-bottom: 1rem;">
+          <div class="form-group">
+            <label>Your Cognitive Archetype:</label>
+            <select id="assistantArchetype">
+              <option value="DeepArchitect" selected>Deep Architect (Systems & Deep Focus)</option>
+              <option value="RapidResponder">Rapid Responder (High Flow & Triage)</option>
+              <option value="SystemsAuditor">Systems Auditor (Precision & Verification)</option>
+              <option value="CreativeSynthesizer">Creative Synthesizer (Vision & Exploration)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>AI Guidance Tone:</label>
+            <select id="assistantTone">
+              <option value="Soothing" selected>Soothing & Philosophical (Rita / Calm)</option>
+              <option value="Analytical">Analytical & Mathematical (DeepSeek)</option>
+              <option value="Direct">Direct & Focused Action</option>
+              <option value="Visionary">Visionary & Inspiring</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ask your personalized guide:</label>
+          <div style="display: flex; gap: 0.75rem;">
+            <input type="text" id="assistantPromptInput" placeholder="e.g., How can I eliminate context switching during my next 2-hour coding block?" value="How can I optimize my energy for a 90-minute deep programming sprint?" style="flex: 1;" />
+            <button class="btn btn-gold" id="askAssistantBtn">
+              <i class="fa-solid fa-sparkles"></i> Consult AI
+            </button>
+          </div>
+        </div>
+
+        <div id="assistantResponseBox" style="margin-top: 1.5rem; background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-glass); font-size: 0.88rem; line-height: 1.6; color: var(--text-main); display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.35rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-gold); font-weight: 700;">NVIDIA NEMOTRON-3 GUIDANCE</span>
+            <span id="responseStatus" style="font-size: 0.72rem; color: var(--accent-cyan); font-family: var(--font-mono);">Generation Complete</span>
+          </div>
+          <p id="assistantResponseText" style="white-space: pre-wrap; margin: 0;"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Personal Focus Accounting & Integrity Calculator Section -->
   <section class="section section-alt" id="calculator">
     <div class="section-container">
