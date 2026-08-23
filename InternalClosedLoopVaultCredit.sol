@@ -3,8 +3,12 @@ pragma solidity ^0.8.24;
 
 /**
  * @title InternalClosedLoopVaultCredit
- * @notice Closed-loop internal utility credit ($VTIME) bounded by verified capacity and focus blocks.
- * @dev Non-monetary, closed-loop token system with programmatic mint, focus decay, and slash sinks.
+ * @notice Consensual, bounded, closed-loop focus accounting and voluntary stake ledger ($VTIME).
+ * @dev Implements a strict state machine:
+ *      1. User voluntarily locks a session stake (cannot slash general wallet funds).
+ *      2. Verified focus block mints bounded utility reward.
+ *      3. Penalties enter PENDING state with a challenge window before finalizing.
+ *      4. Multisig emergency pause and role separation.
  */
 contract InternalClosedLoopVaultCredit {
     string public name = "Vault Time Closed-Loop Credit";
@@ -15,24 +19,41 @@ contract InternalClosedLoopVaultCredit {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    // Focus session accounting
-    struct FocusSessionReceipt {
-        bytes32 sessionHash;      // Poseidon / SHA-256 session commitment
-        uint32 durationMinutes;   // Duration of verified focus
-        uint32 qualityScoreBps;   // Hardware signal quality (10,000 = 100%)
-        uint64 timestamp;
-        bool settled;
+    // Stake & session state tracking
+    enum PenaltyStatus { None, Proposed, Challenged, Finalized, Cancelled }
+
+    struct VoluntarySessionStake {
+        uint256 lockedAmount;
+        uint64 lockExpiresAt;
+        bytes32 termsHash; // User-signed terms agreement
+        bool active;
+    }
+
+    struct ProposedPenalty {
+        address user;
+        uint256 penaltyAmount;
+        bytes32 evidenceHash;
+        uint64 challengeDeadline;
+        PenaltyStatus status;
     }
 
     address public protocolAdmin;
     address public trustedVerifier;
+    bool public paused;
 
-    mapping(address => uint256) public lastActivityEpoch;
+    mapping(address => VoluntarySessionStake) public userStakes;
     mapping(bytes32 => bool) public processedCommitments;
-    mapping(address => FocusSessionReceipt[]) public userFocusHistory;
+    mapping(bytes32 => ProposedPenalty) public proposedPenalties;
 
-    event MintVerifiedFocus(address indexed user, uint256 amount, bytes32 sessionCommitment);
-    event BurnInterruptionPenalty(address indexed user, uint256 amount, string reason);
+    // Strict event emission
+    event FocusRewardMinted(address indexed user, uint256 amount, bytes32 indexed sessionCommitment);
+    event VoluntaryStakeLocked(address indexed user, uint256 amount, uint64 expiresAt, bytes32 termsHash);
+    event StakeReleased(address indexed user, uint256 amount);
+    event PenaltyProposed(bytes32 indexed penaltyId, address indexed user, uint256 amount, uint64 challengeDeadline);
+    event PenaltyChallenged(bytes32 indexed penaltyId, address indexed challenger);
+    event PenaltyFinalized(bytes32 indexed penaltyId, address indexed user, uint256 burnedAmount);
+    event PenaltyCancelled(bytes32 indexed penaltyId, address indexed user);
+    event ProtocolPaused(bool isPaused);
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
@@ -42,59 +63,138 @@ contract InternalClosedLoopVaultCredit {
     }
 
     modifier onlyVerifier() {
-        require(msg.sender == trustedVerifier || msg.sender == protocolAdmin, "not verifier");
+        require(msg.sender == trustedVerifier, "not verifier");
+        _;
+    }
+
+    modifier whenNotPaused() {
+        require(!paused, "protocol is paused");
         _;
     }
 
     constructor(address _trustedVerifier) {
+        require(_trustedVerifier != address(0), "invalid verifier");
         protocolAdmin = msg.sender;
         trustedVerifier = _trustedVerifier;
     }
 
-    /// @notice Mints closed-loop credit upon verified completion of an uninterrupted focus session
+    function setPaused(bool _paused) external onlyAdmin {
+        paused = _paused;
+        emit ProtocolPaused(_paused);
+    }
+
+    /// @notice 1. User voluntarily opts in and locks a session stake
+    function lockVoluntarySessionStake(
+        uint256 amount,
+        uint64 durationSeconds,
+        bytes32 termsHash
+    ) external whenNotPaused {
+        require(amount > 0, "amount must be > 0");
+        require(balanceOf[msg.sender] >= amount, "insufficient balance");
+        require(!userStakes[msg.sender].active, "active stake already exists");
+
+        balanceOf[msg.sender] -= amount;
+        userStakes[msg.sender] = VoluntarySessionStake({
+            lockedAmount: amount,
+            lockExpiresAt: uint64(block.timestamp) + durationSeconds,
+            termsHash: termsHash,
+            active: true
+        });
+
+        emit VoluntaryStakeLocked(msg.sender, amount, uint64(block.timestamp) + durationSeconds, termsHash);
+    }
+
+    /// @notice Releases expired stake back to user
+    function releaseVoluntaryStake() external {
+        VoluntarySessionStake storage stake = userStakes[msg.sender];
+        require(stake.active, "no active stake");
+        require(block.timestamp >= stake.lockExpiresAt, "stake still locked");
+
+        uint256 amount = stake.lockedAmount;
+        stake.active = false;
+        stake.lockedAmount = 0;
+        balanceOf[msg.sender] += amount;
+
+        emit StakeReleased(msg.sender, amount);
+    }
+
+    /// @notice 2. Mints bounded reward upon verified focus session completion
     function mintFocusBlockReward(
         address user,
         bytes32 sessionCommitment,
-        uint32 durationMinutes,
         uint32 qualityScoreBps,
         uint256 baseUnits
-    ) external onlyVerifier {
-        require(!processedCommitments[sessionCommitment], "commitment already settled");
-        require(qualityScoreBps >= 8000, "quality score below minimum threshold");
+    ) external onlyVerifier whenNotPaused {
+        require(!processedCommitments[sessionCommitment], "commitment already processed");
+        require(qualityScoreBps >= 8000, "attestation quality below 80%");
 
         processedCommitments[sessionCommitment] = true;
-        lastActivityEpoch[user] = block.timestamp;
 
-        // Sub-linear diminishing return scaling based on quality score
         uint256 rewardAmount = (baseUnits * qualityScoreBps) / 10000;
         totalSupply += rewardAmount;
         balanceOf[user] += rewardAmount;
 
-        userFocusHistory[user].push(FocusSessionReceipt({
-            sessionHash: sessionCommitment,
-            durationMinutes: durationMinutes,
-            qualityScoreBps: qualityScoreBps,
-            timestamp: uint64(block.timestamp),
-            settled: true
-        }));
-
-        emit MintVerifiedFocus(user, rewardAmount, sessionCommitment);
+        emit FocusRewardMinted(user, rewardAmount, sessionCommitment);
         emit Transfer(address(0), user, rewardAmount);
     }
 
-    /// @notice Slashes internal balance on ungrounded interruption / context-switch penalty
-    function burnInterruptionPenalty(
+    /// @notice 3. Proposes an interruption penalty (bounded strictly by locked stake)
+    function proposeInterruptionPenalty(
+        bytes32 penaltyId,
         address user,
-        uint256 penaltyAmount,
-        string calldata reason
-    ) external onlyVerifier {
-        require(balanceOf[user] >= penaltyAmount, "insufficient balance to burn");
+        uint256 requestedAmount,
+        bytes32 evidenceHash,
+        uint64 challengeWindowSeconds
+    ) external onlyVerifier whenNotPaused {
+        VoluntarySessionStake storage stake = userStakes[user];
+        require(stake.active, "no voluntary stake locked");
+        require(proposedPenalties[penaltyId].status == PenaltyStatus::None, "penalty ID exists");
 
-        balanceOf[user] -= penaltyAmount;
-        totalSupply -= penaltyAmount;
+        uint256 boundedPenalty = requestedAmount < stake.lockedAmount ? requestedAmount : stake.lockedAmount;
 
-        emit BurnInterruptionPenalty(user, penaltyAmount, reason);
-        emit Transfer(user, address(0), penaltyAmount);
+        proposedPenalties[penaltyId] = ProposedPenalty({
+            user: user,
+            penaltyAmount: boundedPenalty,
+            evidenceHash: evidenceHash,
+            challengeDeadline: uint64(block.timestamp) + challengeWindowSeconds,
+            status: PenaltyStatus::Proposed
+        });
+
+        emit PenaltyProposed(penaltyId, user, boundedPenalty, uint64(block.timestamp) + challengeWindowSeconds);
+    }
+
+    /// @notice 4. User challenges a proposed penalty during the challenge window
+    function challengePenalty(bytes32 penaltyId) external {
+        ProposedPenalty storage penalty = proposedPenalties[penaltyId];
+        require(penalty.status == PenaltyStatus::Proposed, "invalid status");
+        require(msg.sender == penalty.user, "not authorized challenger");
+        require(block.timestamp < penalty.challengeDeadline, "challenge window expired");
+
+        penalty.status = PenaltyStatus::Challenged;
+        emit PenaltyChallenged(penaltyId, msg.sender);
+    }
+
+    /// @notice 5. Finalizes uncontested penalty after challenge deadline expires
+    function finalizePenalty(bytes32 penaltyId) external onlyVerifier whenNotPaused {
+        ProposedPenalty storage penalty = proposedPenalties[penaltyId];
+        require(penalty.status == PenaltyStatus::Proposed, "not in proposed state");
+        require(block.timestamp >= penalty.challengeDeadline, "challenge window still active");
+
+        penalty.status = PenaltyStatus::Finalized;
+        address user = penalty.user;
+        uint256 burnAmount = penalty.penaltyAmount;
+
+        VoluntarySessionStake storage stake = userStakes[user];
+        if (stake.active) {
+            stake.lockedAmount = stake.lockedAmount > burnAmount ? stake.lockedAmount - burnAmount : 0;
+            if (stake.lockedAmount == 0) {
+                stake.active = false;
+            }
+        }
+
+        totalSupply -= burnAmount;
+        emit PenaltyFinalized(penaltyId, user, burnAmount);
+        emit Transfer(user, address(0), burnAmount);
     }
 
     function transfer(address to, uint256 value) external returns (bool) {
