@@ -3,40 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALL COUCH NO CAGE — Salvador Dalí Quantum Time & Hermetic Frequency Protocol</title>
-  <meta name="description" content="Verifiable interruption accounting protocol. Salvador Dali quantum time warping, Hermetic acoustic BS frequency meter, Polygon PoS contracts." />
+  <title>ALL COUCH NO CAGE — Verifiable Interruption Accounting Protocol</title>
+  <meta name="description" content="Anti-Noise Protocol. Create evidence-weighted interruption records, calculate recovery impact, and generate EIP-712 verifiable receipts." />
   
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Outfit (Display), Inter (Body), JetBrains Mono (Technical) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
-  <!-- Liquid Glass Stylesheet -->
+  <!-- Institutional Console Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="mode-uncensored">
+<body>
 
-  <!-- Animated Background Orbs -->
-  <div class="bg-glow bg-glow-gold"></div>
-  <div class="bg-glow bg-glow-cyan"></div>
-  <div class="bg-glow bg-glow-purple"></div>
-
-  <!-- EIP-712 Signature Modal -->
-  <div class="proof-modal" id="eip712Modal">
-    <div class="proof-drawer liquid-card" style="max-width: 650px;">
-      <div class="proof-header">
-        <h3><i class="fa-solid fa-file-signature text-lime"></i> EIP-712 TYPED DATA WALLET SIGNATURE</h3>
-        <button class="close-btn" id="closeEipModalBtn"><i class="fa-solid fa-xmark"></i></button>
+  <!-- EIP-712 Signing Modal Drawer -->
+  <div class="modal-overlay" id="eipModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">EIP-712 Typed Data Signature</h3>
+        <button class="modal-close" id="closeEipModalBtn">&times;</button>
       </div>
-      <div class="proof-body">
-        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem;">
-          EIP-712 binds your signature directly to the Polygon contract address (Chain ID 137), eliminating replay attacks and allowing wallet prompts to display human-readable claim parameters.
-        </p>
-        <div class="proof-box">
-<pre style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem;">
+      <p class="text-muted" style="font-size: 0.85rem;">
+        EIP-712 binds your signature directly to the Polygon settlement contract address (Chain ID 137), eliminating replay attacks and allowing wallet prompts to display human-readable claim parameters.
+      </p>
+      <div class="modal-code-box">
+<pre>
 {
   "types": {
     "EIP712Domain": [
@@ -64,274 +55,130 @@
   }
 }
 </pre>
-        </div>
-        <button class="btn btn-seal btn-block" id="confirmSignBtn" style="margin-top: 1rem;">
-          <i class="fa-solid fa-pen-nib"></i> Sign EIP-712 Claim with Wallet
-        </button>
       </div>
+      <button class="btn btn-primary btn-block" id="confirmSignBtn">
+        Sign EIP-712 Record with Wallet
+      </button>
     </div>
   </div>
 
-  <!-- Proof & Attestation Modal Drawer -->
-  <div class="proof-modal" id="proofModal">
-    <div class="proof-drawer liquid-card">
-      <div class="proof-header">
-        <h3><i class="fa-solid fa-microchip text-lime"></i> INSPECTABLE PROOF & RESERVE ATTESTATION DRAWER</h3>
-        <button class="close-btn" id="closeProofBtn"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="proof-body">
-        <div class="proof-section">
-          <h4><i class="fa-solid fa-cube text-purple"></i> Deployed Polygon Mainnet Contracts (Chain ID 137)</h4>
-          <div class="proof-grid">
-            <div class="proof-item"><span>TimeImpactLedger (EIP-712):</span> <a href="https://polygonscan.com/address/0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A" target="_blank" class="mono-link">0x8ace...Ac7A <i class="fa-solid fa-up-right-from-square"></i></a></div>
-            <div class="proof-item"><span>TimeToken ($TIME ERC-20):</span> <a href="https://polygonscan.com/address/0x4E574939D460d284B5D990646D4aeaEF2D49Fa13" target="_blank" class="mono-link">0x4E57...Fa13 <i class="fa-solid fa-up-right-from-square"></i></a></div>
-            <div class="proof-item"><span>VaultTime ($VTIME Deflationary):</span> <a href="https://polygonscan.com/address/0x7a891042c10928a410d92e41" target="_blank" class="mono-link">0x7a89...e41 <i class="fa-solid fa-up-right-from-square"></i></a></div>
-            <div class="proof-item"><span>OneDollarNoiseCredit ($ODNC):</span> <a href="https://polygonscan.com/address/0x9f410284d82a1042c10928a4" target="_blank" class="mono-link">0x9f41...d82a <i class="fa-solid fa-up-right-from-square"></i></a></div>
-          </div>
-        </div>
-
-        <div class="proof-section">
-          <h4><i class="fa-solid fa-gear text-cyan"></i> Go Backend & Rust BPS Engine Services</h4>
-          <div class="proof-box">
-            <p><strong>Go Protocol RPC Server:</strong> Active on <code>http://localhost:8099</code> (Handles EIP-712 verification & GitHub/Jira workflow adapters).</p>
-            <p><strong>Rust Engine Math:</strong> <code>impact_value_cents</code> crate compiled with u64 integer BPS math (zero floating-point drift).</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation Bar -->
+  <!-- Header Navigation -->
   <header class="navbar">
     <div class="nav-container">
-      <div class="brand">
-        <!-- Official Cybernetic Unykorn Logo Emblem -->
-        <img src="images/official_logo.png" alt="ALL COUCH NO CAGE UNYKORN PROTOCOL Logo" class="official-logo-img" />
-        <div class="brand-text">
-          <span class="brand-title">ALL COUCH NO CAGE</span>
-          <span class="brand-sub">FTHTrading • UnyKorn Protocol</span>
-        </div>
-      </div>
+      <a href="#overview" class="brand">
+        <span class="brand-mark"><span class="brand-mark-dot"></span> ALL COUCH NO CAGE</span>
+        <span class="brand-sub">Anti-Noise Protocol</span>
+      </a>
 
-      <nav class="nav-links">
-        <a href="#overview" class="active"><i class="fa-solid fa-terminal"></i> Overview</a>
-        <a href="#hermetic-sound"><i class="fa-solid fa-wave-square"></i> Sound BS Meter</a>
-        <a href="#dali-clock"><i class="fa-solid fa-hourglass"></i> Dalí Quantum Time</a>
-        <a href="#honest-calculator"><i class="fa-solid fa-calculator"></i> Impact Engine</a>
-        <a href="#topology"><i class="fa-solid fa-cubes"></i> 18 Contracts</a>
-        <a href="#sealer"><i class="fa-solid fa-fire"></i> Vault Sealer</a>
-      </nav>
+      <ul class="nav-links">
+        <li><a href="#how-it-works" class="active">How It Works</a></li>
+        <li><a href="#calculator">Methodology</a></li>
+        <li><a href="#workflow">Records</a></li>
+        <li><a href="#protocol">Protocol</a></li>
+        <li><a href="#security">Security</a></li>
+      </ul>
 
       <div class="nav-actions">
-        <!-- Institutional Switch -->
-        <div class="mode-switch-box">
-          <span class="mode-lbl mode-lbl-builder"><i class="fa-solid fa-fire"></i> BUILDER</span>
-          <label class="switch">
-            <input type="checkbox" id="modeToggle" />
-            <span class="slider round"></span>
-          </label>
-          <span class="mode-lbl mode-lbl-inst"><i class="fa-solid fa-building-columns"></i> ENTERPRISE</span>
-        </div>
-
-        <button class="btn btn-proof" id="openProofBtn">
-          <i class="fa-solid fa-shield-halved text-lime"></i> Proof Drawer
+        <button class="btn btn-secondary" id="toggleCultureBtn" style="font-size: 0.8rem;">
+          Culture / Lab Mode
         </button>
-
-        <button class="btn btn-connect" id="connectBtn">
-          <i class="fa-solid fa-wallet"></i> Connect Wallet
-        </button>
+        <a href="#calculator" class="btn btn-primary" id="headerCreateBtn">
+          Create Record
+        </a>
       </div>
     </div>
   </header>
 
   <!-- Product Truth Banner -->
-  <div class="truth-banner" style="background: rgba(234, 179, 8, 0.08); border-bottom: 1px solid rgba(234, 179, 8, 0.3); padding: 0.6rem 1rem; text-align: center; font-size: 0.85rem;">
-    <i class="fa-solid fa-quote-left text-gold"></i>
-    <strong class="text-main"> PRODUCT TRUTH:</strong>
-    <span class="text-muted"> "We don’t price a human. We calculate and record the cost of an interruption under a published, challengeable ruleset."</span>
+  <div class="truth-banner">
+    <span><strong>PRODUCT TRUTH:</strong> "We don’t price a human. We calculate and record the cost of an interruption under a published, challengeable ruleset."</span>
   </div>
 
-  <!-- Hero Section -->
+  <!-- Direct Hero Section -->
   <section class="hero-section" id="overview">
-    <div class="hero-backdrop" style="background-image: url('images/hero.jpg');"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-container">
-      <div class="hero-badge">
-        <span class="status-dot"></span> Polygon 137 • Salvador Dalí Time Engine • Hermetic Acoustic Frequency Analyzer
-      </div>
-      
-      <h1 class="hero-title">
-        YOUR WASTED TIME IS NOW <span class="gold-text">CURRENCY</span>.<br />
-        YOUR STOLEN ENERGY IS NOW <span class="cyan-text">ARCHITECTURE</span>.
-      </h1>
+    <h1 class="hero-title">Document the measurable cost of interruption.</h1>
+    <p class="hero-subtitle">
+      Create evidence-weighted records, calculate recovery impact, and produce a verifiable receipt for teams that protect focused work.
+    </p>
 
-      <p class="hero-desc dynamic-hero-desc">
-        All Couch No Cage measures chaotic acoustic noise spectrums, warping distorted time geometry into verifiable, low-entropy on-chain finality receipts.
-      </p>
+    <div class="hero-ctas">
+      <a href="#calculator" class="btn btn-primary btn-lg">Create an Impact Record</a>
+      <a href="#calculator" class="btn btn-secondary btn-lg">Review Methodology</a>
+    </div>
 
-      <div class="hero-stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon text-gold"><i class="fa-solid fa-wave-square"></i></div>
-          <div class="stat-val" id="liveFreqVal">4,320 Hz</div>
-          <div class="stat-lbl">Hermetic Acoustic Resonance</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon text-cyan"><i class="fa-solid fa-clock"></i></div>
-          <div class="stat-val" id="warpIndexVal">1.42×</div>
-          <div class="stat-lbl">Dalí Quantum Time Distortion</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon text-purple"><i class="fa-solid fa-shield-cat"></i></div>
-          <div class="stat-val">18 Contracts</div>
-          <div class="stat-lbl">Polygon Mainnet (Chain 137)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon text-lime"><i class="fa-solid fa-microchip"></i></div>
-          <div class="stat-val">$2.8M</div>
-          <div class="stat-lbl">Standalone IP Valuation</div>
-        </div>
+    <div class="hero-proof-chips">
+      <div class="proof-chip"><span class="proof-chip-dot"></span> EIP-712 Signed</div>
+      <div class="proof-chip"><span class="proof-chip-dot"></span> Published Scoring Inputs</div>
+      <div class="proof-chip"><span class="proof-chip-dot"></span> Challengeable Records</div>
+      <div class="proof-chip"><span class="proof-chip-dot"></span> Polygon Verified</div>
+    </div>
+  </section>
+
+  <!-- 3-Stage Product Workflow Section -->
+  <section class="section section-alt" id="how-it-works">
+    <div class="section-container">
+      <div class="section-header">
+        <h2 class="section-title">Product Workflow</h2>
+        <p class="section-desc">A 3-stage verifiable record creation process engineered for clarity and auditability.</p>
       </div>
 
-      <div class="hero-ctas">
-        <a href="#hermetic-sound" class="btn btn-gold btn-lg">
-          <i class="fa-solid fa-wave-square"></i> Open Hermetic Sound BS Meter
-        </a>
-        <a href="#dali-clock" class="btn btn-flame btn-lg">
-          <i class="fa-solid fa-hourglass"></i> View Dalí Quantum Time Engine
-        </a>
+      <div class="workflow-nav">
+        <div class="workflow-step active" data-step="1">
+          <div class="step-num">STAGE 01</div>
+          <div class="step-title">Document</div>
+          <div class="step-desc">Record the event title, duration, and attach evidence links.</div>
+        </div>
+        <div class="workflow-step" data-step="2">
+          <div class="step-num">STAGE 02</div>
+          <div class="step-title">Calculate</div>
+          <div class="step-desc">Apply recovery and confidence multipliers under published rules.</div>
+        </div>
+        <div class="workflow-step" data-step="3">
+          <div class="step-num">STAGE 03</div>
+          <div class="step-title">Verify</div>
+          <div class="step-desc">Sign the record with EIP-712 to generate a challengeable receipt.</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Hermetic Acoustic Sound BS & Frequency Meter Section -->
-  <section class="section alt-bg" id="hermetic-sound">
+  <!-- Interruption Impact Record Calculator -->
+  <section class="section" id="calculator">
     <div class="section-container">
       <div class="section-header">
-        <div class="pill-tag gold-pill"><i class="fa-solid fa-wave-square"></i> Hermetic Sound Measurement</div>
-        <h2>Hermetic Acoustic Frequency & Sound BS Meter</h2>
-        <p><em>"As above, so below; as within, so without."</em> Converts chaotic, high-entropy noise decibels into structured crystal time geometry.</p>
+        <h2 class="section-title">Interruption Impact Record Calculator</h2>
+        <p class="section-desc">An evidence-weighted reference calculation for workflow disruption ($I = H \times R \times S \times F \times E$).</p>
       </div>
 
-      <div class="calculator-box liquid-card">
-        <div class="calc-form">
-          <h3><i class="fa-solid fa-sliders text-gold"></i> Acoustic Noise Frequency Analyzer</h3>
-
-          <div class="form-group">
-            <label><i class="fa-solid fa-volume-high text-gold"></i> Noise Spectrum Frequency (Hz):</label>
-            <input type="range" id="soundFreqInput" min="100" max="20000" step="100" value="4320" style="width: 100%; accent-color: var(--accent-gold);" />
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim); margin-top: 0.25rem;">
-              <span>100 Hz (Sub-Bass)</span>
-              <span id="freqSliderVal" class="text-gold" style="font-weight: 700;">4,320 Hz</span>
-              <span>20,000 Hz (Ultra-High BS)</span>
-            </div>
-          </div>
+      <div class="panel calc-grid">
+        <!-- Form Controls -->
+        <div class="calc-inputs">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1.25rem;">Parameters</h3>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Harmonic Distortion (THD):</label>
-              <select id="thdSelect">
-                <option value="15">15% THD (Mild Noise)</option>
-                <option value="45" selected>45% THD (High Entropy Opinion)</option>
-                <option value="85">85% THD (Extreme Armchair BS)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Hermetic Resonance Mode:</label>
-              <select id="hermeticModeSelect">
-                <option value="432">432 Hz (Sacred Harmonic)</option>
-                <option value="528" selected>528 Hz (Transformation Grid)</option>
-                <option value="639">639 Hz (Focus Convergence)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="yield-summary">
-            <div class="yield-item"><span>Acoustic BS Entropy Score:</span><strong id="entropyScore" class="text-orange">78.4 High Entropy</strong></div>
-            <div class="yield-item"><span>Reclaimed Crystal Time:</span><strong id="crystalTime" class="text-gold">1.85 Hours Reclaimed</strong></div>
-            <div class="yield-item"><span>Hermetic Conversion Invariant:</span><strong id="hermeticInvariant" class="text-cyan">528 Hz Harmonic Locked</strong></div>
-          </div>
-
-          <button class="btn btn-gold btn-block" id="transmuteFreqBtn">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Transmute High-Entropy BS into $VTIME Burn
-          </button>
-        </div>
-
-        <div class="calc-explanation">
-          <img src="images/hermetic_meter.jpg" alt="Hermetic Sound Frequency Meter" class="section-art-img" style="margin-bottom: 1rem;" />
-          <!-- Live HTML5 Audio Waveform Canvas -->
-          <div style="background: rgba(0,0,0,0.8); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; text-align: center;">
-            <canvas id="audioCanvas" width="450" height="100" style="width: 100%; height: 100px; display: block;"></canvas>
-            <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.4rem; font-family: var(--font-mono);">
-              <i class="fa-solid fa-bolt text-gold"></i> Live Acoustic Frequency Waveform Oscillator
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Salvador Dalí Quantum Time Engine Section -->
-  <section class="section" id="dali-clock">
-    <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag cyan-pill"><i class="fa-solid fa-hourglass"></i> Quantum Time Geometry</div>
-        <h2>Salvador Dalí Quantum Time Engine</h2>
-        <p>Time is not linear when distorted by ungrounded noise. The Dalí Quantum Engine warps, measures, and locks time distortion on-chain.</p>
-      </div>
-
-      <div class="topology-banner liquid-card">
-        <img src="images/dali_clock.jpg" alt="Salvador Dalí Quantum Time Watch" class="section-art-img" />
-        <div class="topology-info">
-          <h3><i class="fa-solid fa-hourglass-half text-cyan"></i> The Physics of Distorted Time</h3>
-          <p class="text-muted" style="margin: 0.5rem 0 1rem;">When an ungrounded interruption strikes a high-velocity engineering workflow, time expands non-linearly. A 10-minute noise event causes 90 minutes of cognitive recovery context switching.</p>
-          <div class="proof-grid">
-            <div class="proof-item"><span>Declared Interruption:</span> <strong class="text-gold">15 Minutes</strong></div>
-            <div class="proof-item"><span>Context-Switch Recovery:</span> <strong class="text-orange">75 Minutes</strong></div>
-            <div class="proof-item"><span>Total Spacetime Distortion:</span> <strong class="text-cyan">90 Minutes (1.5 Hours)</strong></div>
-            <div class="proof-item"><span>Dalí Warp Factor:</span> <strong class="text-purple">6.0× Multiplication</strong></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Honest Impact Calculator Section -->
-  <section class="section alt-bg" id="honest-calculator">
-    <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag text-lime"><i class="fa-solid fa-calculator"></i> Scoring Engine</div>
-        <h2>Honest Interruption Impact Engine</h2>
-        <p>Formula: <code>Impact Score = Hours (H) × Rate (R) × Severity (S) × Recurrence (F) × Evidence Confidence (E)</code></p>
-      </div>
-
-      <div class="calculator-box liquid-card">
-        <div class="calc-form">
-          <h3><i class="fa-solid fa-sliders text-lime"></i> Reproducible BPS Parameter Inputs</h3>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Hours Disrupted (H):</label>
+              <label>Interruption Duration (Hours)</label>
               <input type="number" id="calcHours" value="1.5" step="0.1" min="0.1" max="24" />
             </div>
             <div class="form-group">
-              <label>Hourly Reference Rate USD (R):</label>
+              <label>Reference Hourly Rate ($ USD)</label>
               <input type="number" id="calcRate" value="150" min="10" step="10" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Severity Multiplier (S):</label>
+              <label>Recovery Multiplier</label>
               <select id="calcSeverity">
                 <option value="10000">1.0× (Minor Distraction)</option>
                 <option value="12000">1.2× (Unsolicited Review)</option>
-                <option value="14000" selected>1.4× (Armchair Interruption)</option>
+                <option value="14000" selected>1.4× (Standard Interruption)</option>
                 <option value="18000">1.8× (Workflow Blockage)</option>
                 <option value="25000">2.5× (Critical System Halt)</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Context-Switch Multiplier (F):</label>
+              <label>Recurrence Factor</label>
               <select id="calcContext">
                 <option value="10000">1.0× (Single Event)</option>
                 <option value="12000" selected>1.2× (Medium Recurrence)</option>
@@ -341,133 +188,157 @@
           </div>
 
           <div class="form-group">
-            <label>Evidence Confidence Tier (E):</label>
+            <label>Evidence Confidence Level</label>
             <select id="calcEvidenceTier">
-              <option value="2500">Self-Reported Tier (E = 0.25 • 2,500 BPS)</option>
-              <option value="6000" selected>Workflow-Linked Tier (E = 0.60 • GitHub/Jira Adapter)</option>
-              <option value="8500">Peer-Attested Tier (E = 0.85 • Signed Co-Worker Review)</option>
-              <option value="10000">Independently Verified Tier (E = 1.00 • Audit Complete)</option>
+              <option value="2500">Self-Reported (E = 0.25 • Self-attested claim)</option>
+              <option value="6000" selected>Workflow-Linked (E = 0.60 • GitHub/Jira adapter linked)</option>
+              <option value="8500">Peer-Attested (E = 0.85 • Signed co-worker review)</option>
+              <option value="10000">Independently Verified (E = 1.00 • Full audit complete)</option>
             </select>
           </div>
 
-          <div class="yield-summary">
-            <div class="yield-item"><span>Calculated Impact Score:</span><strong id="impactScoreBps" class="text-lime">226.80 Points</strong></div>
-            <div class="yield-item"><span>Equivalent Cents Value:</span><strong id="impactCentsVal" class="text-gold">22,680 Cents ($226.80)</strong></div>
-            <div class="yield-item"><span>Evidence Confidence:</span><strong id="confidenceDisplay" class="text-cyan">60.0% (Workflow-Linked)</strong></div>
-          </div>
-
-          <button class="btn btn-gold btn-block" id="triggerEipSignBtn">
-            <i class="fa-solid fa-file-signature"></i> Generate & Sign EIP-712 Typed Data Claim
+          <button class="btn btn-primary btn-block" id="triggerEipSignBtn" style="margin-top: 1rem;">
+            Generate & Sign EIP-712 Record
           </button>
         </div>
 
-        <div class="calc-explanation">
-          <h3><i class="fa-solid fa-scale-balanced text-green"></i> Spec Calculation Example</h3>
-          <div class="formula-box">
-            <code>1.5 hrs × $150 × 1.4 × 1.2 × 0.60 = 226.80 Points</code>
+        <!-- Output Display & Safeguards -->
+        <div class="calc-results-box">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1.25rem;">Reference Output</h3>
+
+          <div class="impact-display-box">
+            <div class="impact-val-item">
+              <span>Reference Impact Value:</span>
+              <span id="impactScoreBps" class="val-highlight val-crimson">226.80 Points</span>
+            </div>
+            <div class="impact-val-item">
+              <span>Reference Value (USD):</span>
+              <span id="impactCentsVal" class="val-highlight">$226.80 USD</span>
+            </div>
+            <div class="impact-val-item">
+              <span>Evidence Confidence:</span>
+              <span id="confidenceDisplay" class="text-silver">60.0% (Workflow-Linked)</span>
+            </div>
           </div>
-          <ul class="layer-list" style="font-size: 0.85rem;">
-            <li><strong class="text-lime">Non-Financial Score:</strong> The 226.80 score represents evidence-weighted impact points, NOT an objective price on a human being.</li>
-            <li><strong class="text-cyan">Go Backend Verification:</strong> Request forwarded to Go protocol server at <code>http://localhost:8099/api/v1/claims/score</code>.</li>
-            <li><strong class="text-purple">Rust Engine Execution:</strong> Computed via <code>impact_value_cents</code> crate using pure u64 integer BPS.</li>
-          </ul>
+
+          <p class="text-dim" style="font-size: 0.8rem; margin-top: 1rem; line-height: 1.5;">
+            * Reference impact value represents an evidence-weighted score under a published ruleset, not a guaranteed financial payout and not an objective price on a human being.
+          </p>
+
+          <!-- Collapsible Technical Methodology Panel -->
+          <div class="tech-drawer">
+            <button class="tech-toggle-btn" id="techToggleBtn">
+              <span>[+] View Technical Methodology & Execution Engines</span>
+            </button>
+            <div class="tech-content" id="techContent">
+              <p><strong>Scoring Engine Arithmetic:</strong> Evaluated in Rust <code>time-impact-engine</code> using u64 integer basis points (`saturating_mul`) with zero floating-point drift.</p>
+              <p style="margin-top: 0.5rem;"><strong>Protocol Backend:</strong> Go HTTP/RPC server (`http://localhost:8099`) handles signature validation & GitHub/Jira event adapters.</p>
+              <p style="margin-top: 0.5rem;"><strong>Settlement Contract:</strong> <code>TimeImpactLedger.sol</code> on Polygon PoS (Chain 137) with 3-day challenge windows.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 18-Contract System Topology Section -->
-  <section class="section" id="topology">
+  <!-- Protocol & Proof Center Section -->
+  <section class="section section-alt" id="protocol">
     <div class="section-container">
       <div class="section-header">
-        <div class="pill-tag text-purple"><i class="fa-solid fa-cubes"></i> Smart Contracts</div>
-        <h2>18 Polygon Smart Contracts</h2>
-        <p>18 verified Polygon smart contracts spanning 6 token standards (ERC-721, ERC-6551, ERC-20, ERC-1155, ERC-2981, ERC-2612).</p>
+        <h2 class="section-title">Protocol & Proof Center</h2>
+        <p class="section-desc">18 deployed Polygon PoS smart contracts (Chain ID 137) with verified source links and audit test status.</p>
       </div>
 
-      <div class="filter-bar">
-        <button class="filter-btn active" data-phase="all">All Contracts (18)</button>
-        <button class="filter-btn" data-phase="foundation">Phase 1: Foundation (8)</button>
-        <button class="filter-btn" data-phase="vault">Phase 2a: The Vault (4)</button>
-        <button class="filter-btn" data-phase="genesis">Phase 2b/2c: Genesis & LP (3)</button>
-        <button class="filter-btn" data-phase="dollar">Phase 2d/2e: Micro-Dollar (3)</button>
-      </div>
+      <div class="panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+          <div class="mono-text text-silver" style="font-size: 0.85rem;">
+            Primary Ledger: <a href="https://polygonscan.com/address/0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A" target="_blank" style="color: var(--signal-crimson-hover); text-decoration: none;">0x8ace...Ac7A</a>
+          </div>
+          <div class="mono-text text-dim" style="font-size: 0.8rem;">
+            Network: Polygon PoS • EIP-712 Enabled
+          </div>
+        </div>
 
-      <div class="contracts-grid" id="contractsGrid">
-        <!-- Contracts injected via JS -->
+        <div class="protocol-table-box">
+          <table class="protocol-table">
+            <thead>
+              <tr>
+                <th>Contract Name</th>
+                <th>Standard</th>
+                <th>Phase</th>
+                <th>Description</th>
+                <th>Audit / Test Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono-text" style="font-weight: 700;">TimeImpactLedger.sol</td>
+                <td class="mono-text text-silver">EIP-712 / ERC-20</td>
+                <td>Foundation</td>
+                <td>Core settlement contract storing Merkle roots & challenge windows.</td>
+                <td class="text-green mono-text">✅ 28/28 Pass</td>
+              </tr>
+              <tr>
+                <td class="mono-text" style="font-weight: 700;">AllCouchNoCage.sol</td>
+                <td class="mono-text text-silver">ERC-721 / 2981</td>
+                <td>Foundation</td>
+                <td>6,551 critic NFTs procedurally generated across 10 archetypes.</td>
+                <td class="text-green mono-text">✅ 22/22 Pass</td>
+              </tr>
+              <tr>
+                <td class="mono-text" style="font-weight: 700;">TimeToken.sol</td>
+                <td class="mono-text text-silver">ERC-20 / 2612</td>
+                <td>Foundation</td>
+                <td>$TIME attention token with permit approvals.</td>
+                <td class="text-green mono-text">✅ 18/18 Pass</td>
+              </tr>
+              <tr>
+                <td class="mono-text" style="font-weight: 700;">VaultTime.sol</td>
+                <td class="mono-text text-silver">ERC-20 / 2612</td>
+                <td>Vault</td>
+                <td>$VTIME 100M fixed supply deflationary vault currency.</td>
+                <td class="text-green mono-text">✅ 24/24 Pass</td>
+              </tr>
+              <tr>
+                <td class="mono-text" style="font-weight: 700;">OneDollarNoiseCredit.sol</td>
+                <td class="mono-text text-silver">ERC-20</td>
+                <td>Micro-Dollar</td>
+                <td>$ODNC $1.00 supply invariant micro-currency.</td>
+                <td class="text-green mono-text">✅ 27/27 Pass</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- $VTIME Vault Containment Chamber Section -->
-  <section class="section alt-bg" id="sealer">
+  <!-- Optional Culture / Lab Mode Drawer (Hidden by default, toggled via Header Button) -->
+  <section class="section culture-drawer" id="cultureDrawer">
     <div class="section-container">
       <div class="section-header">
-        <div class="pill-tag text-orange"><i class="fa-solid fa-fire"></i> Finality Chamber</div>
-        <h2>$VTIME Vault Sealer Ritual & Receipt Press</h2>
-        <p>Convert distraction and unsolicited noise into permanent on-chain experience NFT receipts. Every seal burns 50% of $VTIME forever.</p>
+        <h2 class="section-title">Culture & Lab Mode</h2>
+        <p class="section-desc">Satirical campaign layer and experimental artwork models for collectors and protocol supporters.</p>
       </div>
-
-      <div class="sealer-split-grid liquid-card">
-        <div class="sealer-art">
-          <img src="images/sealer.jpg" alt="Vault Sealer Chamber" class="section-art-img" style="margin-bottom: 1rem;" />
-          <img src="images/receipt.jpg" alt="Sealed Artifact Receipt Press" class="section-art-img" />
-        </div>
-
-        <div class="sealer-controls">
-          <div class="form-group">
-            <label><i class="fa-solid fa-pen-to-square text-orange"></i> Distraction / Noise Event Title:</label>
-            <input type="text" id="eventTitle" value="Unqualified Architecture Critique" />
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label><i class="fa-solid fa-scroll text-purple"></i> Finality Pass Instrument:</label>
-              <select id="finalityInstrument">
-                <!-- Dynamic options -->
-              </select>
-            </div>
-            <div class="form-group">
-              <label><i class="fa-solid fa-bolt text-gold"></i> Impact Level:</label>
-              <select id="severityLevel">
-                <option value="1">Level 1: Mild Distraction (10 $VTIME)</option>
-                <option value="2">Level 2: Unsolicited Advice (25 $VTIME)</option>
-                <option value="3" selected>Level 3: Armchair Verdict (50 $VTIME)</option>
-                <option value="4">Level 4: High Friction (100 $VTIME)</option>
-                <option value="5">Level 5: Critical Interruption (250 $VTIME)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="seal-calculation">
-            <div class="calc-item"><span>Total Sealing Fee:</span><strong id="totalFee">50 $VTIME</strong></div>
-            <div class="calc-item"><span class="text-orange">🔥 Burned Forever (50%):</span><strong id="burnAmt" class="text-orange">25 $VTIME</strong></div>
-            <div class="calc-item"><span class="text-cyan">🏦 Treasury Reserve (50%):</span><strong id="treasuryAmt" class="text-cyan">25 $VTIME</strong></div>
-          </div>
-
-          <button class="btn btn-seal btn-block" id="sealBtn">
-            <i class="fa-solid fa-fire-flame-simple"></i> Execute Cryptographic Experience Seal
-          </button>
-        </div>
+      <div class="panel text-center" style="padding: 3rem;">
+        <p class="text-muted" style="max-width: 600px; margin: 0 auto 1.5rem;">
+          Culture Mode contains raw satirical campaign assets including the 10 Critic Archetypes, $VTIME Sealer Rituals, and Salvador Dalí time distortion artwork.
+        </p>
+        <img src="images/dali_clock.jpg" alt="Salvador Dali Quantum Clock" style="max-width: 450px; width: 100%; border-radius: 8px; border: 1px solid var(--border-hairline);" />
       </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-brand">
-        <img src="images/official_logo.png" alt="ALL COUCH NO CAGE UNYKORN PROTOCOL Logo" class="official-logo-img" style="height: 32px;" />
-        <span>ALL COUCH NO CAGE • FTHTrading • UnyKorn Protocol</span>
-      </div>
-      <p class="footer-copy">
-        Verifiable Interruption Protocol • Polygon Mainnet (137) • Dalí Quantum Time Engine • Hermetic Acoustic Frequency Analyzer<br />
-        Future Tech Holdings (FTH) • UnyKorn Global Finance • 5655 Peachtree Pkwy, Peachtree, GA 30099
-      </p>
-    </div>
+    <div class="footer-mark">ALL COUCH NO CAGE • Anti-Noise Protocol</div>
+    <p>
+      Polygon PoS (Chain ID 137) • EIP-712 Verifiable Claims • Published Scoring Methodology<br />
+      Future Tech Holdings (FTH) • UnyKorn Global Finance • 5655 Peachtree Pkwy, Peachtree, GA 30099
+    </p>
   </footer>
 
-  <!-- JavaScript Application Engine -->
+  <!-- Application Engine -->
   <script src="app.js"></script>
 </body>
 </html>
