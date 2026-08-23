@@ -6,6 +6,8 @@ pub mod infra_reserve;
 pub mod biosignal_zk;
 pub mod biophysical_metrics;
 pub mod biophysical_typed;
+#[cfg(test)]
+pub mod biophysical_tests;
 
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
