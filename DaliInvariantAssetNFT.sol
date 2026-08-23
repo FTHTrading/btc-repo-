@@ -4,7 +4,11 @@ pragma solidity ^0.8.24;
 /**
  * @title DaliInvariantAssetNFT
  * @notice ERC-721 collection for the 15 Salvador Dali Invariant visual protocol artifacts.
- * @dev Binds SHA-256 evidence seals and IPFS metadata CIDs directly to immutable on-chain token IDs.
+ * @dev Enforces immutable evidence binding:
+ *      1. Valid token ID range (1 to 15).
+ *      2. Non-zero evidence SHA-256 seal.
+ *      3. Unique evidence enforcement (no seal re-use).
+ *      4. Standard ERC-721 event emission and queryable metadata.
  */
 contract DaliInvariantAssetNFT {
     string public name = "All Couch No Cage - Dali Invariant Collection";
@@ -19,19 +23,19 @@ contract DaliInvariantAssetNFT {
     }
 
     address public contractOwner;
-    uint256 public nextTokenId = 1;
     uint256 public constant MAX_SUPPLY = 15;
 
     mapping(uint256 => address) public ownerOf;
     mapping(uint256 => AssetMetadata) public tokenMetadata;
     mapping(address => uint256) public balanceOf;
+    mapping(bytes32 => bool) private _usedEvidence;
 
-    event AssetMinted(
+    event InvariantAssetMinted(
         uint256 indexed tokenId,
-        address indexed owner,
-        bytes32 evidenceSha256,
-        string ipfsMetadataUri,
-        uint64 mintedAt
+        address indexed recipient,
+        bytes32 indexed evidenceSha256,
+        string tokenURI,
+        uint256 mintedAt
     );
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
@@ -46,13 +50,19 @@ contract DaliInvariantAssetNFT {
 
     /// @notice Mints an indisputable visual artifact with its cryptographic evidence seal
     function mintInvariantAsset(
+        uint256 tokenId,
         address recipient,
         bytes32 evidenceSha256,
         string calldata ipfsMetadataUri
-    ) external onlyOwner returns (uint256 tokenId) {
-        require(nextTokenId <= MAX_SUPPLY, "max supply reached");
-        tokenId = nextTokenId++;
+    ) external onlyOwner {
+        require(tokenId >= 1 && tokenId <= MAX_SUPPLY, "invalid token id");
+        require(ownerOf[tokenId] == address(0), "already minted");
+        require(recipient != address(0), "invalid recipient");
+        require(bytes(ipfsMetadataUri).length > 0, "missing metadata");
+        require(evidenceSha256 != bytes32(0), "missing seal");
+        require(!_usedEvidence[evidenceSha256], "evidence already used");
 
+        _usedEvidence[evidenceSha256] = true;
         ownerOf[tokenId] = recipient;
         balanceOf[recipient]++;
 
@@ -64,7 +74,7 @@ contract DaliInvariantAssetNFT {
             initialOwner: recipient
         });
 
-        emit AssetMinted(tokenId, recipient, evidenceSha256, ipfsMetadataUri, uint64(block.timestamp));
+        emit InvariantAssetMinted(tokenId, recipient, evidenceSha256, ipfsMetadataUri, block.timestamp);
         emit Transfer(address(0), recipient, tokenId);
     }
 
