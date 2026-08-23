@@ -1,7 +1,7 @@
 # 🛠️ Universal Build & Deployment Guide
 
 **FTHTrading / kevanbtc & unykornai Ecosystem**  
-**Supported Runtimes:** Python (CBDC / AI), Rust (Groth16 / ZK), C# (.NET XRPL Attestation), Go (Besu / CometBFT), Solidity (Foundry), TypeScript (Node.js / Electron / Desktop).  
+**Supported Runtimes:** Python (GMIIE / CBDC), TypeScript (HydraGrid / Next.js), Solidity (Foundry / Hardhat), Rust (Groth16 / ZK), C# (.NET XRPL Attestation).  
 
 ---
 
@@ -10,42 +10,47 @@
 ### System Requirements
 - **OS:** Windows 10/11, macOS, Linux
 - **Python**: 3.10+ (`python --version`)
-- **Rust**: 1.75+ (`rustup update stable`)
-- **.NET SDK**: 8.0+ for C# (`dotnet --version`)
-- **Go**: 1.21+ (`go version`)
-- **Node.js**: 18.x or 20.x with `pnpm` / `npm`
+- **Node.js**: 18.x or 20.x with `pnpm` / `npm` / `yarn`
+- **Foundry**: `forge` / `cast` / `anvil` (`foundryup`)
+- **Hardhat**: `npx hardhat`
+- **Docker**: Docker Desktop with Compose
 
 ---
 
 ## 2. Component Build Instructions
 
-### A. Sovereign CBDC Central Bank Engine (`unykornai/cbdc-2`)
+### A. Global Monetary Infrastructure Intelligence Engine (`unykornai/cbdc-2-76988`)
 ```bash
-git clone https://github.com/unykornai/cbdc-2.git
-cd cbdc-2
-pip install -r requirements.txt
-python -m cbdc.main
+git clone https://github.com/unykornai/cbdc-2-76988.git
+cd cbdc-2-76988
+cp .env.example .env
+docker compose up -d
+# Dashboard: http://localhost:3000 | API: http://localhost:8000
 ```
 
-### B. Institutional C# XRPL Attestation Engine (`unykornai/UnyXRPL.Attestation`)
+### B. UnykornX HydraGrid Multi-Asset AI Platform (`kevanbtc/hydra`)
 ```bash
-git clone https://github.com/unykornai/UnyXRPL.Attestation.git
-cd UnyXRPL.Attestation
-dotnet build -c Release
-dotnet test
+git clone https://github.com/kevanbtc/hydra.git
+cd hydra
+python -m venv .venv
+source .venv/bin/activate # .venv\Scripts\activate on Windows
+pip install -e .[all]
+pytest tests -v
 ```
 
-### C. Local Desktop AI Agent Surface (`unykornai/AionUi`)
+### C. All Couch No Cage Polygon Mainnet Protocol (`unykornai/Small-Dick`)
 ```bash
-git clone https://github.com/unykornai/AionUi.git
-cd AionUi
-pnpm install
-pnpm dev
+git clone https://github.com/unykornai/Small-Dick.git
+cd Small-Dick
+npm install
+npx hardhat compile
+npx hardhat test
 ```
 
-### D. UNYKORN Zero-Knowledge Enterprise Rust L1 (`kevanbtc/uny-rust`)
+### D. Athlete Sovereign Global Fund Infrastructure (`unykornai/AIF`)
 ```bash
-git clone https://github.com/kevanbtc/uny-rust.git
-cd uny-rust
-cargo build --release && cargo test
+git clone https://github.com/unykornai/AIF.git
+cd AIF
+forge build
+forge test
 ```
