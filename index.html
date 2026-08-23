@@ -3,93 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALL COUCH NO CAGE — Verifiable Interruption Accounting Protocol</title>
-  <meta name="description" content="Anti-Noise Protocol. Create evidence-weighted interruption records, calculate recovery impact, and generate EIP-712 verifiable receipts." />
+  <title>ALL COUCH NO CAGE — Salvador Dalí Liquid Glass & Wasted Time Protocol</title>
+  <meta name="description" content="Verifiable interruption accounting protocol. Measure how ungrounded noise warps cognitive time geometry into permanent Polygon finality receipts." />
   
   <!-- Google Fonts: Outfit (Display), Inter (Body), JetBrains Mono (Technical) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Institutional Console Stylesheet -->
+  <!-- Liquid Glassmorphism Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- EIP-712 Signing Modal Drawer -->
-  <div class="modal-overlay" id="eipModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">EIP-712 Typed Data Signature</h3>
-        <button class="modal-close" id="closeEipModalBtn">&times;</button>
-      </div>
-      <p class="text-muted" style="font-size: 0.85rem;">
-        EIP-712 binds your signature directly to the Polygon settlement contract address (Chain ID 137), eliminating replay attacks and allowing wallet prompts to display human-readable claim parameters.
-      </p>
-      <div class="modal-code-box">
-<pre>
-{
-  "types": {
-    "EIP712Domain": [
-      { "name": "name", "type": "string" },
-      { "name": "version", "type": "string" },
-      { "name": "chainId", "type": "uint256" },
-      { "name": "verifyingContract", "type": "address" }
-    ],
-    "TimeClaim": [
-      { "name": "claimant", "type": "address" },
-      { "name": "evidenceRoot", "type": "bytes32" },
-      { "name": "estimatedMinutes", "type": "uint256" },
-      { "name": "severityBps", "type": "uint32" },
-      { "name": "confidenceBps", "type": "uint32" },
-      { "name": "nonce", "type": "uint256" },
-      { "name": "deadline", "type": "uint256" }
-    ]
-  },
-  "primaryType": "TimeClaim",
-  "domain": {
-    "name": "TimeImpactLedger",
-    "version": "1",
-    "chainId": 137,
-    "verifyingContract": "0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A"
-  }
-}
-</pre>
-      </div>
-      <button class="btn btn-primary btn-block" id="confirmSignBtn">
-        Sign EIP-712 Record with Wallet
-      </button>
-    </div>
-  </div>
+  <!-- Ambient Liquid Glass Orbs -->
+  <div class="liquid-orb orb-gold"></div>
+  <div class="liquid-orb orb-cyan"></div>
+  <div class="liquid-orb orb-purple"></div>
 
   <!-- Asset Inspection Lightbox Modal -->
   <div class="modal-overlay" id="assetLightboxModal">
-    <div class="modal-card lightbox-card">
-      <div class="modal-header">
-        <h3 class="modal-title" id="lightboxTitle">Protocol Visual Asset Inspector</h3>
-        <button class="modal-close" id="closeLightboxBtn">&times;</button>
+    <div class="lightbox-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem;">
+        <h3 id="lightboxTitle" style="font-size: 1.15rem; font-weight: 800;" class="gold-gradient">Protocol Visual Asset Inspector</h3>
+        <button id="closeLightboxBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
       </div>
 
       <div class="lightbox-img-box">
-        <div class="lightbox-watermark-stamp">UNYKORN PROTOCOL • VERIFIED EIP-712</div>
-        <img id="lightboxImg" src="images/kb_1.jpg" alt="Asset Preview" />
+        <div style="position: absolute; top: 12px; right: 12px; background: rgba(234, 179, 8, 0.9); color: #000; padding: 0.4rem 0.85rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; border-radius: 4px; text-transform: uppercase;">
+          UNYKORN PROTOCOL • EIP-712 VERIFIED
+        </div>
+        <img id="lightboxImg" src="images/dali_clock.jpg" alt="Asset Preview" />
       </div>
 
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--proof-silver); font-family: var(--font-mono); margin-bottom: 1rem;">
-        <span>Format: JPEG / 1080p</span>
-        <span id="lightboxHash">Evidence Hash: 0x8ace92e41b7392a...</span>
-        <span>Polygon 137</span>
+      <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1.25rem;">
+        <span>Format: High-Res Protocol Asset</span>
+        <span id="lightboxHash" class="text-cyan">Evidence Hash: 0x8ace92e41b7392a...</span>
+        <span class="text-lime">Polygon PoS 137</span>
       </div>
 
       <div class="lightbox-actions">
-        <a id="downloadAssetBtn" href="images/kb_1.jpg" download="UNYKORN_PROTOCOL_ASSET.jpg" class="btn btn-primary" style="text-decoration: none;">
-          Download Watermarked Asset
+        <a id="downloadAssetBtn" href="images/dali_clock.jpg" download="UNYKORN_PROTOCOL_ASSET.jpg" class="btn btn-gold" style="text-decoration: none;">
+          <i class="fa-solid fa-download"></i> Download Watermarked Asset
         </a>
-        <button class="btn btn-secondary" id="copyHashBtn">
-          Copy Evidence Seal Hash
+        <button class="btn btn-glass" id="copyHashBtn">
+          <i class="fa-solid fa-copy text-cyan"></i> Copy Evidence Seal Hash
         </button>
-        <button class="btn btn-outline" id="attachEvidenceBtn">
-          Attach to Impact Record
+        <button class="btn btn-cyan" id="attachEvidenceBtn">
+          <i class="fa-solid fa-calculator"></i> Attach to Impact Calculator
         </button>
       </div>
     </div>
@@ -99,24 +63,24 @@
   <header class="navbar">
     <div class="nav-container">
       <a href="#overview" class="brand">
-        <span class="brand-mark"><span class="brand-mark-dot"></span> ALL COUCH NO CAGE</span>
-        <span class="brand-sub">Anti-Noise Protocol</span>
+        <img src="images/official_logo.png" alt="UNYKORN PROTOCOL Logo" class="brand-logo-img" />
+        <div class="brand-text">
+          <span>ALL COUCH NO CAGE</span>
+          <span class="brand-sub">Wasted Time Protocol • UnyKorn LLC</span>
+        </div>
       </a>
 
       <ul class="nav-links">
-        <li><a href="#how-it-works" class="active">How It Works</a></li>
-        <li><a href="#calculator">Methodology</a></li>
-        <li><a href="#workflow">Records</a></li>
-        <li><a href="#protocol">Protocol</a></li>
-        <li><a href="#security">Security</a></li>
+        <li><a href="#overview" class="active">Overview</a></li>
+        <li><a href="#wasted-time">Wasted Time</a></li>
+        <li><a href="#dali-engine">Dalí Engine</a></li>
+        <li><a href="#calculator">Calculator</a></li>
+        <li><a href="#gallery">Visual Assets</a></li>
       </ul>
 
       <div class="nav-actions">
-        <button class="btn btn-secondary" id="toggleCultureBtn" style="font-size: 0.8rem;">
-          Culture / Gallery Mode
-        </button>
-        <a href="#calculator" class="btn btn-primary" id="headerCreateBtn">
-          Create Record
+        <a href="#calculator" class="btn btn-gold btn-sm">
+          <i class="fa-solid fa-calculator"></i> Calculate Wasted Time
         </a>
       </div>
     </div>
@@ -124,84 +88,164 @@
 
   <!-- Product Truth Banner -->
   <div class="truth-banner">
+    <i class="fa-solid fa-quote-left" style="margin-right: 0.4rem;"></i>
     <span><strong>PRODUCT TRUTH:</strong> "We don’t price a human. We calculate and record the cost of an interruption under a published, challengeable ruleset."</span>
   </div>
 
-  <!-- Direct Hero Section -->
+  <!-- Salvador Dalí Liquid Glass Hero Section -->
   <section class="hero-section" id="overview">
-    <h1 class="hero-title">Document the measurable cost of interruption.</h1>
-    <p class="hero-subtitle">
-      Create evidence-weighted records, calculate recovery impact, and produce a verifiable receipt for teams that protect focused work.
-    </p>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <i class="fa-solid fa-hourglass-half"></i> Polygon 137 • Salvador Dalí Time Warp Engine • EIP-712 Signed
+        </div>
 
-    <div class="hero-ctas">
-      <a href="#calculator" class="btn btn-primary btn-lg">Create an Impact Record</a>
-      <a href="#calculator" class="btn btn-secondary btn-lg">Review Methodology</a>
-    </div>
+        <h1 class="hero-title">
+          TIME STOLEN BY NOISE IS NOW <span class="gold-gradient">CRYPTOGRAPHICALLY SEALED</span>.
+        </h1>
 
-    <div class="hero-proof-chips">
-      <div class="proof-chip"><span class="proof-chip-dot"></span> EIP-712 Signed</div>
-      <div class="proof-chip"><span class="proof-chip-dot"></span> Published Scoring Inputs</div>
-      <div class="proof-chip"><span class="proof-chip-dot"></span> Challengeable Records</div>
-      <div class="proof-chip"><span class="proof-chip-dot"></span> Polygon Verified</div>
-    </div>
-  </section>
+        <p class="hero-desc">
+          Measure how ungrounded interruptions warp cognitive time geometry. Convert wasted hours into reproducible integer impact claims ($I = H \times R \times S \times F \times E$) and permanent $VTIME burns on Polygon PoS.
+        </p>
 
-  <!-- 3-Stage Product Workflow Section -->
-  <section class="section section-alt" id="how-it-works">
-    <div class="section-container">
-      <div class="section-header">
-        <h2 class="section-title">Product Workflow</h2>
-        <p class="section-desc">A 3-stage verifiable record creation process engineered for clarity and auditability.</p>
+        <div class="hero-ctas">
+          <a href="#calculator" class="btn btn-gold btn-lg">
+            <i class="fa-solid fa-calculator"></i> Calculate Wasted Time
+          </a>
+          <a href="#gallery" class="btn btn-cyan btn-lg">
+            <i class="fa-solid fa-images"></i> Inspect Protocol Assets
+          </a>
+        </div>
       </div>
 
-      <div class="workflow-nav">
-        <div class="workflow-step active" data-step="1">
-          <div class="step-num">STAGE 01</div>
-          <div class="step-title">Document</div>
-          <div class="step-desc">Record the event title, duration, and attach evidence links.</div>
-        </div>
-        <div class="workflow-step" data-step="2">
-          <div class="step-num">STAGE 02</div>
-          <div class="step-title">Calculate</div>
-          <div class="step-desc">Apply recovery and confidence multipliers under published rules.</div>
-        </div>
-        <div class="workflow-step" data-step="3">
-          <div class="step-num">STAGE 03</div>
-          <div class="step-title">Verify</div>
-          <div class="step-desc">Sign the record with EIP-712 to generate a challengeable receipt.</div>
+      <!-- Salvador Dalí Quantum Time Watch Visual -->
+      <div class="hero-art-box">
+        <img src="images/dali_clock.jpg" alt="Salvador Dalí Quantum Time Watch" class="hero-art-img" />
+        <div class="liquid-watermark">
+          <span class="watermark-brand">UNYKORN PROTOCOL</span>
+          <span>DALÍ QUANTUM TIME INVARIANT • EIP-712 #001</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Interruption Impact Record Calculator -->
-  <section class="section" id="calculator">
+  <!-- The Mechanics of Wasted Time (3 Liquid Glass Tiles) -->
+  <section class="section section-alt" id="wasted-time">
     <div class="section-container">
       <div class="section-header">
-        <h2 class="section-title">Interruption Impact Record Calculator</h2>
-        <p class="section-desc">An evidence-weighted reference calculation for workflow disruption ($I = H \times R \times S \times F \times E$).</p>
+        <div class="pill-tag gold-pill"><i class="fa-solid fa-layer-group"></i> Time Distortion Physics</div>
+        <h2>The Physics of Wasted Time</h2>
+        <p>Ungrounded interruptions cause non-linear cognitive friction. Here is how noise expands time spacetime geometry.</p>
       </div>
 
-      <div class="panel calc-grid">
-        <!-- Form Controls -->
+      <div class="wasted-time-grid">
+        <div class="glass-panel tile-card">
+          <div class="tile-icon text-gold"><i class="fa-solid fa-hourglass-start"></i></div>
+          <h3 class="tile-title">01. Spacetime Expansion</h3>
+          <p class="tile-desc">A 15-minute ungrounded interruption requires 75 minutes of cognitive recovery context switching. Total spacetime distortion: <strong>90 Minutes (1.5 Hours)</strong>.</p>
+        </div>
+
+        <div class="glass-panel tile-card">
+          <div class="tile-icon text-cyan"><i class="fa-solid fa-filter"></i></div>
+          <h3 class="tile-title">02. Noise Signal Isolation</h3>
+          <p class="tile-desc">Separates high-entropy opinion from evidence-backed engineering. Low-evidence claims carry a reduced 0.25 confidence multiplier under published BPS rules.</p>
+        </div>
+
+        <div class="glass-panel tile-card">
+          <div class="tile-icon text-purple"><i class="fa-solid fa-fire"></i></div>
+          <h3 class="tile-title">03. Permanent Finality Seal</h3>
+          <p class="tile-desc">Executes an on-chain $VTIME burn (50% burn / 50% treasury reserve) to issue a permanent, non-custodial experience receipt on Polygon PoS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hermetic Acoustic Sound BS Frequency Meter Section -->
+  <section class="section" id="dali-engine">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag cyan-pill"><i class="fa-solid fa-wave-square"></i> Acoustic Sound Analyzer</div>
+        <h2>Acoustic Sound Frequency & BS Meter</h2>
+        <p><em>"As above, so below; as within, so without."</em> Converts chaotic sound decibels into structured sacred crystal geometry.</p>
+      </div>
+
+      <div class="calc-grid glass-panel">
         <div class="calc-inputs">
-          <h3 style="font-size: 1.1rem; margin-bottom: 1.25rem;">Parameters</h3>
+          <h3><i class="fa-solid fa-sliders text-gold"></i> Sound Spectrum Analyzer</h3>
+          
+          <div class="form-group" style="margin-top: 1.25rem;">
+            <label>Noise Spectrum Frequency (Hz):</label>
+            <input type="range" id="soundFreqInput" min="100" max="20000" step="100" value="4320" style="width: 100%; accent-color: var(--accent-gold);" />
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; font-family: var(--font-mono);">
+              <span>100 Hz</span>
+              <span id="freqSliderVal" class="text-gold" style="font-weight: 700;">4,320 Hz</span>
+              <span>20,000 Hz</span>
+            </div>
+          </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Interruption Duration (Hours)</label>
+              <label>Harmonic Distortion (THD):</label>
+              <select id="thdSelect">
+                <option value="15">15% THD (Mild Noise)</option>
+                <option value="45" selected>45% THD (High Entropy)</option>
+                <option value="85">85% THD (Extreme BS)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Harmonic Lock:</label>
+              <select id="hermeticModeSelect">
+                <option value="432">432 Hz (Sacred)</option>
+                <option value="528" selected>528 Hz (Transformation)</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-gold btn-block" id="transmuteFreqBtn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Transmute Sound Entropy into $VTIME Burn
+          </button>
+        </div>
+
+        <div>
+          <img src="images/hermetic_meter.jpg" alt="Hermetic Sound Meter" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-glass); margin-bottom: 1rem;" />
+          <div style="background: rgba(0,0,0,0.8); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; text-align: center;">
+            <canvas id="audioCanvas" width="450" height="90" style="width: 100%; height: 90px; display: block;"></canvas>
+            <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.4rem; font-family: var(--font-mono);">
+              <i class="fa-solid fa-bolt text-gold"></i> Live Acoustic Frequency Waveform Oscillator
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wasted Time & Interruption Impact Calculator Section -->
+  <section class="section section-alt" id="calculator">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="pill-tag purple-pill"><i class="fa-solid fa-calculator"></i> Scoring Engine</div>
+        <h2>Wasted Time & Impact Calculator</h2>
+        <p>Formula: <code>Impact Score = Hours (H) × Rate (R) × Severity (S) × Recurrence (F) × Evidence Confidence (E)</code></p>
+      </div>
+
+      <div class="glass-panel calc-grid">
+        <div class="calc-inputs">
+          <h3><i class="fa-solid fa-sliders text-cyan"></i> BPS Parameter Inputs</h3>
+
+          <div class="form-row" style="margin-top: 1rem;">
+            <div class="form-group">
+              <label>Hours Disrupted (H):</label>
               <input type="number" id="calcHours" value="1.5" step="0.1" min="0.1" max="24" />
             </div>
             <div class="form-group">
-              <label>Reference Hourly Rate ($ USD)</label>
+              <label>Reference Hourly Rate ($ USD):</label>
               <input type="number" id="calcRate" value="150" min="10" step="10" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Recovery Multiplier</label>
+              <label>Recovery Multiplier (S):</label>
               <select id="calcSeverity">
                 <option value="10000">1.0× (Minor Distraction)</option>
                 <option value="12000">1.2× (Unsolicited Review)</option>
@@ -211,7 +255,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Recurrence Factor</label>
+              <label>Recurrence Factor (F):</label>
               <select id="calcContext">
                 <option value="10000">1.0× (Single Event)</option>
                 <option value="12000" selected>1.2× (Medium Recurrence)</option>
@@ -221,152 +265,67 @@
           </div>
 
           <div class="form-group">
-            <label>Evidence Confidence Level</label>
+            <label>Evidence Confidence Level (E):</label>
             <select id="calcEvidenceTier">
-              <option value="2500">Self-Reported (E = 0.25 • Self-attested claim)</option>
-              <option value="6000" selected>Workflow-Linked (E = 0.60 • GitHub/Jira adapter linked)</option>
+              <option value="2500">Self-Reported (E = 0.25 • 2,500 BPS)</option>
+              <option value="6000" selected>Workflow-Linked (E = 0.60 • GitHub/Jira adapter)</option>
               <option value="8500">Peer-Attested (E = 0.85 • Signed co-worker review)</option>
-              <option value="10000">Independently Verified (E = 1.00 • Full audit complete)</option>
+              <option value="10000">Independently Verified (E = 1.00 • Full audit)</option>
             </select>
           </div>
 
-          <button class="btn btn-primary btn-block" id="triggerEipSignBtn" style="margin-top: 1rem;">
-            Generate & Sign EIP-712 Record
+          <button class="btn btn-gold btn-block" id="triggerEipSignBtn" style="margin-top: 1rem;">
+            <i class="fa-solid fa-pen-nib"></i> Generate & Sign EIP-712 Record
           </button>
         </div>
 
-        <!-- Output Display & Safeguards -->
         <div class="calc-results-box">
-          <h3 style="font-size: 1.1rem; margin-bottom: 1.25rem;">Reference Output</h3>
-
           <div class="impact-display-box">
             <div class="impact-val-item">
-              <span>Reference Impact Value:</span>
-              <span id="impactScoreBps" class="val-highlight val-crimson">226.80 Points</span>
+              <span>Calculated Impact Score:</span>
+              <span id="impactScoreBps" class="val-highlight gold-gradient">226.80 Points</span>
             </div>
             <div class="impact-val-item">
-              <span>Reference Value (USD):</span>
-              <span id="impactCentsVal" class="val-highlight">$226.80 USD</span>
+              <span>Reference USD Value:</span>
+              <span id="impactCentsVal" class="val-highlight cyan-gradient">$226.80 USD</span>
             </div>
             <div class="impact-val-item">
               <span>Evidence Confidence:</span>
-              <span id="confidenceDisplay" class="text-silver">60.0% (Workflow-Linked)</span>
+              <span id="confidenceDisplay" class="text-muted">60.0% (Workflow-Linked)</span>
             </div>
           </div>
 
           <p class="text-dim" style="font-size: 0.8rem; margin-top: 1rem; line-height: 1.5;">
-            * Reference impact value represents an evidence-weighted score under a published ruleset, not a guaranteed financial payout and not an objective price on a human being.
+            * Reference impact score represents evidence-weighted points evaluated in Rust u64 integer BPS, NOT an objective price on a human being.
           </p>
-
-          <!-- Collapsible Technical Methodology Panel -->
-          <div class="tech-drawer">
-            <button class="tech-toggle-btn" id="techToggleBtn">
-              <span>[+] View Technical Methodology & Execution Engines</span>
-            </button>
-            <div class="tech-content" id="techContent">
-              <p><strong>Scoring Engine Arithmetic:</strong> Evaluated in Rust <code>time-impact-engine</code> using u64 integer basis points (`saturating_mul`) with zero floating-point drift.</p>
-              <p style="margin-top: 0.5rem;"><strong>Protocol Backend:</strong> Go HTTP/RPC server (`http://localhost:8099`) handles signature validation & GitHub/Jira event adapters.</p>
-              <p style="margin-top: 0.5rem;"><strong>Settlement Contract:</strong> <code>TimeImpactLedger.sol</code> on Polygon PoS (Chain 137) with 3-day challenge windows.</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Protocol & Proof Center Section -->
-  <section class="section section-alt" id="protocol">
+  <!-- Shared Image Showcase Gallery Section -->
+  <section class="section" id="gallery">
     <div class="section-container">
       <div class="section-header">
-        <h2 class="section-title">Protocol & Proof Center</h2>
-        <p class="section-desc">18 deployed Polygon PoS smart contracts (Chain ID 137) with verified source links and audit test status.</p>
+        <div class="pill-tag gold-pill"><i class="fa-solid fa-images"></i> Watermarked Assets</div>
+        <h2>Protocol Visual Asset Inspector</h2>
+        <p>Click any visual asset to inspect SHA-256 evidence seals, download watermarked assets, or attach to an impact record.</p>
       </div>
 
-      <div class="panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
-          <div class="mono-text text-silver" style="font-size: 0.85rem;">
-            Primary Ledger: <a href="https://polygonscan.com/address/0x8aced25DC8530FDaf0f86D53a0A1E02AAfA7Ac7A" target="_blank" style="color: var(--signal-crimson-hover); text-decoration: none;">0x8ace...Ac7A</a>
-          </div>
-          <div class="mono-text text-dim" style="font-size: 0.8rem;">
-            Network: Polygon PoS • EIP-712 Enabled
-          </div>
-        </div>
-
-        <div class="protocol-table-box">
-          <table class="protocol-table">
-            <thead>
-              <tr>
-                <th>Contract Name</th>
-                <th>Standard</th>
-                <th>Phase</th>
-                <th>Description</th>
-                <th>Audit / Test Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="mono-text" style="font-weight: 700;">TimeImpactLedger.sol</td>
-                <td class="mono-text text-silver">EIP-712 / ERC-20</td>
-                <td>Foundation</td>
-                <td>Core settlement contract storing Merkle roots & challenge windows.</td>
-                <td class="text-green mono-text">✅ 28/28 Pass</td>
-              </tr>
-              <tr>
-                <td class="mono-text" style="font-weight: 700;">AllCouchNoCage.sol</td>
-                <td class="mono-text text-silver">ERC-721 / 2981</td>
-                <td>Foundation</td>
-                <td>6,551 critic NFTs procedurally generated across 10 archetypes.</td>
-                <td class="text-green mono-text">✅ 22/22 Pass</td>
-              </tr>
-              <tr>
-                <td class="mono-text" style="font-weight: 700;">TimeToken.sol</td>
-                <td class="mono-text text-silver">ERC-20 / 2612</td>
-                <td>Foundation</td>
-                <td>$TIME attention token with permit approvals.</td>
-                <td class="text-green mono-text">✅ 18/18 Pass</td>
-              </tr>
-              <tr>
-                <td class="mono-text" style="font-weight: 700;">VaultTime.sol</td>
-                <td class="mono-text text-silver">ERC-20 / 2612</td>
-                <td>Vault</td>
-                <td>$VTIME 100M fixed supply deflationary vault currency.</td>
-                <td class="text-green mono-text">✅ 24/24 Pass</td>
-              </tr>
-              <tr>
-                <td class="mono-text" style="font-weight: 700;">OneDollarNoiseCredit.sol</td>
-                <td class="mono-text text-silver">ERC-20</td>
-                <td>Micro-Dollar</td>
-                <td>$ODNC $1.00 supply invariant micro-currency.</td>
-                <td class="text-green mono-text">✅ 27/27 Pass</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Culture / Visual Gallery Mode Drawer (Watermarked Protocol Assets) -->
-  <section class="section culture-drawer" id="cultureDrawer">
-    <div class="section-container">
-      <div class="section-header">
-        <h2 class="section-title">Watermarked Protocol Asset Inspector</h2>
-        <p class="section-desc">Click any protocol asset to inspect SHA-256 evidence seals, download watermarked assets, or attach to an impact record.</p>
-      </div>
-
-      <div class="panel">
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem;" id="watermarkedGalleryGrid">
-          <!-- 15 Watermarked Asset Cards injected dynamically via JS -->
-        </div>
+      <div class="shared-images-grid" id="watermarkedGalleryGrid">
+        <!-- 15 Shared Watermarked Assets injected dynamically via JS -->
       </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-mark">ALL COUCH NO CAGE • Anti-Noise Protocol</div>
-    <p>
-      Polygon PoS (Chain ID 137) • EIP-712 Verifiable Claims • Published Scoring Methodology<br />
+    <div class="footer-brand">
+      <img src="images/official_logo.png" alt="Logo" style="height: 32px;" />
+      <span>ALL COUCH NO CAGE • UnyKorn LLC</span>
+    </div>
+    <p class="footer-copy">
+      Polygon PoS (Chain ID 137) • Salvador Dalí Time Warp Engine • EIP-712 Verifiable Claims<br />
       Future Tech Holdings (FTH) • UnyKorn Global Finance • 5655 Peachtree Pkwy, Peachtree, GA 30099
     </p>
   </footer>
