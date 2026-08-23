@@ -10,7 +10,7 @@
 
 To provide an institutional-grade, realistic appraisal of the 258 repositories within the ecosystem, three standard software & asset valuation models were synthesized:
 
-1. **Cost-to-Replicate (Replacement Cost Method)**: Evaluates the total engineering hours, architectural design, security auditing, and test coverage required to recreate the codebases from scratch at market rates ($175/hr average senior Web3/Rust/Go rate).
+1. **Cost-to-Replicate (Replacement Cost Method)**: Evaluates the total engineering hours, architectural design, security auditing, and test coverage required to recreate the codebases from scratch at market rates ($200/hr average senior Web3/Rust/Go rate).
 2. **Discounted Cash Flow (DCF) of ARR (Monetization Potential)**: Calculates the net present value of recurring SaaS subscriptions, DEX fees, and AUM management fees.
 3. **Underlying Asset Anchor & Collateral**: Direct linkage to verified physical assets, bond issuances ($5.0B Series B Note), $246M TVL in UnyKorn L1, and real-world asset ledgers ($4.82B UnyKorn AUC).
 
@@ -26,8 +26,8 @@ To provide an institutional-grade, realistic appraisal of the 258 repositories w
 | **`BankChain`** | Go ABCI CometBFT L1 | `$2,100,000` | `$450,000/yr` | Sovereign Bank DevNet | **$3,000,000** |
 | **`FTHFinancial-`** | FTH-OS Solvency Kernel | `$1,600,000` | `$300,000/yr` | Solvency Gate Reserve Proofs | **$2,800,000** |
 | **`digitalgiant`** | Connection Economy | `$1,500,000` | `$1,200,000/yr` | 9.5M Displaced Pros | **$2,500,000** |
-| **`UNY-144a-bond`** | Polygon Bond Token | `$1,200,000` | `$150,000/issue` | **$5.0B Polygon Note** | **$2,500,000** |
-| **`fthboss`** | 1kg Gold System (FTH-G) | `$1,100,000` | `$1,200,000/yr` | **1kg Gold ($25M AUM)** | **$2,500,000** |
+| **`UNY-144a-bond`** | Polygon Bond Token | `$1,200,000` | `$150,000/issue` | **$5.0B Polygon Note (`0xA715...`)**| **$2,500,000** |
+| **`fthboss`** | 1kg Gold System (FTH-G) | `$1,100,000` | `$1,200,000/yr` | **1kg Gold ($25M AUM Model)** | **$2,500,000** |
 | **`bradleykizer`** | TEUCRIUM Commodity ETF | `$1,300,000` | `0.75% AUM Fee` | Physical Vault Assay Receipts | **$2,200,000** |
 | **`AIF`** | Reg D 506(c) Athlete Fund | `$1,000,000` | `2% AUM / 20% Perf` | Reg D/S Tokenized Rails | **$2,000,000** |
 | **`unykorn`** | Gold AMM DEX & Factory | `$1,100,000` | `0.25% Trading Fee` | 1 FTHG = 1 oz Troy Gold | **$2,000,000** |
