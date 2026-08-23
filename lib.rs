@@ -4,6 +4,7 @@
 
 pub mod infra_reserve;
 pub mod biosignal_zk;
+pub mod biophysical_metrics;
 
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
