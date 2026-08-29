@@ -39,7 +39,7 @@
 
       <div class="nav-actions">
         <button class="btn btn-gold btn-sm" id="globalConnectWalletBtn">
-          <i class="fa-solid fa-wallet"></i> Connect / Enter
+          <i class="fa-solid fa-wallet"></i> Connect Wallet
         </button>
       </div>
     </div>
@@ -49,10 +49,10 @@
     <div class="page-header">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <div class="truth-badge badge-live" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-coins"></i> Economy Engine — LIVE</div>
+          <div class="truth-badge badge-local" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-coins"></i> REWARD LEDGER — LOCAL</div>
           <h1 class="page-title">Earn & Unlock <span class="gold-gradient">Ecosystem Value</span></h1>
           <p class="page-desc">
-            Complete verified focus blocks to accumulate off-chain Focus Units, earn Impact Points for sustainable actions, and use closed-loop VTIME credits to unlock advanced guides, team spaces, and milestone relics.
+            Complete verified focus blocks to accumulate Focus Points, earn Impact Points for sustainable actions, and use closed-loop VTIME credits to unlock advanced guides and milestone relics.
           </p>
         </div>
         <div>
@@ -61,27 +61,27 @@
       </div>
     </div>
 
-    <!-- Stats Overview Grid -->
+    <!-- Stats Overview Grid (Strict Zero Default) -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-label">Today's Points</div>
-        <div class="stat-value text-gold" id="rewardsTodayPoints">12</div>
-        <div style="font-size: 0.72rem; color: var(--accent-lime); margin-top: 0.25rem;"><i class="fa-solid fa-arrow-trend-up"></i> Active Today</div>
+        <div class="stat-label">Today's Verified Points</div>
+        <div class="stat-value text-gold" id="rewardsTodayPoints">0</div>
+        <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.25rem;">Earned today</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Total Points (Focus + Impact)</div>
-        <div class="stat-value" id="rewardsTotalPoints">56</div>
-        <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.25rem;">Combined verified actions</div>
+        <div class="stat-label">Total Verified Points</div>
+        <div class="stat-value" id="rewardsTotalPoints">0</div>
+        <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.25rem;">Focus + Impact + Contribution</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Internal VTIME Balance</div>
-        <div class="stat-value text-cyan" id="rewardsVTimeBalance">4.60 VTIME</div>
+        <div class="stat-label">Eligible VTIME Credit</div>
+        <div class="stat-value text-cyan" id="rewardsVTimeBalance">0.00 VTIME</div>
         <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.25rem;">Available for utility unlocks</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Daily Focus Streak</div>
-        <div class="stat-value text-gold" id="rewardsStreakDays">3 Days</div>
-        <div style="font-size: 0.72rem; color: var(--accent-gold); margin-top: 0.25rem;"><i class="fa-solid fa-fire"></i> 1.2× Multiplier Active</div>
+        <div class="stat-label">Focus Streak</div>
+        <div class="stat-value text-gold" id="rewardsStreakDays">Not started</div>
+        <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 0.25rem;">Daily consistency tracker</div>
       </div>
     </div>
 
@@ -99,7 +99,7 @@
         <div class="utility-card">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span class="truth-badge badge-live">GUIDE</span>
+              <span class="truth-badge badge-local">LOCAL</span>
               <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); font-weight: 800;">1.0 VTIME</span>
             </div>
             <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem;">Deep Cognitive Architecture</h3>
@@ -115,7 +115,7 @@
         <div class="utility-card">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span class="truth-badge badge-live">AUDIO</span>
+              <span class="truth-badge badge-pending">PENDING</span>
               <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); font-weight: 800;">2.0 VTIME</span>
             </div>
             <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem;">528 Hz Binaural Ambient Pack</h3>
@@ -123,15 +123,15 @@
               Isochronic soundscapes and harmonic frequencies designed to induce alpha brainwave flow during sprints.
             </p>
           </div>
-          <button class="btn btn-cyan btn-sm unlock-utility-btn" data-utility="audio_528hz" data-cost="2.0">
-            <i class="fa-solid fa-key"></i> Unlock Audio Pack
+          <button class="btn btn-glass btn-sm unlock-utility-btn" data-utility="audio_528hz" data-cost="2.0" disabled>
+            <i class="fa-solid fa-lock"></i> Pending License
           </button>
         </div>
 
         <div class="utility-card">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span class="truth-badge badge-testnet">TEAM ROOM</span>
+              <span class="truth-badge badge-pending">PENDING</span>
               <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); font-weight: 800;">5.0 VTIME</span>
             </div>
             <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem;">Team Accountability Space</h3>
@@ -139,56 +139,36 @@
               Private multi-participant sprint room with synchronous countdown timers and aggregate focus receipts.
             </p>
           </div>
-          <button class="btn btn-cyan btn-sm unlock-utility-btn" data-utility="team_room_pass" data-cost="5.0">
-            <i class="fa-solid fa-key"></i> Unlock Room Pass
+          <button class="btn btn-glass btn-sm unlock-utility-btn" data-utility="team_room" data-cost="5.0" disabled>
+            <i class="fa-solid fa-lock"></i> Pending Multi-User
           </button>
         </div>
 
         <div class="utility-card">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span class="truth-badge badge-demo">NFT FORGE</span>
-              <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); font-weight: 800;">10.0 VTIME</span>
+              <span class="truth-badge badge-demo">DEMO</span>
+              <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-gold); font-weight: 800;">10.0 VTIME</span>
             </div>
-            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem;">Milestone Relic Forging Permit</h3>
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem;">Sovereign Relic Forge</h3>
             <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
-              Permit to mint a custom generative Surreal Timepiece badge commemorating a major personal achievement.
+              Transform 50 hours of verified focus milestones into an immutable milestone receipt with high-res Salvador Dali art.
             </p>
           </div>
-          <button class="btn btn-cyan btn-sm unlock-utility-btn" data-utility="relic_forge_permit" data-cost="10.0">
-            <i class="fa-solid fa-key"></i> Unlock Forge Permit
-          </button>
+          <a href="relics.html" class="btn btn-gold btn-sm">
+            <i class="fa-solid fa-palette"></i> View Relics
+          </a>
         </div>
       </div>
     </div>
 
-    <!-- Voluntary Commitment & Stakes Module -->
-    <div class="glass-panel" style="margin-bottom: 3.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+    <!-- Verified Session Ledger Table (Zero-State Default) -->
+    <div class="glass-panel" style="margin-bottom: 2.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-handshake"></i> Voluntary Commitment Staking</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;">
-            Optionally stake VTIME on your next session. Completing the target preserves your stake and earns extra bonus multiplier points.
-          </p>
+          <h3 style="font-size: 1.25rem; font-weight: 800;"><i class="fa-solid fa-receipt text-gold"></i> Session Ledger & Verified Receipts</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Cryptographically sealed focus session blocks stored in browser memory.</p>
         </div>
-        <span class="truth-badge badge-local">VOLUNTARY DISCIPLINE</span>
-      </div>
-
-      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 200px;">
-          <input type="number" id="voluntaryStakeAmountInput" class="intention-input" style="margin-bottom: 0;" placeholder="Amount to Stake (VTIME, e.g. 5)" min="1" max="50" value="5" />
-        </div>
-        <button class="btn btn-gold" id="createVoluntaryStakeBtn">
-          <i class="fa-solid fa-lock"></i> Commit Session Stake
-        </button>
-      </div>
-    </div>
-
-    <!-- Completed Sessions History Table -->
-    <div class="glass-panel">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <h3 style="font-size: 1.15rem; font-weight: 800;"><i class="fa-solid fa-list-check text-cyan"></i> Recent Session Ledger</h3>
-        <span class="truth-badge badge-local">LOCAL STORAGE v3</span>
       </div>
 
       <div style="overflow-x: auto;">
@@ -196,66 +176,51 @@
           <thead>
             <tr>
               <th>Receipt ID</th>
-              <th>Date</th>
               <th>Duration</th>
-              <th>VTIME Value</th>
-              <th>Status</th>
+              <th>Intention</th>
+              <th>Points</th>
+              <th>VTIME Base</th>
+              <th>Proof Level</th>
+              <th style="text-align: right;">Action</th>
             </tr>
           </thead>
-          <tbody id="rewardsSessionHistoryBody">
-            <!-- Dynamically populated from localStorage -->
+          <tbody id="sessionLedgerBody">
+            <!-- Rendered dynamically -->
           </tbody>
         </table>
       </div>
+
+      <div id="sessionLedgerEmptyNotice" style="text-align: center; padding: 3rem 1.5rem; color: var(--text-dim); font-family: var(--font-mono); font-size: 0.88rem;">
+        SESSION LEDGER: No verified sessions yet.<br />
+        <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-top: 0.4rem;">
+          Start a Focus Block to create your first local receipt.
+        </span>
+      </div>
     </div>
+
+    <!-- Closed-Loop Utility Clarification -->
+    <div class="glass-panel" style="border-left: 3px solid var(--accent-gold);">
+      <div style="display: flex; gap: 1rem; align-items: flex-start;">
+        <div style="color: var(--accent-gold); font-size: 1.5rem; margin-top: 0.15rem;"><i class="fa-solid fa-lock"></i></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+          <strong style="color: var(--text-main); font-family: var(--font-mono);">VTIME Utility Credit Definition:</strong> 
+          Earned only under published rules from eligible, evidence-backed activity. <strong>Not cash. Not an offset. Not transferable unless explicitly enabled under a future compliant program.</strong>
+        </div>
+      </div>
+    </div>
+
   </main>
 
-  <!-- System Diagnostics Modal -->
-  <div class="modal-overlay" id="diagModal">
-    <div class="lightbox-card" style="max-width: 600px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem; margin-bottom: 1rem;">
-        <h3 style="font-size: 1.1rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-microchip"></i> System Diagnostics</h3>
-        <button id="closeDiagBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
-      </div>
-
-      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
-          <span>Runtime Version:</span>
-          <span class="truth-badge badge-live">v3.2.0-multi-page</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Storage Schema:</span>
-          <span class="text-lime">acnc_session_v3</span>
-        </div>
-      </div>
-
-      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList"></div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-glass btn-sm" id="clearStateBtn">
-          <i class="fa-solid fa-trash-can text-flame"></i> Reset Local State
-        </button>
-        <span style="font-size: 0.75rem; color: var(--text-dim);">Safe Client-Only Reset</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Shared Footer -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-brand">
       <img src="images/official_logo.png" alt="Logo" style="height: 28px;" />
       <span>ALL COUCH NO CAGE</span>
     </div>
     <p class="footer-copy">
-      Self-Mastery, Focus & Biophysical Time Architecture • Powered by Deterministic Rust Math<br />
-      Non-medical utility software • Private by default • Open specification
+      Measure what you use. Reduce what you can. Verify what you offset.<br />
+      VTIME utility credit is earned only under published rules from eligible, evidence-backed activity.
     </p>
-    <div style="margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.8rem; font-family: var(--font-mono);">
-      <a href="docs/PRODUCT_STATUS.md" style="color: var(--text-muted); text-decoration: none;">Product Status</a>
-      <a href="docs/PRIVACY_AND_DATA.md" style="color: var(--text-muted); text-decoration: none;">Privacy & Data</a>
-      <a href="docs/TESTNET_VERIFICATION.md" style="color: var(--text-muted); text-decoration: none;">Testnet Verification</a>
-      <a href="#" id="diagToggleBtn" style="color: var(--accent-gold); text-decoration: none;"><i class="fa-solid fa-terminal"></i> Diagnostics</a>
-    </div>
   </footer>
 
   <script src="self_healing_client.js"></script>

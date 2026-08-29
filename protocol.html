@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Protocol Specifications & Architecture — ALL COUCH NO CAGE</title>
-  <meta name="description" content="Technical documentation for the deterministic Rust math engines, EIP-712 reward claims, and reference signal models." />
+  <title>Protocol & Methodology — ALL COUCH NO CAGE</title>
+  <meta name="description" content="Published emissions factors, data hierarchy, integer math, and reward issuance policies for All Couch No Cage." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,7 @@
         <img src="images/official_logo.png" alt="All Couch No Cage Logo" class="brand-logo-img" />
         <div class="brand-text">
           <span>ALL COUCH NO CAGE</span>
-          <span class="brand-sub">Protocol Architecture</span>
+          <span class="brand-sub">Protocol Specifications</span>
         </div>
       </a>
 
@@ -39,7 +39,7 @@
 
       <div class="nav-actions">
         <button class="btn btn-gold btn-sm" id="globalConnectWalletBtn">
-          <i class="fa-solid fa-wallet"></i> Connect / Enter
+          <i class="fa-solid fa-wallet"></i> Connect Wallet
         </button>
       </div>
     </div>
@@ -47,248 +47,307 @@
 
   <main class="page-container">
     <div class="page-header">
-      <div class="truth-badge badge-testnet" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-book-open"></i> Technical Specification — v3.2</div>
-      <h1 class="page-title">Protocol & <span class="cyan-gradient">Scientific Architecture</span></h1>
-      <p class="page-desc">
-        Complete mathematical specifications, Solidity contract interfaces, deterministic Rust implementations, and human-lifecycle impact standards.
-      </p>
-    </div>
-
-    <!-- Tabbed Navigation Bar -->
-    <div class="tabs-nav">
-      <button type="button" class="tab-btn active" data-tab="tab-overview">1. Protocol Overview</button>
-      <button type="button" class="tab-btn" data-tab="tab-rewards">2. Reward Rules</button>
-      <button type="button" class="tab-btn" data-tab="tab-privacy">3. Privacy & Proofs</button>
-      <button type="button" class="tab-btn" data-tab="tab-contracts">4. Smart Contracts</button>
-      <button type="button" class="tab-btn" data-tab="tab-science">5. Carbon & Science</button>
-      <button type="button" class="tab-btn" data-tab="tab-dev">6. Developer Docs</button>
-    </div>
-
-    <!-- TAB 1: Protocol Overview -->
-    <div class="tab-pane active" id="tab-overview">
-      <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="gold-gradient">The 4-Tier Ecosystem Pipeline</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
-          ALL COUCH NO CAGE connects private human focus to deterministic Rust mathematics, internal closed-loop accounting credits, and optional Polygon Amoy smart contract anchors.
-        </p>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
-          <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.35rem;">TIER 1 • FOCUS & IMPACT</div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Client-Side Actions</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Monotonic countdown timer and lifecycle impact calculators operating 100% locally in your browser.</p>
-          </div>
-
-          <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-flame); font-weight: 800; margin-bottom: 0.35rem;">TIER 2 • RUST ENGINE</div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Deterministic Math</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Integer basis-point calculations with zero floating-point rounding errors.</p>
-          </div>
-
-          <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-gold); font-weight: 800; margin-bottom: 0.35rem;">TIER 3 • REWARDS</div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Internal Economy</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Distinct Focus Units, Impact Points, and closed-loop VTIME utility credits.</p>
-          </div>
-
-          <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-purple); font-weight: 800; margin-bottom: 0.35rem;">TIER 4 • ON-CHAIN VAULT</div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Smart Contracts</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">EIP-712 claims and SHA-256 evidence anchoring on Polygon Amoy.</p>
-          </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 1rem;">
+        <div>
+          <div class="truth-badge badge-live" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-book"></i> Version 2026.1 Specifications</div>
+          <h1 class="page-title">Protocol & <span class="cyan-gradient">Methodology</span></h1>
+          <p class="page-desc">
+            Complete transparent disclosures of data confidence levels, published emission factors, mathematical reward functions, and JSON schemas.
+          </p>
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: Reward Rules & Credit Separation -->
-    <div class="tab-pane" id="tab-rewards">
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="tab-hierarchy">Data Trust Hierarchy</button>
+      <button class="tab-btn" data-tab="tab-factors">Emission Factor Sources</button>
+      <button class="tab-btn" data-tab="tab-ethical">Ethical Ledger Boundary</button>
+      <button class="tab-btn" data-tab="tab-rewards">Reward Issuance Policy</button>
+      <button class="tab-btn" data-tab="tab-schemas">JSON Data Schemas</button>
+    </div>
+
+    <!-- Tab 1: Data Trust Hierarchy -->
+    <div id="tab-hierarchy" class="tab-pane active">
       <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="gold-gradient">The 4-Tier Non-Interchangeable Credit Taxonomy</h2>
-        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.25rem;">
-          To ensure ethical incentives, we separate four distinct concepts that must never be conflated:
+        <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;"><i class="fa-solid fa-layer-group text-gold"></i> Real Measurement Hierarchy</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          Every recorded metric in the platform must display both what it measures and how trustworthy it is. Estimates are labeled and never treated as facts.
         </p>
 
-        <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+        <div style="overflow-x: auto;">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Unit</th>
-                <th>Represents</th>
-                <th>How Earned</th>
-                <th>Location</th>
+                <th>Data Status</th>
+                <th>Meaning</th>
+                <th>Example Source</th>
+                <th>Evidence Multiplier</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="color: var(--accent-gold); font-weight: 700;">Focus Units</td>
-                <td>Completed intentional work or learning</td>
-                <td>Session completion and self-attestation</td>
-                <td>Local / Browser Account</td>
+                <td><span class="status-badge status-user-entered">USER_ENTERED</span></td>
+                <td>Manually supplied by the user</td>
+                <td>"320 kWh entered from July utility statement"</td>
+                <td><strong>0.2×</strong> (Provisional points)</td>
               </tr>
               <tr>
-                <td style="color: var(--accent-lime); font-weight: 700;">Impact Points</td>
-                <td>Verified sustainable or community actions</td>
-                <td>Metered reduction, certified repair, transit check-in</td>
-                <td>Off-chain ledger + signed receipt</td>
+                <td><span class="status-badge status-receipt-backed">RECEIPT_BACKED</span></td>
+                <td>Supported by a receipt or invoice</td>
+                <td>"Transit purchase receipt or electric bill PDF attached"</td>
+                <td><strong>0.8×</strong> (High confidence)</td>
               </tr>
               <tr>
-                <td style="color: var(--accent-cyan); font-weight: 700;">VTIME Credits</td>
-                <td>Closed-loop ecosystem utility credit</td>
-                <td>Conversion of eligible points under caps</td>
-                <td>Smart contract vault when claimed</td>
+                <td><span class="status-badge status-metered">METERED</span></td>
+                <td>From a connected device, utility, or provider</td>
+                <td>"Electricity usage imported from utility integration"</td>
+                <td><strong>1.0×</strong> (Highest confidence)</td>
               </tr>
               <tr>
-                <td style="color: var(--accent-purple); font-weight: 700;">Offset Certificate</td>
-                <td>Retired 3rd-party verified carbon credit</td>
-                <td>Retirement on Puro.earth / Gold Standard / Verra</td>
-                <td>Registry serial + immutable receipt</td>
+                <td><span class="status-badge status-attested">ATTESTED</span></td>
+                <td>Validated by an approved third party</td>
+                <td>"Volunteer hours confirmed by partner organization"</td>
+                <td><strong>1.0×</strong> (Highest confidence)</td>
+              </tr>
+              <tr>
+                <td><span class="status-badge status-registry-verified">REGISTRY_VERIFIED</span></td>
+                <td>Linked to an authoritative registry record</td>
+                <td>"Carbon credit retirement certificate verified"</td>
+                <td><strong>1.0×</strong> (Certificate validated)</td>
+              </tr>
+              <tr>
+                <td><span class="status-badge status-estimated">ESTIMATED</span></td>
+                <td>Derived from a disclosed factor/model</td>
+                <td>"Travel estimate using route miles and vehicle mode"</td>
+                <td><strong>0.3×</strong> (Provisional estimate)</td>
+              </tr>
+              <tr>
+                <td><span class="status-badge status-unverified">UNVERIFIED</span></td>
+                <td>Recorded for personal tracking; cannot earn rewards</td>
+                <td>"Self-reported repair action without receipt"</td>
+                <td><strong>0.0×</strong> (No reward)</td>
               </tr>
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
 
-        <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;" class="gold-gradient">Reward Formula Specification</h3>
-        <div style="background: rgba(0,0,0,0.7); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-glass); font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 1rem;">
-          Eligible Reward = min(Base_Hours × Rate × Severity × Evidence, Event_Cap, Daily_Cap)
+    <!-- Tab 2: Emission Factor Sources -->
+    <div id="tab-factors" class="tab-pane">
+      <div class="glass-panel" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;"><i class="fa-solid fa-leaf text-lime"></i> Disclosed Emissions Factor Standards (v2026.1)</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          Calculations use regional and global standards published by authoritative agencies (EPA, IPCC, ICAO, DEFRA).
+        </p>
+
+        <div style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>Factor Value</th>
+                <th>Unit</th>
+                <th>Standard & Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Home Electricity (US Average)</td>
+                <td><strong>0.385</strong></td>
+                <td>kg CO2e / kWh</td>
+                <td>EPA eGRID 2024 / GHG Hub</td>
+              </tr>
+              <tr>
+                <td>Residential Natural Gas</td>
+                <td><strong>2.020</strong></td>
+                <td>kg CO2e / therm</td>
+                <td>EPA GHG Emission Factors Hub</td>
+              </tr>
+              <tr>
+                <td>Municipal Treated Water</td>
+                <td><strong>0.003</strong></td>
+                <td>kg CO2e / gallon</td>
+                <td>Water Research Foundation</td>
+              </tr>
+              <tr>
+                <td>Gasoline Passenger Vehicle</td>
+                <td><strong>0.404</strong></td>
+                <td>kg CO2e / mile</td>
+                <td>EPA GHG Emission Factors</td>
+              </tr>
+              <tr>
+                <td>Diesel Passenger Vehicle</td>
+                <td><strong>0.450</strong></td>
+                <td>kg CO2e / mile</td>
+                <td>EPA GHG Emission Factors</td>
+              </tr>
+              <tr>
+                <td>Electric Vehicle (Grid Average)</td>
+                <td><strong>0.110</strong></td>
+                <td>kg CO2e / mile</td>
+                <td>DOE Alternative Fuels Data Center</td>
+              </tr>
+              <tr>
+                <td>Transit Bus / Rail</td>
+                <td><strong>0.140</strong></td>
+                <td>kg CO2e / passenger-mile</td>
+                <td>DOT Federal Transit Administration</td>
+              </tr>
+              <tr>
+                <td>Domestic Flight Economy</td>
+                <td><strong>0.210</strong></td>
+                <td>kg CO2e / passenger-mile</td>
+                <td>ICAO Carbon Emissions Calculator</td>
+              </tr>
+              <tr>
+                <td>Food Waste to Landfill</td>
+                <td><strong>2.500</strong></td>
+                <td>kg CO2e / kg</td>
+                <td>EPA Waste Reduction Model (WARM)</td>
+              </tr>
+              <tr>
+                <td>Cloud GPU Compute</td>
+                <td><strong>0.180</strong></td>
+                <td>kg CO2e / hour</td>
+                <td>Major Cloud Provider Disclosures</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <ul style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; padding-left: 1.25rem;">
-          <li><strong>Base_Hours</strong>: Clamped strictly between <code>0.10h</code> (6 minutes) and <code>24.00h</code> (1,440 minutes).</li>
-          <li><strong>Rate</strong>: Baseline rate coefficient set to <code>15.00 VTIME / hour</code>.</li>
-          <li><strong>Verification Multipliers</strong>: Self-Reported (1.00×), Device/Receipt Supported (1.25×), 3rd-Party Verified (1.50×), On-Chain Attested (1.75×).</li>
-          <li><strong>Event Cap</strong>: Hard ceiling of <code>100.00 VTIME</code> per individual action.</li>
-          <li><strong>Daily Cap</strong>: Rolling 24-hour ceiling of <code>300.00 VTIME</code> per participant.</li>
+      </div>
+    </div>
+
+    <!-- Tab 3: Ethical Ledger Boundary -->
+    <div id="tab-ethical" class="tab-pane">
+      <div class="glass-panel" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;"><i class="fa-solid fa-scale-balanced text-gold"></i> Non-Biological Positive Activity Ledger</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          Human existence is treated as a sovereign source of positive value—not as a biological liability.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="background: rgba(132, 204, 22, 0.08); border: 1px solid rgba(132, 204, 22, 0.3); border-radius: 10px; padding: 1.25rem;">
+            <div style="font-weight: 800; color: var(--accent-lime); margin-bottom: 0.5rem;"><i class="fa-solid fa-circle-check"></i> What We Measure & Reward</div>
+            <ul style="padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.8;">
+              <li>Focused deep work and skill acquisition</li>
+              <li>Caregiving and mentorship</li>
+              <li>Community and volunteer service</li>
+              <li>Physical product repair and reuse</li>
+              <li>Environmental stewardship</li>
+              <li>Metered energy and transit reductions</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 1.25rem;">
+            <div style="font-weight: 800; color: #f87171; margin-bottom: 0.5rem;"><i class="fa-solid fa-ban"></i> What We Never Charge or Penalize</div>
+            <ul style="padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.8;">
+              <li>Oxygen consumption or respiratory CO2</li>
+              <li>Biological metabolism or basal caloric needs</li>
+              <li>Bodily existence and sleep</li>
+              <li>Essential water and nourishment needs</li>
+              <li>Disability or medical device requirements</li>
+              <li>Personal health conditions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 4: Reward Issuance Policy -->
+    <div id="tab-rewards" class="tab-pane">
+      <div class="glass-panel" style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;"><i class="fa-solid fa-coins text-gold"></i> Versioned Reward Policy & Caps</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          Rules governing point accumulation and deterministic VTIME credit conversion.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 1rem 1.25rem; font-family: var(--font-mono); font-size: 0.95rem; color: var(--accent-gold); margin-bottom: 1.5rem; text-align: center;">
+          VTIME issued = min( base_reward × evidence_multiplier × policy_multiplier, category_cap, daily_cap )
+        </div>
+
+        <ul style="padding-left: 1.25rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
+          <li><strong>Published Reward Policy:</strong> Caps issuance per activity, per category (50 VTIME/day), and per account (200 VTIME/day).</li>
+          <li><strong>Provisional Valuation:</strong> Self-reported entries receive a lower multiplier (0.2×) until receipt or meter confirmation is provided.</li>
+          <li><strong>Anti-Duplication:</strong> Cryptographic SHA-256 hashes prevent duplicate receipt, session, or retirement claims.</li>
+          <li><strong>Auditable Correction:</strong> If an entry is found invalid, points are revoked from the local and on-chain verification record.</li>
+          <li><strong>No Offset Equivalence:</strong> One VTIME never equals one tonne of carbon. VTIME is an internal ecosystem utility credit.</li>
         </ul>
       </div>
     </div>
 
-    <!-- TAB 3: Privacy & Proofs -->
-    <div class="tab-pane" id="tab-privacy">
+    <!-- Tab 5: JSON Data Schemas -->
+    <div id="tab-schemas" class="tab-pane">
       <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="cyan-gradient">Privacy & Non-Biological Accounting Policy</h2>
-        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.25rem;">
-          The focus timer and impact ledger operate with zero server telemetry. No personal data, browsing history, or biometric data is ever collected or sold.
+        <h2 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;"><i class="fa-solid fa-code text-cyan"></i> Canonical JSON Data Architectures</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          Standard record format forcing evidence metadata and calculation versions into every entry.
         </p>
-        <div style="background: rgba(234, 179, 8, 0.08); border-left: 3px solid var(--accent-gold); padding: 1rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-          <strong class="text-gold">Non-Biological Policy:</strong> Human essentials (oxygen consumption, exhaled CO2, body weight, disability, medical status, and baseline metabolism) are normal necessities of life and are <strong>strictly excluded</strong> from carbon footprints, offset obligations, and reward calculations.
-        </div>
-        <div style="background: rgba(6, 182, 212, 0.08); border-left: 3px solid var(--accent-cyan); padding: 1rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
-          <strong class="text-cyan">Non-Medical Notice:</strong> ALL COUCH NO CAGE is self-mastery, focus accountability, and lifestyle impact software. It does not diagnose, treat, or monitor clinical health conditions.
-        </div>
-      </div>
-    </div>
 
-    <!-- TAB 4: Smart Contracts -->
-    <div class="tab-pane" id="tab-contracts">
-      <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="gold-gradient">EIP-712 Verifiable Claim Struct</h2>
-        <pre style="background: rgba(0,0,0,0.8); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-glass); color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem; overflow-x: auto; line-height: 1.5;">
-struct RewardClaim {
-    address recipient;
-    uint256 amount;
-    string receiptId;
-    uint256 nonce;
-    uint256 deadline;
-    bytes signature;
-}
-
-function claimReward(RewardClaim calldata claim) external {
-    require(block.timestamp &lt;= claim.deadline, "Expired claim");
-    require(!usedReceipt[claim.receiptId], "Receipt already claimed");
-    bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
-        REWARD_CLAIM_TYPEHASH,
-        claim.recipient,
-        claim.amount,
-        keccak256(bytes(claim.receiptId)),
-        claim.nonce,
-        claim.deadline
-    )));
-    address signer = ECDSA.recover(digest, claim.signature);
-    require(signer == trustedAttester, "Invalid signature");
-    usedReceipt[claim.receiptId] = true;
-    _mint(claim.recipient, claim.amount);
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-weight: 700; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-gold); margin-bottom: 0.35rem;">
+            1. Activity Record Schema (Home Electricity Example)
+          </div>
+          <pre style="background: rgba(0,0,0,0.8); border: 1px solid var(--border-glass); padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-cyan); overflow-x: auto;">
+{
+  "record_id": "rec_8ace92e4",
+  "category": "home_energy",
+  "sub_category": "home_electricity_kwh",
+  "quantity": 320,
+  "unit": "kWh",
+  "period_start": "2026-08-01",
+  "period_end": "2026-08-31",
+  "data_status": "RECEIPT_BACKED",
+  "evidence_hash": "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+  "factor_source": "EPA eGRID 2024",
+  "factor_version": "2026.1",
+  "co2e_kg_estimate": 123.20,
+  "calculation_version": "impact-v1",
+  "reward_eligibility": "ELIGIBLE",
+  "points_earned": 0,
+  "timestamp": "2026-08-29T01:00:00.000Z"
 }</pre>
-      </div>
-    </div>
+        </div>
 
-    <!-- TAB 5: Carbon & Science -->
-    <div class="tab-pane" id="tab-science">
-      <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="cyan-gradient">Carbon Accounting & Emission Factors</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.25rem;">
-          Calculations on <code>/impact</code> follow the transparent equation: <code>Estimated CO2e = Activity Quantity × Published Emission Factor</code>.
-        </p>
-        <ul style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; padding-left: 1.25rem;">
-          <li><strong>Home Electricity</strong>: <code>0.385 kg CO2e / kWh</code> (EPA eGRID 2024 US Average).</li>
-          <li><strong>Passenger Vehicle</strong>: <code>0.404 kg CO2e / mile</code> (EPA GHG Emission Factors for Typical Passenger Cars).</li>
-          <li><strong>Public Transit (Bus/Rail)</strong>: <code>0.140 kg CO2e / passenger-mile</code> (DOT FTA National Transit Database).</li>
-          <li><strong>Cloud GPU Workloads</strong>: <code>0.180 kg CO2e / GPU-hour</code> (Cloud Carbon Footprint standard grid factor).</li>
-          <li><strong>Avoided Food Waste</strong>: <code>2.500 kg CO2e saved / kg</code> (EPA WARM v15 Food Waste reduction model).</li>
-          <li><strong>Material Repair & Reuse</strong>: <code>12.000 kg CO2e saved / certified repair unit</code> (EU Circular Economy model).</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- TAB 6: Developer Docs -->
-    <div class="tab-pane" id="tab-dev">
-      <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="gold-gradient">Developer Reference & Local Schema</h2>
-        <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;">
-          <div>• Storage Key: <code>acnc_focus_session_timer_v3</code></div>
-          <div>• Rewards Key: <code>acnc_reward_economy_v3</code></div>
-          <div>• Impact Key: <code>acnc_impact_history_v3</code></div>
-          <div>• Wallet Key: <code>acnc_wallet_state_v3</code></div>
-          <div>• Telemetry Key: <code>acnc_diagnostics_log_v3</code></div>
+        <div>
+          <div style="font-weight: 700; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-lime); margin-bottom: 0.35rem;">
+            2. Registry Retirement Record Schema (Gold Standard Certificate Example)
+          </div>
+          <pre style="background: rgba(0,0,0,0.8); border: 1px solid var(--border-glass); padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-lime); overflow-x: auto;">
+{
+  "record_id": "ret_9b28fa10",
+  "type": "registry_retirement",
+  "registry": "Gold Standard",
+  "serial_number": "GS1-1-US-GS4928-12-2025-2849",
+  "project_id": "GS4928",
+  "project_name": "Direct Air Capture & Permanent Storage",
+  "vintage": 2025,
+  "tonnes_co2e_retired": 1.0,
+  "retirement_date": "2026-08-29",
+  "evidence_uri": "https://registry.goldstandard.org/projects/details/4928",
+  "evidence_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "validation_status": "REGISTRY_VERIFIED",
+  "receipt_id": "RCPT-RET-2849FE",
+  "points_earned": 100,
+  "timestamp": "2026-08-29T01:00:00.000Z"
+}</pre>
         </div>
       </div>
     </div>
+
   </main>
 
-  <!-- System Diagnostics Modal -->
-  <div class="modal-overlay" id="diagModal">
-    <div class="lightbox-card" style="max-width: 600px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem; margin-bottom: 1rem;">
-        <h3 style="font-size: 1.1rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-microchip"></i> System Diagnostics</h3>
-        <button id="closeDiagBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
-      </div>
-
-      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
-          <span>Runtime Version:</span>
-          <span class="truth-badge badge-live">v3.2.0-multi-page</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Storage Schema:</span>
-          <span class="text-lime">acnc_session_v3</span>
-        </div>
-      </div>
-
-      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList"></div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-glass btn-sm" id="clearStateBtn">
-          <i class="fa-solid fa-trash-can text-flame"></i> Reset Local State
-        </button>
-        <span style="font-size: 0.75rem; color: var(--text-dim);">Safe Client-Only Reset</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Shared Footer -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-brand">
       <img src="images/official_logo.png" alt="Logo" style="height: 28px;" />
       <span>ALL COUCH NO CAGE</span>
     </div>
     <p class="footer-copy">
-      Self-Mastery, Focus & Biophysical Time Architecture • Powered by Deterministic Rust Math<br />
-      Non-medical utility software • Private by default • Open specification
+      Measure what you use. Reduce what you can. Verify what you offset.<br />
+      VTIME utility credit is earned only under published rules from eligible, evidence-backed activity.
     </p>
-    <div style="margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.8rem; font-family: var(--font-mono);">
-      <a href="docs/PRODUCT_STATUS.md" style="color: var(--text-muted); text-decoration: none;">Product Status</a>
-      <a href="docs/PRIVACY_AND_DATA.md" style="color: var(--text-muted); text-decoration: none;">Privacy & Data</a>
-      <a href="docs/TESTNET_VERIFICATION.md" style="color: var(--text-muted); text-decoration: none;">Testnet Verification</a>
-      <a href="#" id="diagToggleBtn" style="color: var(--accent-gold); text-decoration: none;"><i class="fa-solid fa-terminal"></i> Diagnostics</a>
-    </div>
   </footer>
 
   <script src="self_healing_client.js"></script>

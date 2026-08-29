@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Achievement Relics & Gallery — ALL COUCH NO CAGE</title>
-  <meta name="description" content="Surreal Liquid Time milestone relics with verifiable cryptographic SHA-256 seals." />
+  <title>Dream-Logic Relics — ALL COUCH NO CAGE</title>
+  <meta name="description" content="Milestone artifacts and sovereign achievement records generated strictly upon verified ledger achievements." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,7 @@
         <img src="images/official_logo.png" alt="All Couch No Cage Logo" class="brand-logo-img" />
         <div class="brand-text">
           <span>ALL COUCH NO CAGE</span>
-          <span class="brand-sub">Achievement Relic Gallery</span>
+          <span class="brand-sub">Milestones & Relics</span>
         </div>
       </a>
 
@@ -39,7 +39,7 @@
 
       <div class="nav-actions">
         <button class="btn btn-gold btn-sm" id="globalConnectWalletBtn">
-          <i class="fa-solid fa-wallet"></i> Connect / Enter
+          <i class="fa-solid fa-wallet"></i> Connect Wallet
         </button>
       </div>
     </div>
@@ -49,145 +49,71 @@
     <div class="page-header">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <div class="truth-badge badge-testnet" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-gem"></i> Milestone Artifacts — PRE-MINT</div>
-          <h1 class="page-title">Surreal <span class="gold-gradient">Timepiece Relics</span></h1>
+          <div class="truth-badge badge-local" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-gem"></i> Sovereign Achievement Artifacts</div>
+          <h1 class="page-title">Dream-Logic <span class="gold-gradient">Relics</span></h1>
           <p class="page-desc">
-            Visual achievements commemorating deep work milestones. Click any relic to inspect its SHA-256 evidence seal, download watermarked artwork, and export structured JSON receipts.
+            Milestone receipts are issued only upon verified evidence records. No simulated NFT claims or pre-minted badges.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Milestone Relic Forge Card (DEMO PREVIEW) -->
-    <div class="glass-panel" style="margin-bottom: 3rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
-        <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800;"><i class="fa-solid fa-wand-magic-sparkles text-gold"></i> Milestone Relic Forge</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;">
-            Generate a personalized surreal milestone badge for completed deep architecture sprints.
-          </p>
+    <!-- Empty State Notice (Default Honest State) -->
+    <div id="relicsEmptyNotice" class="glass-panel" style="text-align: center; padding: 4rem 2rem; margin-bottom: 2.5rem;">
+      <div style="font-size: 2.4rem; color: var(--accent-gold); margin-bottom: 1rem;">
+        <i class="fa-solid fa-hourglass-start"></i>
+      </div>
+      <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;" class="gold-gradient">NO RELICS MINTED YET</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 520px; margin: 0 auto 1.5rem; line-height: 1.6;">
+        Relics are sovereign digital artifacts anchored to genuine milestone completions in your verified ledger (such as completing 10 verified focus blocks or retiring 1 tonne of carbon).
+      </p>
+      <a href="index.html" class="btn btn-gold">
+        <i class="fa-solid fa-play"></i> Start a Focus Block
+      </a>
+    </div>
+
+    <!-- Unlocked Relics Grid (Populated dynamically when records exist) -->
+    <div id="relicsGrid" class="shared-images-grid" style="display: none; margin-bottom: 2.5rem;">
+      <div class="shared-asset-card">
+        <img src="images/dali_clock.jpg" alt="Surreal Time Invariance" class="shared-asset-img" />
+        <div class="liquid-watermark">
+          <span>SURREAL TIME INVARIANCE</span>
+          <span>#001 • VERIFIED</span>
         </div>
-        <span class="truth-badge badge-demo">DEMO PREVIEW</span>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.5rem; align-items: center;">
-        <div>
-          <div style="margin-bottom: 0.85rem;">
-            <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.4rem;">
-              Milestone Title:
-            </label>
-            <input type="text" id="relicForgeMilestoneInput" class="intention-input" value="50m Deep Architecture Sprint (Alpha Flow)" />
-          </div>
-
-          <div style="display: flex; gap: 0.75rem;">
-            <button class="btn btn-gold" id="relicForgeBtn">
-              <i class="fa-solid fa-sparkles"></i> Forge Milestone Badge
-            </button>
-          </div>
-          <div id="relicForgeStatus" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-gold); margin-top: 0.75rem;"></div>
-        </div>
-
-        <div style="text-align: center;">
-          <div style="position: relative; width: 180px; height: 180px; margin: 0 auto; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-glass); background: #000;">
-            <img src="images/dali_clock.jpg" alt="Relic Preview" style="width: 100%; height: 100%; object-fit: cover;" />
-            <div class="liquid-watermark" style="font-size: 0.65rem;">
-              <span class="watermark-brand">SEALED</span>
-              <span id="relicBadgeTag">50M SPRINT</span>
-            </div>
-          </div>
+      <div class="shared-asset-card">
+        <img src="images/dali_clock_2.jpg" alt="Genesis Focus Relic" class="shared-asset-img" />
+        <div class="liquid-watermark">
+          <span>GENESIS FOCUS MILESTONE</span>
+          <span>#002 • VERIFIED</span>
         </div>
       </div>
     </div>
 
-    <!-- 15 Relic Catalog Showcase Grid -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h2 style="font-size: 1.35rem; font-weight: 800;">Cataloged Visual Relics (15 Artifacts)</h2>
-      <span class="truth-badge badge-testnet">TESTNET PRE-MINT</span>
+    <!-- Milestone Policy Notice -->
+    <div class="glass-panel" style="border-left: 3px solid var(--accent-cyan);">
+      <div style="display: flex; gap: 1rem; align-items: flex-start;">
+        <div style="color: var(--accent-cyan); font-size: 1.5rem; margin-top: 0.15rem;"><i class="fa-solid fa-stamp"></i></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+          <strong style="color: var(--text-main); font-family: var(--font-mono);">Milestone Verification Rule:</strong> 
+          Any claim that a badge, asset, receipt, or NFT is sealed or on-chain must be accompanied by a retrievable cryptographic record and transaction hash. Unsubstantiated badges are never displayed.
+        </div>
+      </div>
     </div>
 
-    <div class="shared-images-grid" id="relicsGalleryGrid">
-      <!-- Injected dynamically via JS -->
-    </div>
   </main>
 
-  <!-- Relic Inspection Lightbox Modal -->
-  <div class="modal-overlay" id="relicLightboxModal">
-    <div class="lightbox-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem;">
-        <h3 id="relicLightboxTitle" style="font-size: 1.15rem; font-weight: 800;" class="gold-gradient">Visual Asset Inspector</h3>
-        <button id="closeRelicLightboxBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
-      </div>
-
-      <div class="lightbox-img-box">
-        <div style="position: absolute; top: 12px; right: 12px; background: rgba(234, 179, 8, 0.9); color: #000; padding: 0.35rem 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; border-radius: 4px; text-transform: uppercase;">
-          LOCAL SHA-256 SEAL
-        </div>
-        <img id="relicLightboxImg" src="images/dali_clock.jpg" alt="Relic Preview" />
-      </div>
-
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
-        <span>Format: High-Res Artifact</span>
-        <span id="relicLightboxHash" class="text-cyan">Evidence Hash: 0x8ace...</span>
-        <span class="truth-badge badge-testnet">AMOY VERIFICATION STAGE</span>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
-        <a id="relicDownloadAssetBtn" href="images/dali_clock.jpg" download="SURREAL_TIME_RELIC.jpg" class="btn btn-gold">
-          <i class="fa-solid fa-download"></i> Download Artwork
-        </a>
-        <button class="btn btn-cyan" id="relicDownloadJsonReceiptBtn">
-          <i class="fa-solid fa-file-code"></i> Download JSON Receipt
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- System Diagnostics Modal -->
-  <div class="modal-overlay" id="diagModal">
-    <div class="lightbox-card" style="max-width: 600px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem; margin-bottom: 1rem;">
-        <h3 style="font-size: 1.1rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-microchip"></i> System Diagnostics</h3>
-        <button id="closeDiagBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
-      </div>
-
-      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
-          <span>Runtime Version:</span>
-          <span class="truth-badge badge-live">v3.2.0-multi-page</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Storage Schema:</span>
-          <span class="text-lime">acnc_session_v3</span>
-        </div>
-      </div>
-
-      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList"></div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-glass btn-sm" id="clearStateBtn">
-          <i class="fa-solid fa-trash-can text-flame"></i> Reset Local State
-        </button>
-        <span style="font-size: 0.75rem; color: var(--text-dim);">Safe Client-Only Reset</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Shared Footer -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-brand">
       <img src="images/official_logo.png" alt="Logo" style="height: 28px;" />
       <span>ALL COUCH NO CAGE</span>
     </div>
     <p class="footer-copy">
-      Self-Mastery, Focus & Biophysical Time Architecture • Powered by Deterministic Rust Math<br />
-      Non-medical utility software • Private by default • Open specification
+      Measure what you use. Reduce what you can. Verify what you offset.<br />
+      VTIME utility credit is earned only under published rules from eligible, evidence-backed activity.
     </p>
-    <div style="margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.8rem; font-family: var(--font-mono);">
-      <a href="docs/PRODUCT_STATUS.md" style="color: var(--text-muted); text-decoration: none;">Product Status</a>
-      <a href="docs/PRIVACY_AND_DATA.md" style="color: var(--text-muted); text-decoration: none;">Privacy & Data</a>
-      <a href="docs/TESTNET_VERIFICATION.md" style="color: var(--text-muted); text-decoration: none;">Testnet Verification</a>
-      <a href="#" id="diagToggleBtn" style="color: var(--accent-gold); text-decoration: none;"><i class="fa-solid fa-terminal"></i> Diagnostics</a>
-    </div>
   </footer>
 
   <script src="self_healing_client.js"></script>

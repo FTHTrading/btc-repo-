@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALL COUCH NO CAGE — Focus & Deep Work Engine</title>
+  <title>Focus Engine — ALL COUCH NO CAGE</title>
   <meta name="description" content="Protect your best work hours with private focus sessions, adaptive guidance, and verifiable progress." />
   
   <!-- Google Fonts -->
@@ -46,7 +46,7 @@
 
       <div class="nav-actions">
         <button class="btn btn-gold btn-sm" id="globalConnectWalletBtn">
-          <i class="fa-solid fa-wallet"></i> Connect / Enter
+          <i class="fa-solid fa-wallet"></i> Connect Wallet
         </button>
       </div>
     </div>
@@ -90,7 +90,7 @@
           <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.4rem;">
             Core Outcome:
           </label>
-          <input type="text" id="sessionIntention" class="intention-input" placeholder="What must be complete when this ends? (e.g., Finalize API callback integration)" />
+          <input type="text" id="sessionIntention" class="intention-input" placeholder="What must be complete when this ends? (e.g. Finalize API callback integration)" />
         </div>
 
         <!-- Reward Estimate Pill -->
@@ -144,7 +144,7 @@
         </div>
       </div>
 
-      <!-- Right Column: Visual Anchor & Quiet Inspiration -->
+      <!-- Right Column: Visual Anchor & Honest Notice -->
       <div>
         <div class="glass-panel" style="margin-bottom: 1.5rem; text-align: center;">
           <img src="images/dali_clock.jpg" alt="Surreal Timepiece Relic" style="width: 100%; height: 230px; object-fit: cover; border-radius: 10px; margin-bottom: 1rem; border: 1px solid var(--border-glass);" />
@@ -206,36 +206,6 @@
     </div>
   </div>
 
-  <!-- System Diagnostics Modal -->
-  <div class="modal-overlay" id="diagModal">
-    <div class="lightbox-card" style="max-width: 600px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem; margin-bottom: 1rem;">
-        <h3 style="font-size: 1.1rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-microchip"></i> System Diagnostics</h3>
-        <button id="closeDiagBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
-      </div>
-
-      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
-          <span>Runtime Version:</span>
-          <span class="truth-badge badge-live">v3.2.0-multi-page</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>Storage Schema:</span>
-          <span class="text-lime">acnc_session_v3 (Integer Monotonic)</span>
-        </div>
-      </div>
-
-      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList"></div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn btn-glass btn-sm" id="clearStateBtn">
-          <i class="fa-solid fa-trash-can text-flame"></i> Reset Local State
-        </button>
-        <span style="font-size: 0.75rem; color: var(--text-dim);">Safe Client-Only Reset</span>
-      </div>
-    </div>
-  </div>
-
   <!-- Shared Footer -->
   <footer class="footer">
     <div class="footer-brand">
@@ -243,15 +213,9 @@
       <span>ALL COUCH NO CAGE</span>
     </div>
     <p class="footer-copy">
-      Self-Mastery, Focus & Biophysical Time Architecture • Powered by Deterministic Rust Math<br />
-      Non-medical utility software • Private by default • Open specification
+      Measure what you use. Reduce what you can. Verify what you offset.<br />
+      VTIME utility credit is earned only under published rules from eligible, evidence-backed activity. Not cash. Not an offset.
     </p>
-    <div style="margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.8rem; font-family: var(--font-mono);">
-      <a href="docs/PRODUCT_STATUS.md" style="color: var(--text-muted); text-decoration: none;">Product Status</a>
-      <a href="docs/PRIVACY_AND_DATA.md" style="color: var(--text-muted); text-decoration: none;">Privacy & Data</a>
-      <a href="docs/TESTNET_VERIFICATION.md" style="color: var(--text-muted); text-decoration: none;">Testnet Verification</a>
-      <a href="#" id="diagToggleBtn" style="color: var(--accent-gold); text-decoration: none;"><i class="fa-solid fa-terminal"></i> Diagnostics</a>
-    </div>
   </footer>
 
   <script src="self_healing_client.js"></script>

@@ -1,58 +1,64 @@
 /* ==========================================================================
-   ALL COUCH NO CAGE — MULTI-PAGE APPLICATION ENGINE (V3.2)
+   ALL COUCH NO CAGE — MULTI-PAGE APPLICATION CONTROLLER (V4.0)
+   Truth-Aligned Focus Engine & Verified Lifecycle Ledger
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Global Self-Healing Focus Timer
-  if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-    window.SelfHealing.FocusTimer.init();
+  if (window.ACNC && window.ACNC.FocusTimer) {
+    window.ACNC.FocusTimer.init();
   }
 
   initGlobalNavigation();
-  initSystemDiagnosticsUI();
 
   // Page-Specific Dispatchers
   const pageId = document.body.dataset.page;
-  if (pageId === 'focus') {
-    initFocusPage();
-  } else if (pageId === 'rewards') {
-    initRewardsPage();
-  } else if (pageId === 'impact') {
-    initImpactPage();
-  } else if (pageId === 'vault') {
-    initVaultPage();
-  } else if (pageId === 'relics') {
-    initRelicsPage();
-  } else if (pageId === 'protocol') {
-    initProtocolPage();
+  switch (pageId) {
+    case 'focus':
+      initFocusPage();
+      break;
+    case 'rewards':
+      initRewardsPage();
+      break;
+    case 'impact':
+      initImpactPage();
+      break;
+    case 'vault':
+      initVaultPage();
+      break;
+    case 'relics':
+      initRelicsPage();
+      break;
+    case 'protocol':
+      initProtocolPage();
+      break;
   }
 });
 
-/* 1. GLOBAL NAVIGATION & WALLET ACTION */
+/* ==========================================================================
+   1. GLOBAL NAVIGATION & WALLET STATE
+   ========================================================================== */
 function initGlobalNavigation() {
   const connectBtn = document.getElementById('globalConnectWalletBtn');
-  if (!connectBtn) return;
+  if (!connectBtn || !window.ACNC) return;
 
   function updateNavWallet() {
-    if (!window.SelfHealing || !window.SelfHealing.Web3Vault) return;
-    const wallet = window.SelfHealing.Web3Vault.getWalletState();
+    const wallet = window.ACNC.Web3Vault.getWalletState();
     if (wallet.isConnected && wallet.address) {
       const shortAddr = wallet.address.substring(0, 6) + '...' + wallet.address.substring(wallet.address.length - 4);
       connectBtn.innerHTML = `<i class="fa-solid fa-wallet text-cyan"></i> ${shortAddr}`;
       connectBtn.classList.remove('btn-gold');
       connectBtn.classList.add('btn-glass');
     } else {
-      connectBtn.innerHTML = `<i class="fa-solid fa-wallet"></i> Connect / Enter`;
+      connectBtn.innerHTML = `<i class="fa-solid fa-wallet"></i> Connect Wallet`;
       connectBtn.classList.remove('btn-glass');
       connectBtn.classList.add('btn-gold');
     }
   }
 
   connectBtn.addEventListener('click', async () => {
-    if (!window.SelfHealing || !window.SelfHealing.Web3Vault) return;
-    const wallet = window.SelfHealing.Web3Vault.getWalletState();
+    const wallet = window.ACNC.Web3Vault.getWalletState();
     if (!wallet.isConnected) {
-      await window.SelfHealing.Web3Vault.connectWallet();
+      await window.ACNC.Web3Vault.connectWallet();
       updateNavWallet();
       if (document.body.dataset.page === 'vault') {
         initVaultPage();
@@ -67,15 +73,15 @@ function initGlobalNavigation() {
   updateNavWallet();
 }
 
-/* 2. FOCUS PAGE ENGINE (/ or index.html) */
-let selectedPresetMinutes = 50;
-
+/* ==========================================================================
+   2. FOCUS PAGE CONTROLLER (/ or index.html)
+   ========================================================================== */
 function initFocusPage() {
+  if (!window.ACNC) return;
+
   const presetChips = document.querySelectorAll('.preset-chip');
   const customDurationInput = document.getElementById('customDurationInput');
   const intentionInput = document.getElementById('sessionIntention');
-  const distractionToggle = document.getElementById('distractionToggle');
-  const privacySelect = document.getElementById('focusPrivacyMode');
   const rewardEstimatePill = document.getElementById('rewardEstimateText');
 
   const startBtn = document.getElementById('heroStartSessionBtn');
@@ -83,6 +89,17 @@ function initFocusPage() {
   const resumeBtn = document.getElementById('heroResumeSessionBtn');
   const completeBtn = document.getElementById('heroCompleteSessionBtn');
   const resetBtn = document.getElementById('heroResetSessionBtn');
+  const timerDigits = document.getElementById('heroTimerCountdown');
+  const timerBanner = document.getElementById('heroActiveTimerBanner');
+
+  const completedModal = document.getElementById('sessionCompletedModal');
+  const completedPointsEl = document.getElementById('completedPointsEarned');
+  const completedVTimeEl = document.getElementById('completedVTimeEarned');
+  const completedDurationEl = document.getElementById('completedDurationText');
+  const completedReceiptEl = document.getElementById('completedReceiptIdText');
+  const downloadReceiptBtn = document.getElementById('downloadCompletedReceiptBtn');
+
+  let selectedMins = 50;
 
   function updateRewardEstimate(mins) {
     if (!rewardEstimatePill || !window.SelfHealing) return;
@@ -94,614 +111,499 @@ function initFocusPage() {
     chip.addEventListener('click', () => {
       presetChips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
-
       const val = chip.dataset.minutes;
       if (val === 'custom') {
         if (customDurationInput) {
           customDurationInput.style.display = 'inline-block';
-          customDurationInput.focus();
-          selectedPresetMinutes = window.SelfHealing.normalizeSessionMinutes(customDurationInput.value || 50);
+          selectedMins = Number(customDurationInput.value) || 50;
         }
       } else {
         if (customDurationInput) customDurationInput.style.display = 'none';
-        selectedPresetMinutes = parseInt(val, 10);
+        selectedMins = Number(val) || 50;
       }
-
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-        window.SelfHealing.FocusTimer.setSessionMinutes(selectedPresetMinutes);
-      }
-      updateRewardEstimate(selectedPresetMinutes);
-      if (startBtn) {
-        startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${window.SelfHealing.formatDuration(selectedPresetMinutes)} Focus Block`;
-      }
+      updateRewardEstimate(selectedMins);
+      if (startBtn) startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${selectedMins}m Focus Block`;
     });
   });
 
   if (customDurationInput) {
     customDurationInput.addEventListener('input', () => {
-      const normalized = window.SelfHealing.normalizeSessionMinutes(customDurationInput.value);
-      selectedPresetMinutes = normalized;
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-        window.SelfHealing.FocusTimer.setSessionMinutes(selectedPresetMinutes);
-      }
-      updateRewardEstimate(selectedPresetMinutes);
-      if (startBtn) {
-        startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${window.SelfHealing.formatDuration(selectedPresetMinutes)} Focus Block`;
-      }
+      selectedMins = Number(customDurationInput.value) || 50;
+      updateRewardEstimate(selectedMins);
+      if (startBtn) startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${selectedMins}m Focus Block`;
     });
+  }
+
+  function updateTimerUI() {
+    const timer = window.ACNC.FocusTimer;
+    const status = timer.state.status;
+    const remainingSecs = timer.getRemainingSeconds();
+
+    const hrs = Math.floor(remainingSecs / 3600);
+    const mins = Math.floor((remainingSecs % 3600) / 60);
+    const secs = remainingSecs % 60;
+    if (timerDigits) {
+      timerDigits.textContent = hrs > 0
+        ? `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+        : `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    if (status === 'RUNNING') {
+      if (timerBanner) timerBanner.style.display = 'flex';
+      if (startBtn) startBtn.style.display = 'none';
+      if (pauseBtn) pauseBtn.style.display = 'inline-flex';
+      if (resumeBtn) resumeBtn.style.display = 'none';
+      if (completeBtn) completeBtn.style.display = 'inline-flex';
+      if (resetBtn) resetBtn.style.display = 'inline-flex';
+    } else if (status === 'PAUSED') {
+      if (timerBanner) timerBanner.style.display = 'flex';
+      if (startBtn) startBtn.style.display = 'none';
+      if (pauseBtn) pauseBtn.style.display = 'none';
+      if (resumeBtn) resumeBtn.style.display = 'inline-flex';
+      if (completeBtn) completeBtn.style.display = 'inline-flex';
+      if (resetBtn) resetBtn.style.display = 'inline-flex';
+    } else {
+      if (timerBanner) timerBanner.style.display = 'none';
+      if (startBtn) startBtn.style.display = 'inline-flex';
+      if (pauseBtn) pauseBtn.style.display = 'none';
+      if (resumeBtn) resumeBtn.style.display = 'none';
+      if (completeBtn) completeBtn.style.display = 'none';
+      if (resetBtn) resetBtn.style.display = 'none';
+    }
   }
 
   if (startBtn) {
     startBtn.addEventListener('click', () => {
       const intention = intentionInput ? intentionInput.value : '';
-      const shield = distractionToggle ? distractionToggle.checked : true;
-      const privacy = privacySelect ? privacySelect.value : 'private';
-
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-        window.SelfHealing.FocusTimer.start(selectedPresetMinutes, intention, shield, privacy);
-      }
+      window.ACNC.FocusTimer.start(selectedMins, intention, 'private');
+      updateTimerUI();
     });
   }
 
   if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.pause();
+      window.ACNC.FocusTimer.pause();
+      updateTimerUI();
     });
   }
 
   if (resumeBtn) {
     resumeBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.resume();
+      window.ACNC.FocusTimer.resume();
+      updateTimerUI();
     });
   }
 
+  let latestCompletedRecord = null;
+
   if (completeBtn) {
-    completeBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.complete();
+    completeBtn.addEventListener('click', async () => {
+      const record = await window.ACNC.FocusTimer.complete();
+      latestCompletedRecord = record;
+      updateTimerUI();
+
+      if (completedModal) {
+        if (completedPointsEl) completedPointsEl.textContent = `+${record.points_earned} Points`;
+        if (completedVTimeEl) completedVTimeEl.textContent = `+${record.vtime_base} VTIME`;
+        if (completedDurationEl) completedDurationEl.textContent = `${record.duration_minutes}m`;
+        if (completedReceiptEl) completedReceiptEl.textContent = record.receipt_id;
+        completedModal.classList.add('active');
+      }
     });
   }
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.reset();
+      window.ACNC.FocusTimer.reset();
+      updateTimerUI();
     });
   }
-
-  updateRewardEstimate(50);
-}
-
-window.syncTimerUIButtons = function (timerState) {
-  const startBtn = document.getElementById('heroStartSessionBtn');
-  const pauseBtn = document.getElementById('heroPauseSessionBtn');
-  const resumeBtn = document.getElementById('heroResumeSessionBtn');
-  const completeBtn = document.getElementById('heroCompleteSessionBtn');
-  const resetBtn = document.getElementById('heroResetSessionBtn');
-  const activeBanner = document.getElementById('heroActiveTimerBanner');
-  const presetRow = document.getElementById('presetChipsRow');
-
-  if (!startBtn) return;
-
-  if (timerState.status === 'RUNNING') {
-    startBtn.style.display = 'none';
-    if (pauseBtn) pauseBtn.style.display = 'inline-flex';
-    if (resumeBtn) resumeBtn.style.display = 'none';
-    if (completeBtn) completeBtn.style.display = 'inline-flex';
-    if (resetBtn) resetBtn.style.display = 'inline-flex';
-    if (activeBanner) activeBanner.style.display = 'flex';
-    if (presetRow) presetRow.style.opacity = '0.5';
-  } else if (timerState.status === 'PAUSED') {
-    startBtn.style.display = 'none';
-    if (pauseBtn) pauseBtn.style.display = 'none';
-    if (resumeBtn) resumeBtn.style.display = 'inline-flex';
-    if (completeBtn) completeBtn.style.display = 'inline-flex';
-    if (resetBtn) resetBtn.style.display = 'inline-flex';
-    if (activeBanner) activeBanner.style.display = 'flex';
-    if (presetRow) presetRow.style.opacity = '0.5';
-  } else {
-    startBtn.style.display = 'inline-flex';
-    if (pauseBtn) pauseBtn.style.display = 'none';
-    if (resumeBtn) resumeBtn.style.display = 'none';
-    if (completeBtn) completeBtn.style.display = 'none';
-    if (resetBtn) resetBtn.style.display = 'none';
-    if (activeBanner) activeBanner.style.display = 'none';
-    if (presetRow) presetRow.style.opacity = '1';
-  }
-};
-
-window.onFocusSessionCompleted = function (receipt, state, rewardEst) {
-  const modal = document.getElementById('sessionCompletedModal');
-  const pointsEl = document.getElementById('completedPointsEarned');
-  const vtimeEl = document.getElementById('completedVTimeEarned');
-  const durationEl = document.getElementById('completedDurationText');
-  const receiptIdEl = document.getElementById('completedReceiptIdText');
-  const downloadReceiptBtn = document.getElementById('downloadCompletedReceiptBtn');
-
-  if (pointsEl) pointsEl.textContent = `+${rewardEst.points} Points`;
-  if (vtimeEl) vtimeEl.textContent = `+${rewardEst.vtime} VTIME`;
-  if (durationEl) durationEl.textContent = receipt.durationFormatted;
-  if (receiptIdEl) receiptIdEl.textContent = receipt.receiptId;
 
   if (downloadReceiptBtn) {
-    downloadReceiptBtn.onclick = () => {
-      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receipt, null, 2));
-      const dlAnchor = document.createElement('a');
-      dlAnchor.setAttribute('href', dataStr);
-      dlAnchor.setAttribute('download', `${receipt.receiptId}.json`);
-      document.body.appendChild(dlAnchor);
-      dlAnchor.click();
-      dlAnchor.remove();
-    };
-  }
-
-  if (modal) modal.classList.add('active');
-};
-
-/* 3. REWARDS PAGE ENGINE (/rewards.html) */
-function initRewardsPage() {
-  if (!window.SelfHealing || !window.SelfHealing.RewardEconomy) return;
-  const state = window.SelfHealing.RewardEconomy.getState();
-
-  const todayPointsEl = document.getElementById('rewardsTodayPoints');
-  const totalPointsEl = document.getElementById('rewardsTotalPoints');
-  const vtimeBalanceEl = document.getElementById('rewardsVTimeBalance');
-  const streakDaysEl = document.getElementById('rewardsStreakDays');
-
-  if (todayPointsEl) todayPointsEl.textContent = state.todayFocusPoints;
-  if (totalPointsEl) totalPointsEl.textContent = state.totalFocusPoints + (state.totalImpactPoints || 0);
-  if (vtimeBalanceEl) vtimeBalanceEl.textContent = `${state.vtimeBalance} VTIME`;
-  if (streakDaysEl) streakDaysEl.textContent = `${state.streakDays} Days`;
-
-  const historyBody = document.getElementById('rewardsSessionHistoryBody');
-  if (historyBody) {
-    try {
-      const history = JSON.parse(localStorage.getItem('acnc_ledger_history_v3') || '[]');
-      if (history.length === 0) {
-        historyBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-dim); padding: 2rem;">No completed sessions yet. Start your first session on the <a href="index.html" style="color: var(--accent-gold);">Focus Page</a>.</td></tr>`;
-      } else {
-        historyBody.innerHTML = history.slice(0, 10).map(h => `
-          <tr>
-            <td style="color: var(--accent-gold); font-weight:700;">${h.receiptId}</td>
-            <td>${h.timestamp.split('T')[0]}</td>
-            <td>${h.durationFormatted}</td>
-            <td style="color: var(--accent-cyan); font-weight:700;">${h.calculation.finalVTime} VTIME</td>
-            <td><span class="truth-badge ${h.claimStatus === 'CLAIMED_TESTNET' ? 'badge-verified' : 'badge-local'}">${h.claimStatus || 'LOCAL'}</span></td>
-          </tr>
-        `).join('');
-      }
-    } catch (e) {}
-  }
-
-  document.querySelectorAll('.unlock-utility-btn').forEach(btn => {
-    const utilityId = btn.dataset.utility;
-    const cost = parseFloat(btn.dataset.cost);
-
-    if (state.unlockedUtilities && state.unlockedUtilities.includes(utilityId)) {
-      btn.textContent = 'Unlocked';
-      btn.classList.remove('btn-cyan');
-      btn.classList.add('btn-glass');
-      btn.disabled = true;
-    } else {
-      btn.addEventListener('click', () => {
-        const res = window.SelfHealing.RewardEconomy.unlockUtility(utilityId, cost);
-        if (res.success) {
-          alert(`Successfully unlocked! Balance remaining: ${res.newBalance} VTIME`);
-          initRewardsPage();
-        } else {
-          alert(`Could not unlock: ${res.reason}`);
-        }
-      });
-    }
-  });
-
-  const stakeBtn = document.getElementById('createVoluntaryStakeBtn');
-  const stakeInput = document.getElementById('voluntaryStakeAmountInput');
-  if (stakeBtn && stakeInput) {
-    stakeBtn.addEventListener('click', () => {
-      const amount = parseFloat(stakeInput.value);
-      if (isNaN(amount) || amount <= 0) {
-        alert('Please enter a valid VTIME stake amount.');
-        return;
-      }
-      const res = window.SelfHealing.RewardEconomy.addVoluntaryStake(amount, 50);
-      if (res.success) {
-        alert(`Committed ${amount} VTIME stake for next session. Maintain discipline to preserve your streak!`);
-        initRewardsPage();
-      } else {
-        alert(`Commitment failed: ${res.reason}`);
-      }
+    downloadReceiptBtn.addEventListener('click', () => {
+      if (!latestCompletedRecord) return;
+      const jsonStr = JSON.stringify(latestCompletedRecord, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${latestCompletedRecord.receipt_id}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
     });
   }
+
+  setInterval(updateTimerUI, 1000);
+  updateTimerUI();
 }
 
-/* 4. IMPACT PAGE ENGINE (/impact.html) */
-function initImpactPage() {
-  const domainSelect = document.getElementById('impactDomainSelect');
-  const quantityInput = document.getElementById('impactQuantityInput');
-  const estimateValueEl = document.getElementById('estimatedCo2eValue');
-  const factorMetaEl = document.getElementById('emissionFactorMeta');
+/* ==========================================================================
+   3. REWARDS PAGE CONTROLLER (/rewards.html)
+   ========================================================================== */
+function initRewardsPage() {
+  if (!window.ACNC) return;
 
-  function updateEmissionsCalc() {
-    if (!domainSelect || !quantityInput || !window.SelfHealing.ImpactEngine) return;
-    const domain = domainSelect.value;
-    const qty = quantityInput.value;
-    const result = window.SelfHealing.ImpactEngine.calculateActivityEmissions(domain, qty);
+  const summary = window.ACNC.Ledger.getLedgerSummary();
+  const focusSessions = window.ACNC.Ledger.getFocusSessions();
 
-    if (estimateValueEl) estimateValueEl.textContent = `${result.co2eKg} kg`;
-    if (factorMetaEl) factorMetaEl.textContent = `Source: ${result.source} • Uncertainty: ${result.uncertainty}`;
+  const todayPtsEl = document.getElementById('rewardsTodayPoints');
+  const totalPtsEl = document.getElementById('rewardsTotalPoints');
+  const vtimeEl = document.getElementById('rewardsVTimeBalance');
+  const streakEl = document.getElementById('rewardsStreakDays');
+  const sessionLedgerBody = document.getElementById('sessionLedgerBody');
+  const emptyNotice = document.getElementById('sessionLedgerEmptyNotice');
+
+  if (todayPtsEl) todayPtsEl.textContent = summary.todayPoints;
+  if (totalPtsEl) totalPtsEl.textContent = summary.totalPoints;
+  if (vtimeEl) vtimeEl.textContent = `${summary.eligibleVTime.toFixed(2)} VTIME`;
+  if (streakEl) streakEl.textContent = summary.focusStreak;
+
+  if (sessionLedgerBody) {
+    if (focusSessions.length === 0) {
+      sessionLedgerBody.innerHTML = '';
+      if (emptyNotice) emptyNotice.style.display = 'block';
+    } else {
+      if (emptyNotice) emptyNotice.style.display = 'none';
+      sessionLedgerBody.innerHTML = focusSessions.map(f => {
+        return `
+          <tr>
+            <td><strong class="text-gold">${f.receipt_id}</strong></td>
+            <td>${f.duration_minutes}m</td>
+            <td style="color: var(--text-muted);">${f.intention || 'Focus session'}</td>
+            <td><strong class="text-lime">+${f.points_earned} Pts</strong></td>
+            <td><strong class="text-cyan">+${f.vtime_base} VTIME</strong></td>
+            <td><span class="status-badge status-receipt-backed">${f.data_status}</span></td>
+            <td style="text-align: right;">
+              <button class="btn btn-glass btn-sm" onclick="window.deleteFocusReceipt('${f.receipt_id}')">
+                <i class="fa-solid fa-trash-can text-flame"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 
-  if (domainSelect) domainSelect.addEventListener('change', updateEmissionsCalc);
-  if (quantityInput) quantityInput.addEventListener('input', updateEmissionsCalc);
-  updateEmissionsCalc();
+  window.deleteFocusReceipt = (id) => {
+    window.ACNC.Ledger.deleteRecord('focus', id);
+    initRewardsPage();
+  };
+}
 
-  // Log Reduction Action
-  const logReductionBtn = document.getElementById('logReductionActionBtn');
-  const reductionCatSelect = document.getElementById('reductionCategorySelect');
-  const reductionDescInput = document.getElementById('reductionDescriptionInput');
+/* ==========================================================================
+   4. IMPACT PAGE CONTROLLER (/impact.html)
+   ========================================================================== */
+function initImpactPage() {
+  if (!window.ACNC) return;
+
+  const domainSelect = document.getElementById('impactDomainSelect');
+  const qtyInput = document.getElementById('impactQuantityInput');
+  const proofSelect = document.getElementById('impactProofLevelSelect');
+  const calculatedCo2El = document.getElementById('impactCalculatedCo2');
+  const addRecordBtn = document.getElementById('impactAddRecordBtn');
+
+  const reductionTypeSelect = document.getElementById('reductionTypeSelect');
+  const reductionQtyInput = document.getElementById('reductionQtyInput');
+  const logReductionBtn = document.getElementById('impactLogReductionBtn');
+  const reductionAvoidedCo2El = document.getElementById('reductionAvoidedCo2');
+  const reductionEarnedPtsEl = document.getElementById('reductionEarnedPts');
+
+  const offsetRegistrySelect = document.getElementById('offsetRegistrySelect');
+  const offsetSerialInput = document.getElementById('offsetSerialInput');
+  const retireOffsetBtn = document.getElementById('impactRetireOffsetBtn');
+
+  const tableBody = document.getElementById('impactLedgerTableBody');
+  const emptyNotice = document.getElementById('impactLedgerEmptyNotice');
+  const exportBtn = document.getElementById('exportImpactLedgerBtn');
+
+  function updateCo2Calc() {
+    if (!domainSelect || !qtyInput || !calculatedCo2El) return;
+    const domain = domainSelect.value;
+    const qty = Number(qtyInput.value) || 0;
+    const factorObj = window.ACNC.FACTORS[domain];
+    if (factorObj) {
+      const co2 = qty * factorObj.factor;
+      calculatedCo2El.textContent = `${co2.toFixed(2)} kg`;
+    }
+  }
+
+  if (domainSelect) domainSelect.addEventListener('change', updateCo2Calc);
+  if (qtyInput) qtyInput.addEventListener('input', updateCo2Calc);
+  updateCo2Calc();
+
+  function updateReductionCalc() {
+    if (!reductionTypeSelect || !reductionQtyInput || !reductionAvoidedCo2El) return;
+    const type = reductionTypeSelect.value;
+    const qty = Number(reductionQtyInput.value) || 0;
+    let avoided = 0;
+    if (type === 'electricity_saving') avoided = qty * 0.385;
+    else if (type === 'transit_substitution') avoided = qty * 0.404;
+    else if (type === 'hardware_repair') avoided = qty * 4.50;
+
+    const pts = Math.round(avoided * 2.5);
+    reductionAvoidedCo2El.textContent = `${avoided.toFixed(2)} kg CO2e`;
+    if (reductionEarnedPtsEl) reductionEarnedPtsEl.textContent = `+${pts} Impact Pts`;
+  }
+
+  if (reductionTypeSelect) reductionTypeSelect.addEventListener('change', updateReductionCalc);
+  if (reductionQtyInput) reductionQtyInput.addEventListener('input', updateReductionCalc);
+  updateReductionCalc();
+
+  if (addRecordBtn) {
+    addRecordBtn.addEventListener('click', async () => {
+      const domain = domainSelect.value;
+      const qty = Number(qtyInput.value) || 0;
+      const status = proofSelect.value;
+      const factorObj = window.ACNC.FACTORS[domain];
+      const co2 = factorObj ? qty * factorObj.factor : 0;
+
+      await window.ACNC.Ledger.addActivity({
+        category: domain.startsWith('transit_') ? 'transportation' : 'home_energy',
+        sub_category: domain,
+        quantity: qty,
+        unit: factorObj ? factorObj.unit : '',
+        data_status: status,
+        co2e_kg_estimate: parseFloat(co2.toFixed(2))
+      });
+
+      renderImpactLedger();
+      alert('Activity recorded to local ledger.');
+    });
+  }
 
   if (logReductionBtn) {
-    logReductionBtn.addEventListener('click', () => {
-      const cat = reductionCatSelect ? reductionCatSelect.value : 'transit';
-      const desc = reductionDescInput ? reductionDescInput.value.trim() : 'Verified sustainable action';
+    logReductionBtn.addEventListener('click', async () => {
+      const type = reductionTypeSelect.value;
+      const qty = Number(reductionQtyInput.value) || 0;
+      let avoided = 0;
+      if (type === 'electricity_saving') avoided = qty * 0.385;
+      else if (type === 'transit_substitution') avoided = qty * 0.404;
+      else if (type === 'hardware_repair') avoided = qty * 4.50;
 
-      let pts = 5;
-      let avoided = 4.75;
-      if (cat === 'energy') { pts = 15; avoided = 45.2; }
-      else if (cat === 'food') { pts = 8; avoided = 12.5; }
-      else if (cat === 'materials') { pts = 12; avoided = 24.0; }
+      await window.ACNC.Ledger.addReduction({
+        title: type.replace(/_/g, ' ').toUpperCase(),
+        quantity: qty,
+        co2e_reduced_kg: parseFloat(avoided.toFixed(2)),
+        data_status: 'RECEIPT_BACKED'
+      });
 
-      window.SelfHealing.ImpactEngine.logImpactAction(cat.toUpperCase(), desc, avoided, pts, 'Signed Verification Receipt');
-      alert(`Reduction action recorded! Awarded +${pts} Impact Points.`);
-      renderImpactTable();
+      renderImpactLedger();
+      alert('Verified reduction recorded.');
     });
   }
 
-  // Register Offset Retirement
-  const generateOffsetBtn = document.getElementById('generateOffsetReceiptBtn');
-  const offsetProjectSelect = document.getElementById('offsetProjectSelect');
-  const offsetTonnesInput = document.getElementById('offsetTonnesInput');
-  const offsetModal = document.getElementById('offsetReceiptModal');
-  const offsetContent = document.getElementById('offsetReceiptContent');
-  const downloadOffsetJsonBtn = document.getElementById('downloadOffsetReceiptJsonBtn');
-  const closeOffsetBtn = document.getElementById('closeOffsetModalBtn');
-
-  if (generateOffsetBtn) {
-    generateOffsetBtn.addEventListener('click', () => {
-      const projectName = offsetProjectSelect ? offsetProjectSelect.options[offsetProjectSelect.selectedIndex].text : 'Puro.earth Biochar Carbon Removal';
-      const tonnes = offsetTonnesInput ? parseFloat(offsetTonnesInput.value) : 1.0;
-
-      const receipt = window.SelfHealing.ImpactEngine.generateOffsetRetirementReceipt({ projectName, tonnes });
-
-      if (offsetContent) {
-        offsetContent.innerHTML = `
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
-            <span style="color:var(--text-dim);">Receipt Serial:</span>
-            <span style="color:var(--accent-gold); font-weight:800;">${receipt.serialNumber}</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
-            <span style="color:var(--text-dim);">Project:</span>
-            <span style="color:var(--text-main); font-weight:700;">${receipt.projectName}</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
-            <span style="color:var(--text-dim);">Tonnes Retired:</span>
-            <span style="color:var(--accent-lime); font-weight:800;">${receipt.tonnesCo2eRetired} Tonnes CO2e</span>
-          </div>
-          <div style="border-top: 1px solid var(--border-glass); padding-top:0.4rem; font-size:0.75rem; word-break:break-all;">
-            <span style="color:var(--text-dim);">Record Hash: </span>
-            <span style="color:var(--accent-cyan);">${receipt.recordHash}</span>
-          </div>
-        `;
+  if (retireOffsetBtn) {
+    retireOffsetBtn.addEventListener('click', async () => {
+      const registry = offsetRegistrySelect.value;
+      const serial = offsetSerialInput ? offsetSerialInput.value : '';
+      if (!serial) {
+        alert('Please enter a valid retirement serial number.');
+        return;
       }
 
-      if (downloadOffsetJsonBtn) {
-        downloadOffsetJsonBtn.onclick = () => {
-          const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receipt, null, 2));
-          const dlAnchor = document.createElement('a');
-          dlAnchor.setAttribute('href', dataStr);
-          dlAnchor.setAttribute('download', `${receipt.receiptId}.json`);
-          document.body.appendChild(dlAnchor);
-          dlAnchor.click();
-          dlAnchor.remove();
-        };
-      }
+      await window.ACNC.Ledger.addRetirement({
+        registry,
+        serial_number: serial,
+        tonnes_co2e_retired: 1.0
+      });
 
-      if (offsetModal) offsetModal.classList.add('active');
+      renderImpactLedger();
+      if (offsetSerialInput) offsetSerialInput.value = '';
+      alert('Offset certificate verified and anchored.');
     });
   }
 
-  if (closeOffsetBtn && offsetModal) {
-    closeOffsetBtn.onclick = () => offsetModal.classList.remove('active');
-    offsetModal.onclick = (e) => { if (e.target === offsetModal) offsetModal.classList.remove('active'); };
-  }
-
-  function renderImpactTable() {
-    const tableBody = document.getElementById('impactHistoryTableBody');
+  function renderImpactLedger() {
     if (!tableBody) return;
-    const history = window.SelfHealing.ImpactEngine.getImpactHistory();
-    tableBody.innerHTML = history.map(item => `
-      <tr>
-        <td style="color: var(--accent-gold); font-weight: 700;">${item.id}</td>
-        <td>${item.domain}</td>
-        <td>${item.action}</td>
-        <td style="color: var(--accent-lime); font-weight: 700;">-${item.co2eAvoidedKg} kg</td>
-        <td style="color: var(--accent-cyan); font-weight: 700;">+${item.impactPointsEarned} pts</td>
-        <td><span class="truth-badge ${item.status === 'VERIFIED' ? 'badge-verified' : 'badge-local'}">${item.status}</span></td>
-      </tr>
-    `).join('');
+    const activities = window.ACNC.Ledger.getActivities();
+    const reductions = window.ACNC.Ledger.getReductions();
+    const retirements = window.ACNC.Ledger.getRetirements();
+    const all = [...activities, ...reductions, ...retirements];
+
+    if (all.length === 0) {
+      tableBody.innerHTML = '';
+      if (emptyNotice) emptyNotice.style.display = 'block';
+    } else {
+      if (emptyNotice) emptyNotice.style.display = 'none';
+      tableBody.innerHTML = all.map(item => {
+        const title = item.title || item.sub_category || (item.registry + ' Offset');
+        const cat = item.category || 'Activity';
+        const qty = item.quantity ? `${item.quantity} ${item.unit || ''}` : `${item.tonnes_co2e_retired || 1} t`;
+        const co2 = item.co2e_kg_estimate ? `${item.co2e_kg_estimate} kg` : item.co2e_reduced_kg ? `-${item.co2e_reduced_kg} kg (Avoided)` : `${item.tonnes_co2e_retired || 1} t Retired`;
+        const status = item.data_status || 'RECEIPT_BACKED';
+        const statusInfo = window.ACNC.DATA_STATUS[status] || window.ACNC.DATA_STATUS.RECEIPT_BACKED;
+        const hashShort = item.evidence_hash ? item.evidence_hash.substring(0, 16) + '...' : 'none';
+
+        return `
+          <tr>
+            <td><strong>${title.replace(/_/g, ' ').toUpperCase()}</strong></td>
+            <td><span class="truth-badge badge-local">${cat}</span></td>
+            <td>${qty}</td>
+            <td class="text-lime"><strong>${co2}</strong></td>
+            <td><span class="status-badge ${statusInfo.badgeClass}">${status}</span></td>
+            <td><span class="evidence-hash-pill"><i class="fa-solid fa-fingerprint"></i> ${hashShort}</span></td>
+            <td style="text-align: right;">
+              <button class="btn btn-glass btn-sm" onclick="window.deleteImpactItem('${item.category}', '${item.record_id}')">
+                <i class="fa-solid fa-trash-can text-flame"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 
-  renderImpactTable();
+  window.deleteImpactItem = (cat, id) => {
+    let type = 'activity';
+    if (cat === 'reduction') type = 'reduction';
+    else if (cat === 'offset') type = 'retirement';
+    window.ACNC.Ledger.deleteRecord(type, id);
+    renderImpactLedger();
+  };
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const jsonStr = window.ACNC.Ledger.exportJson();
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `acnc_impact_ledger_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  renderImpactLedger();
 }
 
-/* 5. VAULT & CONTRACTS PAGE ENGINE (/vault.html) */
+/* ==========================================================================
+   5. VAULT PAGE CONTROLLER (/vault.html)
+   ========================================================================== */
 function initVaultPage() {
-  if (!window.SelfHealing || !window.SelfHealing.Web3Vault) return;
-  const wallet = window.SelfHealing.Web3Vault.getWalletState();
-  const rewardState = window.SelfHealing.RewardEconomy.getState();
+  if (!window.ACNC) return;
 
-  const walletAddrEl = document.getElementById('vaultWalletAddress');
-  const walletStatusEl = document.getElementById('vaultConnectionStatus');
+  const wallet = window.ACNC.Web3Vault.getWalletState();
+  const summary = window.ACNC.Ledger.getLedgerSummary();
+
+  const walletAddressEl = document.getElementById('vaultWalletAddress');
+  const connStatusEl = document.getElementById('vaultConnectionStatus');
+  const claimableEl = document.getElementById('vaultClaimableAmount');
   const connectBtn = document.getElementById('vaultConnectBtn');
   const disconnectBtn = document.getElementById('vaultDisconnectBtn');
-  const claimableAmountEl = document.getElementById('vaultClaimableAmount');
-  const onChainBalanceEl = document.getElementById('vaultOnChainBalance');
+  const downloadJsonBtn = document.getElementById('downloadLedgerJsonBtn');
+  const receiptsListEl = document.getElementById('vaultReceiptsList');
 
   if (wallet.isConnected && wallet.address) {
-    if (walletAddrEl) walletAddrEl.textContent = wallet.address;
-    if (walletStatusEl) walletStatusEl.innerHTML = '<span class="truth-badge badge-testnet">CONNECTED (Amoy)</span>';
+    if (walletAddressEl) walletAddressEl.textContent = wallet.address;
+    if (connStatusEl) connStatusEl.innerHTML = `<span class="truth-badge badge-live">CONNECTED (${wallet.network})</span>`;
     if (connectBtn) connectBtn.style.display = 'none';
     if (disconnectBtn) disconnectBtn.style.display = 'inline-flex';
   } else {
-    if (walletAddrEl) walletAddrEl.textContent = 'Not Connected';
-    if (walletStatusEl) walletStatusEl.innerHTML = '<span class="truth-badge badge-pending">DISCONNECTED</span>';
+    if (walletAddressEl) walletAddressEl.textContent = 'Not Connected';
+    if (connStatusEl) connStatusEl.innerHTML = `<span class="truth-badge badge-pending">NO WALLET CONNECTED</span>`;
     if (connectBtn) connectBtn.style.display = 'inline-flex';
     if (disconnectBtn) disconnectBtn.style.display = 'none';
   }
 
-  if (claimableAmountEl) claimableAmountEl.textContent = `${rewardState.claimableVTime} VTIME`;
-  if (onChainBalanceEl) onChainBalanceEl.textContent = `${rewardState.claimedVTime} VTIME`;
+  if (claimableEl) claimableEl.textContent = `${summary.eligibleVTime.toFixed(2)} VTIME`;
 
   if (connectBtn) {
-    connectBtn.onclick = async () => {
-      await window.SelfHealing.Web3Vault.connectWallet();
+    connectBtn.addEventListener('click', async () => {
+      await window.ACNC.Web3Vault.connectWallet();
       initVaultPage();
-    };
+      initGlobalNavigation();
+    });
   }
 
   if (disconnectBtn) {
-    disconnectBtn.onclick = () => {
-      window.SelfHealing.Web3Vault.disconnectWallet();
+    disconnectBtn.addEventListener('click', () => {
+      window.ACNC.Web3Vault.disconnectWallet();
       initVaultPage();
-    };
-  }
-
-  const claimsTableBody = document.getElementById('vaultClaimsTableBody');
-  if (claimsTableBody) {
-    try {
-      const history = JSON.parse(localStorage.getItem('acnc_ledger_history_v3') || '[]');
-      if (history.length === 0) {
-        claimsTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-dim); padding: 2rem;">No pending sessions to claim.</td></tr>`;
-      } else {
-        claimsTableBody.innerHTML = history.slice(0, 8).map(h => `
-          <tr>
-            <td style="color: var(--accent-gold); font-weight: 700;">${h.receiptId}</td>
-            <td>${h.durationFormatted}</td>
-            <td style="color: var(--accent-cyan); font-weight: 700;">${h.calculation.finalVTime} VTIME</td>
-            <td><span class="truth-badge ${h.claimStatus === 'CLAIMED_TESTNET' ? 'badge-verified' : 'badge-testnet'}">${h.claimStatus || 'CLAIMABLE'}</span></td>
-            <td>
-              ${h.claimStatus === 'CLAIMED_TESTNET'
-                ? '<button class="btn btn-glass btn-sm" disabled><i class="fa-solid fa-check"></i> Claimed</button>'
-                : `<button class="btn btn-gold btn-sm submit-claim-btn" data-receipt="${h.receiptId}" data-amount="${h.calculation.finalVTime}"><i class="fa-solid fa-paper-plane"></i> Submit EIP-712</button>`
-              }
-            </td>
-          </tr>
-        `).join('');
-
-        document.querySelectorAll('.submit-claim-btn').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            const receiptId = btn.dataset.receipt;
-            const amount = parseFloat(btn.dataset.amount);
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
-            const res = await window.SelfHealing.Web3Vault.submitEIP712Claim(receiptId, amount);
-            if (res.success) {
-              alert(`EIP-712 Claim Confirmed on ${res.network}!\nTx Hash: ${res.txHash}`);
-              initVaultPage();
-            } else {
-              alert(`Claim failed: ${res.reason}`);
-              btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit EIP-712';
-            }
-          });
-        });
-      }
-    } catch (e) {}
-  }
-
-  const verifyBtn = document.getElementById('verifyReceiptHashBtn');
-  const hashInput = document.getElementById('verifyReceiptHashInput');
-  const resultBox = document.getElementById('receiptVerificationResult');
-
-  if (verifyBtn && hashInput && resultBox) {
-    verifyBtn.addEventListener('click', () => {
-      const hash = hashInput.value.trim();
-      if (!hash) return;
-
-      resultBox.style.display = 'block';
-      try {
-        const history = JSON.parse(localStorage.getItem('acnc_ledger_history_v3') || '[]');
-        const match = history.find(h => h.receiptId === hash || h.evidenceSealHash === hash);
-        if (match) {
-          resultBox.innerHTML = `
-            <div style="color: var(--accent-lime); font-weight: 700; margin-bottom: 0.35rem;"><i class="fa-solid fa-circle-check"></i> Receipt Verified Valid</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">
-              Session ID: <strong>${match.sessionGuid}</strong> | Duration: <strong>${match.durationFormatted}</strong> | Value: <strong>${match.calculation.finalVTime} VTIME</strong><br>
-              Seal Hash: <code style="color: var(--accent-gold);">${match.evidenceSealHash}</code>
-            </div>
-          `;
-        } else {
-          resultBox.innerHTML = `
-            <div style="color: var(--accent-gold); font-weight: 700;"><i class="fa-solid fa-circle-exclamation"></i> Pre-Mint / Local Hash Validated</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Matches canonical Polygon Amoy SHA-256 test vector format.</div>
-          `;
-        }
-      } catch (e) {}
+      initGlobalNavigation();
     });
-  }
-}
-
-/* 6. RELICS & GALLERY PAGE ENGINE (/relics.html) */
-function initRelicsPage() {
-  const grid = document.getElementById('relicsGalleryGrid');
-  if (!grid) return;
-
-  grid.innerHTML = '';
-  for (let i = 1; i <= 15; i++) {
-    const card = document.createElement('div');
-    card.className = 'shared-asset-card';
-    card.dataset.id = i;
-    card.dataset.src = `images/kb_${i}.jpg`;
-    card.dataset.title = `Surreal Timepiece Relic #${i < 10 ? '0' + i : i}`;
-    card.dataset.hash = `0x8ace${(i * 1042).toString(16)}b7392a10427845f91e`;
-
-    card.innerHTML = `
-      <img src="images/kb_${i}.jpg" alt="Surreal Timepiece Relic ${i}" class="shared-asset-img" loading="lazy" />
-      <div class="liquid-watermark">
-        <span class="watermark-brand">ALL COUCH NO CAGE</span>
-        <span>LOCAL SEAL #${i < 10 ? '0' + i : i}</span>
-      </div>
-    `;
-
-    card.addEventListener('click', () => openRelicLightbox(card.dataset));
-    grid.appendChild(card);
-  }
-
-  const forgeBtn = document.getElementById('relicForgeBtn');
-  const forgeInput = document.getElementById('relicForgeMilestoneInput');
-  const forgeStatus = document.getElementById('relicForgeStatus');
-  const badgeTag = document.getElementById('relicBadgeTag');
-
-  if (forgeBtn && forgeInput && forgeStatus) {
-    forgeBtn.addEventListener('click', () => {
-      const milestone = forgeInput.value.trim() || '50m Deep Sprint';
-      if (badgeTag) badgeTag.textContent = milestone.toUpperCase();
-      forgeStatus.innerHTML = '<i class="fa-solid fa-circle-check text-lime"></i> Milestone Relic Generated! (DEMO PREVIEW)';
-    });
-  }
-}
-
-let activeRelicData = null;
-function openRelicLightbox(data) {
-  activeRelicData = data;
-  const modal = document.getElementById('relicLightboxModal');
-  const title = document.getElementById('relicLightboxTitle');
-  const img = document.getElementById('relicLightboxImg');
-  const hash = document.getElementById('relicLightboxHash');
-  const downloadLink = document.getElementById('relicDownloadAssetBtn');
-  const downloadJsonBtn = document.getElementById('relicDownloadJsonReceiptBtn');
-  const closeBtn = document.getElementById('closeRelicLightboxBtn');
-
-  if (title) title.textContent = data.title;
-  if (img) img.src = data.src;
-  if (hash) hash.textContent = `Evidence Hash: ${data.hash}`;
-  if (downloadLink) {
-    downloadLink.href = data.src;
-    downloadLink.download = `SURREAL_TIME_RELIC_${data.id}.jpg`;
   }
 
   if (downloadJsonBtn) {
-    downloadJsonBtn.onclick = () => {
-      const receiptObj = {
-        artifactName: data.title,
-        evidenceSealHash: data.hash,
-        verificationStatus: 'TESTNET_PRE_MINT (Polygon Amoy Stage)',
-        deploymentStage: 'Smart Contract Implemented / Amoy Batch Mint Pending',
-        timestamp: new Date().toISOString(),
-        network: 'Polygon Amoy (Chain ID 80002)',
-        disclaimer: 'Non-medical, verifiable self-mastery visual artifact.'
-      };
-      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receiptObj, null, 2));
-      const dlAnchor = document.createElement('a');
-      dlAnchor.setAttribute('href', dataStr);
-      dlAnchor.setAttribute('download', `EVIDENCE_SEAL_${data.id}.json`);
-      document.body.appendChild(dlAnchor);
-      dlAnchor.click();
-      dlAnchor.remove();
-    };
+    downloadJsonBtn.addEventListener('click', () => {
+      const jsonStr = window.ACNC.Ledger.exportJson();
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `acnc_verified_ledger_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
   }
 
-  if (closeBtn) closeBtn.onclick = () => modal.classList.remove('active');
-  if (modal) {
-    modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
-    modal.classList.add('active');
+  if (receiptsListEl) {
+    const focusSessions = window.ACNC.Ledger.getFocusSessions();
+    const retirements = window.ACNC.Ledger.getRetirements();
+    const all = [...focusSessions, ...retirements];
+
+    if (all.length === 0) {
+      receiptsListEl.innerHTML = `
+        <div style="text-align: center; padding: 2rem; color: var(--text-dim); font-family: var(--font-mono); font-size: 0.85rem;">
+          NO ACTIVITY RECORDED YET<br />
+          <span style="font-size: 0.75rem;">Complete a focus sprint or log an offset retirement to generate verifiable cryptographic receipts.</span>
+        </div>
+      `;
+    } else {
+      receiptsListEl.innerHTML = all.map(r => {
+        const id = r.receipt_id || 'RCPT-PROV';
+        const type = r.type === 'registry_retirement' ? 'Offset Retirement Certificate' : 'Focus Session Receipt';
+        return `
+          <div class="glass-panel" style="padding: 1rem 1.25rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <div style="font-weight: 800; font-family: var(--font-mono); color: var(--accent-gold);">${id}</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">${type} • ${r.timestamp}</div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <span class="evidence-hash-pill"><i class="fa-solid fa-fingerprint"></i> ${r.evidence_hash.substring(0, 16)}...</span>
+              <span class="truth-badge badge-live">SEALED</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
   }
 }
 
-/* 7. PROTOCOL DOCUMENTATION TABS ENGINE (/protocol.html) */
+/* ==========================================================================
+   6. RELICS PAGE CONTROLLER (/relics.html)
+   ========================================================================== */
+function initRelicsPage() {
+  if (!window.ACNC) return;
+  const summary = window.ACNC.Ledger.getLedgerSummary();
+  const relicsEmptyNotice = document.getElementById('relicsEmptyNotice');
+  const relicsGrid = document.getElementById('relicsGrid');
+
+  if (!summary.hasData) {
+    if (relicsEmptyNotice) relicsEmptyNotice.style.display = 'block';
+    if (relicsGrid) relicsGrid.style.display = 'none';
+  } else {
+    if (relicsEmptyNotice) relicsEmptyNotice.style.display = 'none';
+    if (relicsGrid) relicsGrid.style.display = 'grid';
+  }
+}
+
+/* ==========================================================================
+   7. PROTOCOL PAGE CONTROLLER (/protocol.html)
+   ========================================================================== */
 function initProtocolPage() {
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabPanes = document.querySelectorAll('.tab-pane');
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panes = document.querySelectorAll('.tab-pane');
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.dataset.tab;
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabPanes.forEach(p => p.classList.remove('active'));
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panes.forEach(p => p.classList.remove('active'));
 
-      btn.classList.add('active');
+      tab.classList.add('active');
+      const targetId = tab.dataset.tab;
       const targetPane = document.getElementById(targetId);
       if (targetPane) targetPane.classList.add('active');
     });
   });
-}
-
-/* 8. SYSTEM DIAGNOSTICS & RESET UI */
-function initSystemDiagnosticsUI() {
-  const toggleBtn = document.getElementById('diagToggleBtn');
-  const modal = document.getElementById('diagModal');
-  const closeBtn = document.getElementById('closeDiagBtn');
-  const clearBtn = document.getElementById('clearStateBtn');
-  const logList = document.getElementById('diagLogList');
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      renderDiagLogs();
-      if (modal) modal.classList.add('active');
-    });
-  }
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      if (modal) modal.classList.remove('active');
-    });
-  }
-
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      if (confirm('Reset local focus session state, rewards, impact, and telemetry cache?')) {
-        try {
-          localStorage.clear();
-          location.reload();
-        } catch (e) {}
-      }
-    });
-  }
-
-  function renderDiagLogs() {
-    if (!logList) return;
-    try {
-      const logs = JSON.parse(localStorage.getItem('acnc_diagnostics_log_v3') || '[]');
-      if (logs.length === 0) {
-        logList.innerHTML = '<div style="color: var(--text-dim);">No active error events. System healthy.</div>';
-        return;
-      }
-      logList.innerHTML = logs.map(l => `
-        <div style="font-size: 0.72rem; margin-bottom: 0.35rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.25rem;">
-          <span style="color: var(--accent-gold);">[${l.timestamp.split('T')[1].split('.')[0]}]</span>
-          <span style="color: var(--accent-cyan); font-weight: 700;">${l.type}</span>: ${l.message}
-        </div>
-      `).join('');
-    } catch (e) {
-      logList.innerHTML = '<div>Telemetry storage ready.</div>';
-    }
-  }
 }

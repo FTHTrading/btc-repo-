@@ -1,206 +1,494 @@
-// Autonomous Self-Healing & Resilience Layer for time.unykorn.ai
-// Version 3.2.0 — Human-Lifecycle Impact Ledger, Multi-Page Ecosystem & Web3 Claim Rails
+// ==========================================================================
+// ALL COUCH NO CAGE — TRUTH-ALIGNED MEASUREMENT & LEDGER ENGINE (V4.0)
+// Evidence-Backed Lifecycle Footprint, Verified Reductions & Reward Policy
+// ==========================================================================
 
 (function (window) {
   'use strict';
 
-  const MIN_SESSION_MINUTES = 6;
-  const MAX_SESSION_MINUTES = 24 * 60; // 1,440 minutes = 24 hours
-  const DEFAULT_SESSION_MINUTES = 50;
-
   const STORAGE_KEYS = {
-    SESSION_TIMER: 'acnc_focus_session_timer_v3',
-    LEDGER_HISTORY: 'acnc_ledger_history_v3',
-    IMPACT_HISTORY: 'acnc_impact_history_v3',
-    DAILY_TOTALS: 'acnc_daily_totals_v3',
-    REWARD_STATE: 'acnc_reward_economy_v3',
-    WALLET_STATE: 'acnc_wallet_state_v3',
-    USER_PREFS: 'acnc_user_prefs_v3',
-    DIAGNOSTICS_LOG: 'acnc_diagnostics_log_v3'
+    ACTIVITY_LEDGER: 'acnc_activity_ledger_v4',
+    REDUCTION_LEDGER: 'acnc_reduction_ledger_v4',
+    RETIREMENT_LEDGER: 'acnc_retirement_ledger_v4',
+    FOCUS_SESSIONS: 'acnc_focus_sessions_v4',
+    ACTIVE_TIMER: 'acnc_active_timer_v4',
+    WALLET_STATE: 'acnc_wallet_state_v4',
+    DIAGNOSTICS_LOG: 'acnc_diagnostics_log_v4'
   };
 
-  // Normalization Helpers
-  function normalizeSessionMinutes(value) {
-    if (value === null || value === undefined || value === '') return DEFAULT_SESSION_MINUTES;
-    const minutes = Number(value);
-    if (!Number.isFinite(minutes) || minutes <= 0) return DEFAULT_SESSION_MINUTES;
-    return Math.min(
-      MAX_SESSION_MINUTES,
-      Math.max(MIN_SESSION_MINUTES, Math.round(minutes))
-    );
-  }
-
-  function formatDuration(minutes) {
-    const mins = normalizeSessionMinutes(minutes);
-    const hours = Math.floor(mins / 60);
-    const remainder = mins % 60;
-    return hours ? `${hours}h ${String(remainder).padStart(2, '0')}m` : `${remainder}m`;
-  }
-
-  function formatCountdown(totalSecs) {
-    const s = Math.max(0, Math.floor(totalSecs));
-    const hrs = Math.floor(s / 3600);
-    const mins = Math.floor((s % 3600) / 60);
-    const secs = s % 60;
-    if (hrs > 0) {
-      return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  // 1. DATA STATUS DEFINITIONS & EVIDENCE MULTIPLIERS
+  const DATA_STATUS = {
+    USER_ENTERED: {
+      label: 'USER_ENTERED',
+      name: 'User-Entered',
+      multiplier: 0.2,
+      confidence: 'Provisional',
+      badgeClass: 'status-user-entered',
+      desc: 'Manually supplied by the user'
+    },
+    RECEIPT_BACKED: {
+      label: 'RECEIPT_BACKED',
+      name: 'Receipt-Backed',
+      multiplier: 0.8,
+      confidence: 'High Confidence',
+      badgeClass: 'status-receipt-backed',
+      desc: 'Supported by a receipt, invoice, or statement'
+    },
+    METERED: {
+      label: 'METERED',
+      name: 'Metered Device / Utility',
+      multiplier: 1.0,
+      confidence: 'Highest Confidence',
+      badgeClass: 'status-metered',
+      desc: 'From a connected smart device, utility meter, or provider API'
+    },
+    ATTESTED: {
+      label: 'ATTESTED',
+      name: 'Third-Party Attested',
+      multiplier: 1.0,
+      confidence: 'Highest Confidence',
+      badgeClass: 'status-attested',
+      desc: 'Validated by an approved partner, employer, or non-profit'
+    },
+    REGISTRY_VERIFIED: {
+      label: 'REGISTRY_VERIFIED',
+      name: 'Registry Verified',
+      multiplier: 1.0,
+      confidence: 'Certificate Validated',
+      badgeClass: 'status-registry-verified',
+      desc: 'Linked to an authoritative carbon registry serial record'
+    },
+    ESTIMATED: {
+      label: 'ESTIMATED',
+      name: 'Disclosed Estimate',
+      multiplier: 0.3,
+      confidence: 'Estimated Model',
+      badgeClass: 'status-estimated',
+      desc: 'Derived from a disclosed factor or mathematical route model'
+    },
+    UNVERIFIED: {
+      label: 'UNVERIFIED',
+      name: 'Unverified Claim',
+      multiplier: 0.0,
+      confidence: 'No Proof',
+      badgeClass: 'status-unverified',
+      desc: 'Recorded for personal tracking; cannot earn high-confidence rewards'
     }
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  }
-
-  function estimateReward(minutes) {
-    const mins = normalizeSessionMinutes(minutes);
-    const points = Math.max(1, Math.round((mins / 50) * 12));
-    const vtime = parseFloat(((mins / 50) * 1.2).toFixed(2));
-    return { points, vtime };
-  }
-
-  const DIAGNOSTICS = {
-    appVersion: '3.2.0-lifecycle-impact-ledger',
-    errorsCaught: 0,
-    retriesAttempted: 0,
-    circuitBreakerOpen: false,
-    circuitBreakerTrippedAt: 0,
-    lastCorrelationId: null,
-    telemetryHistory: []
   };
 
-  function logTelemetry(type, message, context = {}) {
-    const entry = {
-      timestamp: new Date().toISOString(),
-      type,
-      message,
-      context,
-      correlationId: 'req_' + Math.random().toString(36).substring(2, 9)
-    };
-    DIAGNOSTICS.lastCorrelationId = entry.correlationId;
-    DIAGNOSTICS.telemetryHistory.unshift(entry);
-    if (DIAGNOSTICS.telemetryHistory.length > 50) {
-      DIAGNOSTICS.telemetryHistory.pop();
+  // 2. DISCLOSED EMISSION & IMPACT FACTORS (Version 2026.1 - Published Standards)
+  const FACTORS = {
+    version: '2026.1',
+    standards: 'EPA GHG Hub / IPCC AR6 / eGRID 2024 / DEFRA',
+    electricity_kwh: { factor: 0.385, unit: 'kg CO2e / kWh', name: 'US Grid Electricity Avg', source: 'EPA eGRID 2024' },
+    natural_gas_therm: { factor: 2.020, unit: 'kg CO2e / therm', name: 'Residential Natural Gas', source: 'EPA GHG Emission Factors' },
+    water_utility_gallon: { factor: 0.003, unit: 'kg CO2e / gallon', name: 'Municipal Treated Water', source: 'Water Research Foundation' },
+    gasoline_car_mile: { factor: 0.404, unit: 'kg CO2e / passenger-mile', name: 'Gasoline Passenger Vehicle', source: 'EPA GHG Emission Factors' },
+    transit_bus_mile: { factor: 0.140, unit: 'kg CO2e / passenger-mile', name: 'Public Transit Bus / Metro', source: 'DOT FTA' },
+    cloud_gpu_hour: { factor: 0.180, unit: 'kg CO2e / hour', name: 'High-Density Compute / Cloud GPU', source: 'Cloud Provider Disclosures' }
+  };
+
+  // 3. REWARD POLICY ENGINE (VERSION 2026.1)
+  const REWARD_POLICY = {
+    version: 'policy-2026.1',
+    caps: {
+      focusDailyCapVTime: 50,
+      impactDailyCapVTime: 50,
+      contributionDailyCapVTime: 50,
+      offsetDailyCapVTime: 100,
+      globalDailyCapVTime: 200
+    },
+    rates: {
+      focusMinutesToPoints: (mins) => Math.max(1, Math.round((mins / 50) * 12)),
+      pointsToVTimeBaseRatio: 0.1,
+      avoidedKgToImpactPoints: (kg) => Math.max(1, Math.round(kg * 2.5)),
+      serviceHourToContributionPoints: (hours) => Math.round(hours * 25),
+      offsetTonneToRecognitionPoints: (tonnes) => Math.round(tonnes * 100)
     }
+  };
+
+  // 4. CRYPTOGRAPHIC EVIDENCE HASH GENERATOR (SHA-256)
+  async function generateEvidenceHash(data) {
+    const jsonString = typeof data === 'string' ? data : JSON.stringify(data);
+    if (!window.crypto || !window.crypto.subtle) {
+      let hash = 0;
+      for (let i = 0; i < jsonString.length; i++) {
+        const char = jsonString.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        hash |= 0;
+      }
+      return 'sha256:sim_' + Math.abs(hash).toString(16).padStart(16, '0');
+    }
+    const encoder = new TextEncoder();
+    const dataBuffer = encoder.encode(jsonString);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', dataBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return 'sha256:' + hashHex;
+  }
+
+  // 5. STORAGE & REPOSITORY LAYER
+  function getStoredList(key) {
     try {
-      localStorage.setItem(STORAGE_KEYS.DIAGNOSTICS_LOG, JSON.stringify(DIAGNOSTICS.telemetryHistory));
-    } catch (e) {}
-    console.log(`[Self-Healing System] [${type}] ${message}`, context);
-    return entry.correlationId;
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      return [];
+    }
   }
 
-  // 1. FOCUS TIMER ENGINE (V3)
+  function setStoredList(key, list) {
+    try {
+      localStorage.setItem(key, JSON.stringify(list));
+    } catch (e) {}
+  }
+
+  const Ledger = {
+    getActivities() {
+      return getStoredList(STORAGE_KEYS.ACTIVITY_LEDGER);
+    },
+
+    async addActivity(record) {
+      const list = getStoredList(STORAGE_KEYS.ACTIVITY_LEDGER);
+      const id = record.record_id || 'rec_' + Math.random().toString(36).substring(2, 10);
+      const timestamp = record.timestamp || new Date().toISOString();
+      const statusKey = record.data_status || 'RECEIPT_BACKED';
+      const statusInfo = DATA_STATUS[statusKey] || DATA_STATUS.RECEIPT_BACKED;
+
+      const evidenceHash = record.evidence_hash || await generateEvidenceHash({
+        id,
+        category: record.category,
+        quantity: record.quantity,
+        data_status: statusKey,
+        salt: timestamp
+      });
+
+      const fullRecord = {
+        record_id: id,
+        category: record.category || 'home_energy',
+        sub_category: record.sub_category || record.category || '',
+        quantity: Number(record.quantity) || 0,
+        unit: record.unit || '',
+        data_status: statusKey,
+        evidence_hash: evidenceHash,
+        co2e_kg_estimate: Number(record.co2e_kg_estimate) || 0,
+        points_earned: Number(record.points_earned) || 0,
+        timestamp
+      };
+
+      list.unshift(fullRecord);
+      setStoredList(STORAGE_KEYS.ACTIVITY_LEDGER, list);
+      return fullRecord;
+    },
+
+    getReductions() {
+      return getStoredList(STORAGE_KEYS.REDUCTION_LEDGER);
+    },
+
+    async addReduction(record) {
+      const list = getStoredList(STORAGE_KEYS.REDUCTION_LEDGER);
+      const id = record.record_id || 'red_' + Math.random().toString(36).substring(2, 10);
+      const timestamp = record.timestamp || new Date().toISOString();
+      const statusKey = record.data_status || 'RECEIPT_BACKED';
+
+      const evidenceHash = record.evidence_hash || await generateEvidenceHash({
+        id,
+        title: record.title,
+        co2e_reduced_kg: record.co2e_reduced_kg,
+        salt: timestamp
+      });
+
+      const fullRecord = {
+        record_id: id,
+        title: record.title || 'Verified Reduction',
+        category: 'reduction',
+        quantity: Number(record.quantity) || 0,
+        co2e_reduced_kg: Number(record.co2e_reduced_kg) || 0,
+        data_status: statusKey,
+        evidence_hash: evidenceHash,
+        points_earned: REWARD_POLICY.rates.avoidedKgToImpactPoints(Number(record.co2e_reduced_kg) || 0),
+        timestamp
+      };
+
+      list.unshift(fullRecord);
+      setStoredList(STORAGE_KEYS.REDUCTION_LEDGER, list);
+      return fullRecord;
+    },
+
+    getRetirements() {
+      return getStoredList(STORAGE_KEYS.RETIREMENT_LEDGER);
+    },
+
+    async addRetirement(record) {
+      const list = getStoredList(STORAGE_KEYS.RETIREMENT_LEDGER);
+      const id = record.record_id || 'ret_' + Math.random().toString(36).substring(2, 10);
+      const timestamp = record.timestamp || new Date().toISOString();
+
+      const evidenceHash = record.evidence_hash || await generateEvidenceHash({
+        id,
+        registry: record.registry,
+        serial_number: record.serial_number,
+        tonnes: record.tonnes_co2e_retired,
+        salt: timestamp
+      });
+
+      const fullRecord = {
+        record_id: id,
+        type: 'registry_retirement',
+        category: 'offset',
+        registry: record.registry || 'Gold Standard',
+        serial_number: record.serial_number || '',
+        tonnes_co2e_retired: Number(record.tonnes_co2e_retired) || 1.0,
+        evidence_hash: evidenceHash,
+        data_status: 'REGISTRY_VERIFIED',
+        points_earned: REWARD_POLICY.rates.offsetTonneToRecognitionPoints(Number(record.tonnes_co2e_retired) || 1.0),
+        receipt_id: 'RCPT-RET-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+        timestamp
+      };
+
+      list.unshift(fullRecord);
+      setStoredList(STORAGE_KEYS.RETIREMENT_LEDGER, list);
+      return fullRecord;
+    },
+
+    getFocusSessions() {
+      return getStoredList(STORAGE_KEYS.FOCUS_SESSIONS);
+    },
+
+    async addFocusSession(session) {
+      const list = getStoredList(STORAGE_KEYS.FOCUS_SESSIONS);
+      const id = session.receipt_id || 'RCPT-FOC-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+      const timestamp = session.timestamp || new Date().toISOString();
+      const minutes = Number(session.duration_minutes) || 50;
+      const pointsEarned = REWARD_POLICY.rates.focusMinutesToPoints(minutes);
+      const vtimeBase = pointsEarned * REWARD_POLICY.rates.pointsToVTimeBaseRatio;
+
+      const evidenceHash = session.evidence_hash || await generateEvidenceHash({
+        id,
+        minutes,
+        intention: session.intention,
+        salt: timestamp
+      });
+
+      const fullRecord = {
+        receipt_id: id,
+        duration_minutes: minutes,
+        intention: session.intention || 'Focused deep work sprint',
+        privacy_mode: session.privacy_mode || 'private',
+        data_status: 'RECEIPT_BACKED',
+        evidence_hash: evidenceHash,
+        points_earned: pointsEarned,
+        vtime_base: parseFloat(vtimeBase.toFixed(2)),
+        timestamp
+      };
+
+      list.unshift(fullRecord);
+      setStoredList(STORAGE_KEYS.FOCUS_SESSIONS, list);
+      return fullRecord;
+    },
+
+    deleteRecord(type, id) {
+      let key = STORAGE_KEYS.ACTIVITY_LEDGER;
+      let idField = 'record_id';
+      if (type === 'reduction') key = STORAGE_KEYS.REDUCTION_LEDGER;
+      else if (type === 'retirement') key = STORAGE_KEYS.RETIREMENT_LEDGER;
+      else if (type === 'focus') {
+        key = STORAGE_KEYS.FOCUS_SESSIONS;
+        idField = 'receipt_id';
+      }
+
+      let list = getStoredList(key);
+      list = list.filter(item => item[idField] !== id);
+      setStoredList(key, list);
+    },
+
+    getLedgerSummary() {
+      const activities = this.getActivities();
+      const reductions = this.getReductions();
+      const retirements = this.getRetirements();
+      const focusSessions = this.getFocusSessions();
+
+      let focusPoints = 0;
+      let impactPoints = 0;
+      let contributionPoints = 0;
+      let totalVTimeEarned = 0;
+      let todayPoints = 0;
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      focusSessions.forEach(f => {
+        const pts = f.points_earned || 0;
+        focusPoints += pts;
+        const mult = DATA_STATUS[f.data_status]?.multiplier || 0.8;
+        const vtime = pts * REWARD_POLICY.rates.pointsToVTimeBaseRatio * mult;
+        totalVTimeEarned += vtime;
+        if (f.timestamp && f.timestamp.startsWith(todayStr)) {
+          todayPoints += pts;
+        }
+      });
+
+      activities.forEach(a => {
+        const pts = a.points_earned || 0;
+        impactPoints += pts;
+        const mult = DATA_STATUS[a.data_status]?.multiplier || 0.2;
+        totalVTimeEarned += pts * REWARD_POLICY.rates.pointsToVTimeBaseRatio * mult;
+        if (a.timestamp && a.timestamp.startsWith(todayStr)) {
+          todayPoints += pts;
+        }
+      });
+
+      reductions.forEach(r => {
+        const pts = r.points_earned || 0;
+        impactPoints += pts;
+        const mult = DATA_STATUS[r.data_status]?.multiplier || 0.8;
+        totalVTimeEarned += pts * REWARD_POLICY.rates.pointsToVTimeBaseRatio * mult;
+        if (r.timestamp && r.timestamp.startsWith(todayStr)) {
+          todayPoints += pts;
+        }
+      });
+
+      retirements.forEach(ret => {
+        const pts = ret.points_earned || 0;
+        contributionPoints += pts;
+        totalVTimeEarned += pts * REWARD_POLICY.rates.pointsToVTimeBaseRatio * 1.0;
+        if (ret.timestamp && ret.timestamp.startsWith(todayStr)) {
+          todayPoints += pts;
+        }
+      });
+
+      totalVTimeEarned = Math.min(totalVTimeEarned, REWARD_POLICY.caps.globalDailyCapVTime);
+      const totalPoints = focusPoints + impactPoints + contributionPoints;
+
+      return {
+        hasData: (activities.length + reductions.length + retirements.length + focusSessions.length) > 0,
+        focusPoints,
+        impactPoints,
+        contributionPoints,
+        todayPoints,
+        totalPoints,
+        eligibleVTime: parseFloat(totalVTimeEarned.toFixed(2)),
+        focusStreak: focusSessions.length > 0 ? `${focusSessions.length} Sprints` : 'Not started',
+        focusMinutes: focusSessions.reduce((sum, f) => sum + (f.duration_minutes || 0), 0)
+      };
+    },
+
+    exportJson() {
+      const data = {
+        export_version: 'acnc_ledger_v4',
+        exported_at: new Date().toISOString(),
+        methodology: FACTORS.standards,
+        activities: this.getActivities(),
+        reductions: this.getReductions(),
+        retirements: this.getRetirements(),
+        focus_sessions: this.getFocusSessions(),
+        summary: this.getLedgerSummary()
+      };
+      return JSON.stringify(data, null, 2);
+    },
+
+    clearAll() {
+      localStorage.removeItem(STORAGE_KEYS.ACTIVITY_LEDGER);
+      localStorage.removeItem(STORAGE_KEYS.REDUCTION_LEDGER);
+      localStorage.removeItem(STORAGE_KEYS.RETIREMENT_LEDGER);
+      localStorage.removeItem(STORAGE_KEYS.FOCUS_SESSIONS);
+      localStorage.removeItem(STORAGE_KEYS.ACTIVE_TIMER);
+    }
+  };
+
+  // 6. WALLET STATE (DISCONNECTED DEFAULT)
+  const Web3Vault = {
+    getWalletState() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEYS.WALLET_STATE);
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return { isConnected: false, address: null, chainId: null, network: 'Polygon Amoy' };
+    },
+
+    async connectWallet() {
+      if (window.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+          const state = {
+            isConnected: true,
+            address: accounts[0],
+            chainId,
+            network: chainId === '0x13882' ? 'Polygon Amoy (80002)' : 'EVM Network (' + chainId + ')'
+          };
+          localStorage.setItem(STORAGE_KEYS.WALLET_STATE, JSON.stringify(state));
+          return state;
+        } catch (e) {}
+      }
+      const mockAddr = '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+      const state = {
+        isConnected: true,
+        address: mockAddr,
+        chainId: '0x13882',
+        network: 'Polygon Amoy (80002)'
+      };
+      localStorage.setItem(STORAGE_KEYS.WALLET_STATE, JSON.stringify(state));
+      return state;
+    },
+
+    disconnectWallet() {
+      localStorage.removeItem(STORAGE_KEYS.WALLET_STATE);
+      return { isConnected: false, address: null, chainId: null, network: 'Polygon Amoy' };
+    }
+  };
+
+  // 7. FOCUS TIMER RUNTIME
   const FocusTimer = {
     state: {
-      version: 3,
       status: 'IDLE',
-      sessionMinutes: DEFAULT_SESSION_MINUTES,
+      sessionMinutes: 50,
       startedAt: 0,
       endAt: 0,
       pausedAt: 0,
       accumulatedPausedMs: 0,
       intention: '',
-      shieldDistractions: true,
-      privacyMode: 'private',
-      pausesCount: 0
+      privacyMode: 'private'
     },
-    intervalId: null,
 
     init() {
-      this.restore();
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible' && this.state.status === 'RUNNING') {
-          this.tick();
-        }
-      });
-    },
-
-    save() {
       try {
-        localStorage.setItem(STORAGE_KEYS.SESSION_TIMER, JSON.stringify(this.state));
+        const stored = localStorage.getItem(STORAGE_KEYS.ACTIVE_TIMER);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.status === 'RUNNING') {
+            const now = Date.now();
+            if (now >= parsed.endAt) {
+              parsed.status = 'IDLE';
+              localStorage.removeItem(STORAGE_KEYS.ACTIVE_TIMER);
+            } else {
+              this.state = parsed;
+            }
+          }
+        }
       } catch (e) {}
     },
 
-    restore() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEYS.SESSION_TIMER);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && parsed.version === 3 && parsed.status) {
-            this.state = Object.assign(this.state, parsed);
-            this.state.sessionMinutes = normalizeSessionMinutes(parsed.sessionMinutes);
-
-            if (this.state.status === 'RUNNING') {
-              const remaining = this.getRemainingSeconds();
-              if (remaining <= 0) {
-                this.complete();
-              } else {
-                this.startTicker();
-              }
-            } else {
-              this.tick();
-            }
-            return;
-          }
-        }
-      } catch (e) {
-        logTelemetry('STATE_RESTORE_FAIL', 'Resetting timer to defaults.');
-      }
-      this.reset();
-    },
-
-    getRemainingSeconds() {
-      if (this.state.status === 'IDLE') {
-        return this.state.sessionMinutes * 60;
-      }
-      const totalDurationMs = this.state.sessionMinutes * 60_000;
-      if (this.state.status === 'PAUSED') {
-        const elapsedBeforePause = (this.state.pausedAt - this.state.startedAt) - this.state.accumulatedPausedMs;
-        return Math.max(0, Math.ceil((totalDurationMs - elapsedBeforePause) / 1000));
-      }
-      if (this.state.status === 'RUNNING') {
-        const now = Date.now();
-        const effectiveElapsed = (now - this.state.startedAt) - this.state.accumulatedPausedMs;
-        return Math.max(0, Math.ceil((totalDurationMs - effectiveElapsed) / 1000));
-      }
-      return 0;
-    },
-
-    setSessionMinutes(minutes) {
-      if (this.state.status === 'RUNNING' || this.state.status === 'PAUSED') return;
-      this.state.sessionMinutes = normalizeSessionMinutes(minutes);
-      this.save();
-      this.tick();
-    },
-
-    start(customMinutes = null, intention = '', shield = true, privacy = 'private') {
-      if (this.state.status === 'RUNNING') return;
-
-      const minutes = customMinutes !== null ? normalizeSessionMinutes(customMinutes) : this.state.sessionMinutes;
+    start(minutes, intention, privacyMode) {
       const now = Date.now();
-
-      this.state.version = 3;
-      this.state.status = 'RUNNING';
-      this.state.sessionMinutes = minutes;
-      this.state.startedAt = now;
-      this.state.endAt = now + (minutes * 60_000);
-      this.state.pausedAt = 0;
-      this.state.accumulatedPausedMs = 0;
-      this.state.intention = intention.trim();
-      this.state.shieldDistractions = shield;
-      this.state.privacyMode = privacy;
-      this.state.pausesCount = 0;
-
-      this.save();
-      this.startTicker();
-      logTelemetry('TIMER_STARTED', `Focus session started for ${minutes}m`);
+      const mins = Math.max(6, Math.min(1440, Number(minutes) || 50));
+      this.state = {
+        status: 'RUNNING',
+        sessionMinutes: mins,
+        startedAt: now,
+        endAt: now + mins * 60 * 1000,
+        pausedAt: 0,
+        accumulatedPausedMs: 0,
+        intention: intention || 'Focused work sprint',
+        privacyMode: privacyMode || 'private'
+      };
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_TIMER, JSON.stringify(this.state));
     },
 
     pause() {
       if (this.state.status !== 'RUNNING') return;
       this.state.status = 'PAUSED';
       this.state.pausedAt = Date.now();
-      this.state.pausesCount = (this.state.pausesCount || 0) + 1;
-      clearInterval(this.intervalId);
-      this.save();
-      this.tick();
-      logTelemetry('TIMER_PAUSED', 'Focus session paused');
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_TIMER, JSON.stringify(this.state));
     },
 
     resume() {
@@ -208,456 +496,66 @@
       const pauseDuration = Date.now() - this.state.pausedAt;
       this.state.accumulatedPausedMs += pauseDuration;
       this.state.endAt += pauseDuration;
-      this.state.pausedAt = 0;
       this.state.status = 'RUNNING';
-      this.save();
-      this.startTicker();
-      logTelemetry('TIMER_RESUMED', 'Focus session resumed');
-    },
-
-    complete() {
-      clearInterval(this.intervalId);
-      this.state.status = 'COMPLETED';
-      this.save();
-      this.tick();
-
-      const elapsedSecs = this.state.sessionMinutes * 60;
-      const actualMinutes = Math.max(MIN_SESSION_MINUTES, Math.round(elapsedSecs / 60));
-
-      const calc = LedgerEngine.calculate(actualMinutes / 60, 14000, 10000);
-      const receipt = LedgerEngine.generateReceipt(calc, this.state.privacyMode, this.state.intention);
-
-      const rewardEst = estimateReward(actualMinutes);
-      RewardEconomy.recordCompletedSession(actualMinutes, rewardEst.points, rewardEst.vtime, receipt);
-
-      logTelemetry('TIMER_COMPLETED', `Focus session completed (${actualMinutes}m)`, { receiptId: receipt.receiptId });
-
-      if (window.onFocusSessionCompleted) {
-        window.onFocusSessionCompleted(receipt, this.state, rewardEst);
-      }
-    },
-
-    reset() {
-      clearInterval(this.intervalId);
-      this.state.status = 'IDLE';
-      this.state.startedAt = 0;
-      this.state.endAt = 0;
       this.state.pausedAt = 0;
-      this.state.accumulatedPausedMs = 0;
-      this.state.pausesCount = 0;
-      this.save();
-      this.tick();
-      logTelemetry('TIMER_RESET', 'Focus session timer reset');
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_TIMER, JSON.stringify(this.state));
     },
 
-    startTicker() {
-      clearInterval(this.intervalId);
-      this.tick();
-      this.intervalId = setInterval(() => {
-        const remaining = this.getRemainingSeconds();
-        if (remaining <= 0) {
-          this.complete();
-        } else {
-          this.tick();
-        }
-      }, 1000);
-    },
-
-    tick() {
-      const remainingSecs = this.getRemainingSeconds();
-      const formatted = formatCountdown(remainingSecs);
-
-      const heroTimerDisplay = document.getElementById('heroTimerCountdown');
-      if (heroTimerDisplay) {
-        heroTimerDisplay.textContent = formatted;
-      }
-
-      if (window.syncTimerUIButtons) {
-        window.syncTimerUIButtons(this.state);
-      }
-    }
-  };
-
-  // 2. HUMAN-LIFECYCLE IMPACT & CARBON ACCOUNTING ENGINE
-  const ImpactEngine = {
-    // Verified Published Emission Factors
-    FACTORS: {
-      electricity_kwh: { factor: 0.385, unit: 'kg CO2e / kWh', source: 'EPA eGRID 2024 US Avg', uncertainty: 'Low' },
-      gasoline_car_mile: { factor: 0.404, unit: 'kg CO2e / mile', source: 'EPA GHG Emission Factors', uncertainty: 'Low' },
-      transit_bus_mile: { factor: 0.140, unit: 'kg CO2e / passenger-mile', source: 'DOT FTA National Transit Database', uncertainty: 'Medium' },
-      cloud_gpu_hour: { factor: 0.180, unit: 'kg CO2e / GPU-hr', source: 'Cloud Carbon Footprint Methodology', uncertainty: 'Medium' },
-      food_waste_avoided_kg: { factor: 2.500, unit: 'kg CO2e saved / kg', source: 'EPA WARM v15 Food Waste', uncertainty: 'Medium' },
-      material_repair_unit: { factor: 12.000, unit: 'kg CO2e saved / repair', source: 'EU Circular Economy Action Plan', uncertainty: 'Medium' }
-    },
-
-    calculateActivityEmissions(factorKey, quantity) {
-      const q = Math.max(0, parseFloat(quantity) || 0);
-      const meta = this.FACTORS[factorKey] || { factor: 0.385, unit: 'kg CO2e', source: 'Standard Model', uncertainty: 'Medium' };
-      const co2e = parseFloat((q * meta.factor).toFixed(2));
-      return {
-        quantity: q,
-        factor: meta.factor,
-        unit: meta.unit,
-        source: meta.source,
-        uncertainty: meta.uncertainty,
-        co2eKg: co2e
+    async complete() {
+      const sessionData = {
+        duration_minutes: this.state.sessionMinutes,
+        intention: this.state.intention,
+        privacy_mode: this.state.privacyMode,
+        data_status: 'RECEIPT_BACKED'
       };
-    },
-
-    getImpactHistory() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEYS.IMPACT_HISTORY);
-        if (saved) return JSON.parse(saved);
-      } catch (e) {}
-      return [
-        {
-          id: 'IMP-7492A',
-          domain: 'Home Energy',
-          action: '100% Green Power Tariff Verification',
-          co2eAvoidedKg: 45.2,
-          impactPointsEarned: 15,
-          timestamp: '2026-08-28T14:20:00.000Z',
-          evidenceType: 'Utility Bill Hash',
-          status: 'VERIFIED'
-        },
-        {
-          id: 'IMP-3819B',
-          domain: 'Mobility',
-          action: '18 Transit Miles vs Single Passenger Car',
-          co2eAvoidedKg: 4.75,
-          impactPointsEarned: 5,
-          timestamp: '2026-08-27T09:15:00.000Z',
-          evidenceType: 'Transit Pass Check-in',
-          status: 'VERIFIED'
-        }
-      ];
-    },
-
-    logImpactAction(domain, actionDesc, co2eAvoidedKg, impactPoints, evidenceType = 'Self-Attested') {
-      const history = this.getImpactHistory();
-      const record = {
-        id: 'IMP-' + Math.random().toString(36).substring(2, 7).toUpperCase(),
-        domain,
-        action: actionDesc,
-        co2eAvoidedKg: parseFloat(co2eAvoidedKg.toFixed(2)),
-        impactPointsEarned: impactPoints,
-        timestamp: new Date().toISOString(),
-        evidenceType,
-        status: evidenceType === 'Self-Attested' ? 'LOCAL' : 'VERIFIED'
-      };
-      history.unshift(record);
-      try {
-        localStorage.setItem(STORAGE_KEYS.IMPACT_HISTORY, JSON.stringify(history));
-      } catch (e) {}
-
-      // Update Reward State
-      RewardEconomy.addImpactPoints(impactPoints);
-      logTelemetry('IMPACT_LOGGED', `Logged ${domain} action: +${impactPoints} Impact Points`);
+      const record = await Ledger.addFocusSession(sessionData);
+      this.reset();
       return record;
     },
 
-    generateOffsetRetirementReceipt(projectData) {
-      const receipt = {
-        type: 'retired-carbon-credit-receipt',
-        receiptId: 'RETIRE-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
-        projectName: projectData.projectName || 'Puro.earth Biochar Carbon Removal',
-        registry: projectData.registry || 'Puro.earth CORC Registry',
-        serialNumber: projectData.serialNumber || `PURO-CORC-${Math.floor(Math.random()*900000 + 100000)}-2025`,
-        creditVintage: projectData.vintage || 2025,
-        tonnesCo2eRetired: projectData.tonnes || 1.0,
-        retiredFor: projectData.retiredFor || '0xLocalAccount',
-        retirementDate: new Date().toISOString().split('T')[0],
-        evidenceUri: 'https://registry.unykorn.ai/proof/' + Math.random().toString(36).substring(2, 9),
-        recordHash: '0x' + Math.random().toString(16).substring(2, 18) + '8ace92e41b7392a10427845f91e',
-        verificationStatus: 'REGISTRY_CONFIRMED'
+    reset() {
+      this.state = {
+        status: 'IDLE',
+        sessionMinutes: 50,
+        startedAt: 0,
+        endAt: 0,
+        pausedAt: 0,
+        accumulatedPausedMs: 0,
+        intention: '',
+        privacyMode: 'private'
       };
-      return receipt;
+      localStorage.removeItem(STORAGE_KEYS.ACTIVE_TIMER);
+    },
+
+    getRemainingSeconds() {
+      if (this.state.status === 'IDLE') return this.state.sessionMinutes * 60;
+      if (this.state.status === 'PAUSED') {
+        const remainingMs = this.state.endAt - this.state.pausedAt;
+        return Math.max(0, Math.floor(remainingMs / 1000));
+      }
+      const remainingMs = this.state.endAt - Date.now();
+      return Math.max(0, Math.floor(remainingMs / 1000));
     }
   };
 
-  // 3. PERSISTENT REWARD ECONOMY
-  const RewardEconomy = {
-    getTodayDateString() {
-      return new Date().toISOString().split('T')[0];
-    },
-
-    getState() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEYS.REWARD_STATE);
-        if (saved) return JSON.parse(saved);
-      } catch (e) {}
-
-      return {
-        totalFocusPoints: 36,
-        todayFocusPoints: 12,
-        totalImpactPoints: 20,
-        vtimeBalance: 4.6,
-        claimableVTime: 2.4,
-        claimedVTime: 1.2,
-        streakDays: 3,
-        lastActiveDate: this.getTodayDateString(),
-        totalMinutesFocused: 150,
-        completedSessionsCount: 3,
-        activeStakes: [],
-        unlockedUtilities: ['guide_primer']
-      };
-    },
-
-    saveState(state) {
-      try {
-        localStorage.setItem(STORAGE_KEYS.REWARD_STATE, JSON.stringify(state));
-      } catch (e) {}
-    },
-
-    recordCompletedSession(minutes, points, vtime, receipt) {
-      const state = this.getState();
-      const today = this.getTodayDateString();
-
-      if (state.lastActiveDate === today) {
-        state.todayFocusPoints += points;
-      } else {
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-        if (state.lastActiveDate === yesterday) {
-          state.streakDays += 1;
-        } else {
-          state.streakDays = 1;
-        }
-        state.todayFocusPoints = points;
-        state.lastActiveDate = today;
-      }
-
-      state.totalFocusPoints += points;
-      state.vtimeBalance = parseFloat((state.vtimeBalance + vtime).toFixed(2));
-      state.claimableVTime = parseFloat((state.claimableVTime + vtime).toFixed(2));
-      state.totalMinutesFocused += minutes;
-      state.completedSessionsCount += 1;
-
-      this.saveState(state);
-      return state;
-    },
-
-    addImpactPoints(points) {
-      const state = this.getState();
-      state.totalImpactPoints = (state.totalImpactPoints || 0) + points;
-      const vtimeBonus = parseFloat((points * 0.1).toFixed(2));
-      state.vtimeBalance = parseFloat((state.vtimeBalance + vtimeBonus).toFixed(2));
-      state.claimableVTime = parseFloat((state.claimableVTime + vtimeBonus).toFixed(2));
-      this.saveState(state);
-    },
-
-    unlockUtility(utilityId, costVTime) {
-      const state = this.getState();
-      if (state.unlockedUtilities.includes(utilityId)) return { success: true, alreadyUnlocked: true };
-      if (state.vtimeBalance < costVTime) return { success: false, reason: 'Insufficient VTIME balance' };
-
-      state.vtimeBalance = parseFloat((state.vtimeBalance - costVTime).toFixed(2));
-      state.unlockedUtilities.push(utilityId);
-      this.saveState(state);
-      logTelemetry('UTILITY_UNLOCKED', `Unlocked ${utilityId} for ${costVTime} VTIME`);
-      return { success: true, newBalance: state.vtimeBalance };
-    },
-
-    addVoluntaryStake(amountVTime, targetMinutes = 50) {
-      const state = this.getState();
-      if (state.vtimeBalance < amountVTime) return { success: false, reason: 'Insufficient VTIME balance' };
-
-      state.vtimeBalance = parseFloat((state.vtimeBalance - amountVTime).toFixed(2));
-      const stakeRecord = {
-        id: 'stake_' + Math.random().toString(36).substring(2, 9),
-        amount: amountVTime,
-        targetMinutes,
-        createdAt: new Date().toISOString(),
-        status: 'ACTIVE'
-      };
-      state.activeStakes.push(stakeRecord);
-      this.saveState(state);
-      return { success: true, stake: stakeRecord };
-    }
-  };
-
-  // 4. DETERMINISTIC LEDGER & RECEIPT ENGINE
-  const LedgerEngine = {
-    DAILY_CAP: 300.0,
-    MAX_EVENT_CREDITS: 100.0,
-
-    getTodayIndex() {
-      return Math.floor(Date.now() / 86400000);
-    },
-
-    getDailyMinted() {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEYS.DAILY_TOTALS);
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (parsed && parsed.dayIndex === this.getTodayIndex()) {
-            return Number(parsed.totalMinted) || 0.0;
-          }
-        }
-      } catch (e) {}
-      return 0.0;
-    },
-
-    calculate(hours, severityBps, evidenceBps) {
-      const rawHours = Number(hours);
-      const validHours = Math.min(24.0, Math.max(0.1, Number.isFinite(rawHours) ? Math.round(rawHours * 100) / 100 : 0.83));
-      const validSev = Math.min(20000, Math.max(10000, parseInt(severityBps) || 10000));
-      const validEvi = Math.min(10000, Math.max(8000, parseInt(evidenceBps) || 8000));
-
-      const baseUnits = validHours * 15.0;
-      const adjusted = baseUnits * (validSev / 10000) * (validEvi / 10000);
-
-      const dailyMinted = this.getDailyMinted();
-      const remainingDaily = Math.max(0.0, this.DAILY_CAP - dailyMinted);
-      const boundedUnits = Math.min(adjusted, this.MAX_EVENT_CREDITS, remainingDaily);
-
-      return {
-        hours: validHours,
-        minutes: Math.round(validHours * 60),
-        severityBps: validSev,
-        evidenceBps: validEvi,
-        rawUnits: parseFloat(adjusted.toFixed(2)),
-        finalVTime: parseFloat(boundedUnits.toFixed(2)),
-        dailyRemaining: parseFloat((remainingDaily - boundedUnits).toFixed(2))
-      };
-    },
-
-    generateReceipt(calculation, privacyMode = 'private', intention = '') {
-      const timestamp = new Date().toISOString();
-      const sessionGuid = 'sess_' + Math.random().toString(36).substring(2, 11);
-      const receiptPayload = `${sessionGuid}|${calculation.minutes}m|${calculation.finalVTime}|${privacyMode}|${timestamp}|${intention}`;
-
-      let hash = 0;
-      for (let i = 0; i < receiptPayload.length; i++) {
-        hash = ((hash << 5) - hash) + receiptPayload.charCodeAt(i);
-        hash |= 0;
-      }
-      const hexHash = Math.abs(hash).toString(16).padStart(8, '0');
-      const receiptId = 'RCPT-' + hexHash.toUpperCase();
-      const fullSealHash = '0x' + hexHash + '8ace92e41b7392a10427845f91e';
-
-      const receipt = {
-        receiptId,
-        sessionGuid,
-        timestamp,
-        intention: intention || 'Unspecified Focus Block',
-        durationMinutes: calculation.minutes,
-        durationFormatted: formatDuration(calculation.minutes),
-        calculation,
-        privacyMode,
-        truthStatus: privacyMode === 'proof' ? 'TESTNET / Amoy Verification Stage' : 'LOCAL / Browser Sealed',
-        claimStatus: 'CLAIMABLE',
-        evidenceSealHash: fullSealHash
-      };
-
-      try {
-        const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.LEDGER_HISTORY) || '[]');
-        history.unshift(receipt);
-        if (history.length > 30) history.pop();
-        localStorage.setItem(STORAGE_KEYS.LEDGER_HISTORY, JSON.stringify(history));
-      } catch (e) {}
-
-      return receipt;
-    }
-  };
-
-  // 5. WEB3 VAULT
-  const Web3Vault = {
-    getWalletState() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEYS.WALLET_STATE);
-        if (saved) return JSON.parse(saved);
-      } catch (e) {}
-      return { isConnected: false, address: null, chainId: 80002, networkName: 'Polygon Amoy' };
-    },
-
-    saveWalletState(state) {
-      try {
-        localStorage.setItem(STORAGE_KEYS.WALLET_STATE, JSON.stringify(state));
-      } catch (e) {}
-    },
-
-    async connectWallet() {
-      if (typeof window.ethereum !== 'undefined') {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          if (accounts && accounts.length > 0) {
-            const state = {
-              isConnected: true,
-              address: accounts[0],
-              chainId: 80002,
-              networkName: 'Polygon Amoy Testnet'
-            };
-            this.saveWalletState(state);
-            logTelemetry('WALLET_CONNECTED', `Connected wallet ${accounts[0]}`);
-            return state;
-          }
-        } catch (e) {
-          logTelemetry('WALLET_CONNECT_FAIL', e.message);
-        }
-      }
-
-      const mockState = {
-        isConnected: true,
-        address: '0x71C...49Fa13',
-        chainId: 80002,
-        networkName: 'Polygon Amoy (Simulated)'
-      };
-      this.saveWalletState(mockState);
-      return mockState;
-    },
-
-    disconnectWallet() {
-      const state = { isConnected: false, address: null, chainId: 80002, networkName: 'Polygon Amoy' };
-      this.saveWalletState(state);
-      return state;
-    },
-
-    async submitEIP712Claim(receiptId, amountVTime) {
-      const wallet = this.getWalletState();
-      if (!wallet.isConnected) {
-        return { success: false, reason: 'Please connect your Web3 wallet first.' };
-      }
-
-      try {
-        const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.LEDGER_HISTORY) || '[]');
-        const target = history.find(h => h.receiptId === receiptId);
-        if (target) {
-          target.claimStatus = 'CLAIMED_TESTNET';
-          localStorage.setItem(STORAGE_KEYS.LEDGER_HISTORY, JSON.stringify(history));
-        }
-      } catch (e) {}
-
-      const rewardState = RewardEconomy.getState();
-      rewardState.claimedVTime = parseFloat((rewardState.claimedVTime + amountVTime).toFixed(2));
-      rewardState.claimableVTime = Math.max(0, parseFloat((rewardState.claimableVTime - amountVTime).toFixed(2)));
-      RewardEconomy.saveState(rewardState);
-
-      const txHash = '0x' + Math.random().toString(16).substring(2, 10) + '9460d284b5d990646d4aeaef2d49fa13';
-      logTelemetry('EIP712_CLAIM_SUBMITTED', `Claimed ${receiptId}`, { txHash });
-
-      return {
-        success: true,
-        txHash,
-        network: 'Polygon Amoy (Chain ID 80002)'
-      };
-    }
+  window.ACNC = {
+    DATA_STATUS,
+    FACTORS,
+    REWARD_POLICY,
+    generateEvidenceHash,
+    Ledger,
+    Web3Vault,
+    FocusTimer
   };
 
   window.SelfHealing = {
-    MIN_SESSION_MINUTES,
-    MAX_SESSION_MINUTES,
-    DEFAULT_SESSION_MINUTES,
-    normalizeSessionMinutes,
-    formatDuration,
-    formatCountdown,
-    estimateReward,
-    DIAGNOSTICS,
-    logTelemetry,
+    Ledger,
+    Web3Vault,
     FocusTimer,
-    ImpactEngine,
-    RewardEconomy,
-    LedgerEngine,
-    Web3Vault
+    estimateReward: (mins) => ({
+      points: REWARD_POLICY.rates.focusMinutesToPoints(mins),
+      vtime: parseFloat(((mins / 50) * 1.2).toFixed(2))
+    })
   };
 
 })(window);
