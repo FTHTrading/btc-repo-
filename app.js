@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ALL COUCH NO CAGE — MULTI-PAGE APPLICATION ENGINE (V3.1)
+   ALL COUCH NO CAGE — MULTI-PAGE APPLICATION ENGINE (V3.2)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initFocusPage();
   } else if (pageId === 'rewards') {
     initRewardsPage();
+  } else if (pageId === 'impact') {
+    initImpactPage();
   } else if (pageId === 'vault') {
     initVaultPage();
   } else if (pageId === 'relics') {
@@ -56,7 +58,6 @@ function initGlobalNavigation() {
         initVaultPage();
       }
     } else {
-      // If clicked while on other pages, redirect to vault
       if (document.body.dataset.page !== 'vault') {
         window.location.href = 'vault.html';
       }
@@ -89,7 +90,6 @@ function initFocusPage() {
     rewardEstimatePill.textContent = `Earn ~${est.points} Focus Points & ${est.vtime} VTIME upon verified completion`;
   }
 
-  // Preset Selection
   presetChips.forEach(chip => {
     chip.addEventListener('click', () => {
       presetChips.forEach(c => c.classList.remove('active'));
@@ -131,7 +131,6 @@ function initFocusPage() {
     });
   }
 
-  // Timer Control Triggers
   if (startBtn) {
     startBtn.addEventListener('click', () => {
       const intention = intentionInput ? intentionInput.value : '';
@@ -171,7 +170,6 @@ function initFocusPage() {
   updateRewardEstimate(50);
 }
 
-// Global UI Button Synchronizer for Timer
 window.syncTimerUIButtons = function (timerState) {
   const startBtn = document.getElementById('heroStartSessionBtn');
   const pauseBtn = document.getElementById('heroPauseSessionBtn');
@@ -210,7 +208,6 @@ window.syncTimerUIButtons = function (timerState) {
   }
 };
 
-// Global Completion Modal Callback
 window.onFocusSessionCompleted = function (receipt, state, rewardEst) {
   const modal = document.getElementById('sessionCompletedModal');
   const pointsEl = document.getElementById('completedPointsEarned');
@@ -244,20 +241,16 @@ function initRewardsPage() {
   if (!window.SelfHealing || !window.SelfHealing.RewardEconomy) return;
   const state = window.SelfHealing.RewardEconomy.getState();
 
-  // Render Stats
   const todayPointsEl = document.getElementById('rewardsTodayPoints');
   const totalPointsEl = document.getElementById('rewardsTotalPoints');
   const vtimeBalanceEl = document.getElementById('rewardsVTimeBalance');
   const streakDaysEl = document.getElementById('rewardsStreakDays');
-  const totalMinutesEl = document.getElementById('rewardsTotalMinutes');
 
   if (todayPointsEl) todayPointsEl.textContent = state.todayFocusPoints;
-  if (totalPointsEl) totalPointsEl.textContent = state.totalFocusPoints;
+  if (totalPointsEl) totalPointsEl.textContent = state.totalFocusPoints + (state.totalImpactPoints || 0);
   if (vtimeBalanceEl) vtimeBalanceEl.textContent = `${state.vtimeBalance} VTIME`;
   if (streakDaysEl) streakDaysEl.textContent = `${state.streakDays} Days`;
-  if (totalMinutesEl) totalMinutesEl.textContent = `${state.totalMinutesFocused}m`;
 
-  // Render History Table
   const historyBody = document.getElementById('rewardsSessionHistoryBody');
   if (historyBody) {
     try {
@@ -278,7 +271,6 @@ function initRewardsPage() {
     } catch (e) {}
   }
 
-  // Utility Unlock Buttons
   document.querySelectorAll('.unlock-utility-btn').forEach(btn => {
     const utilityId = btn.dataset.utility;
     const cost = parseFloat(btn.dataset.cost);
@@ -301,7 +293,6 @@ function initRewardsPage() {
     }
   });
 
-  // Voluntary Commitment Stake Form
   const stakeBtn = document.getElementById('createVoluntaryStakeBtn');
   const stakeInput = document.getElementById('voluntaryStakeAmountInput');
   if (stakeBtn && stakeInput) {
@@ -322,7 +313,127 @@ function initRewardsPage() {
   }
 }
 
-/* 4. VAULT & CONTRACTS PAGE ENGINE (/vault.html) */
+/* 4. IMPACT PAGE ENGINE (/impact.html) */
+function initImpactPage() {
+  const domainSelect = document.getElementById('impactDomainSelect');
+  const quantityInput = document.getElementById('impactQuantityInput');
+  const estimateValueEl = document.getElementById('estimatedCo2eValue');
+  const factorMetaEl = document.getElementById('emissionFactorMeta');
+
+  function updateEmissionsCalc() {
+    if (!domainSelect || !quantityInput || !window.SelfHealing.ImpactEngine) return;
+    const domain = domainSelect.value;
+    const qty = quantityInput.value;
+    const result = window.SelfHealing.ImpactEngine.calculateActivityEmissions(domain, qty);
+
+    if (estimateValueEl) estimateValueEl.textContent = `${result.co2eKg} kg`;
+    if (factorMetaEl) factorMetaEl.textContent = `Source: ${result.source} • Uncertainty: ${result.uncertainty}`;
+  }
+
+  if (domainSelect) domainSelect.addEventListener('change', updateEmissionsCalc);
+  if (quantityInput) quantityInput.addEventListener('input', updateEmissionsCalc);
+  updateEmissionsCalc();
+
+  // Log Reduction Action
+  const logReductionBtn = document.getElementById('logReductionActionBtn');
+  const reductionCatSelect = document.getElementById('reductionCategorySelect');
+  const reductionDescInput = document.getElementById('reductionDescriptionInput');
+
+  if (logReductionBtn) {
+    logReductionBtn.addEventListener('click', () => {
+      const cat = reductionCatSelect ? reductionCatSelect.value : 'transit';
+      const desc = reductionDescInput ? reductionDescInput.value.trim() : 'Verified sustainable action';
+
+      let pts = 5;
+      let avoided = 4.75;
+      if (cat === 'energy') { pts = 15; avoided = 45.2; }
+      else if (cat === 'food') { pts = 8; avoided = 12.5; }
+      else if (cat === 'materials') { pts = 12; avoided = 24.0; }
+
+      window.SelfHealing.ImpactEngine.logImpactAction(cat.toUpperCase(), desc, avoided, pts, 'Signed Verification Receipt');
+      alert(`Reduction action recorded! Awarded +${pts} Impact Points.`);
+      renderImpactTable();
+    });
+  }
+
+  // Register Offset Retirement
+  const generateOffsetBtn = document.getElementById('generateOffsetReceiptBtn');
+  const offsetProjectSelect = document.getElementById('offsetProjectSelect');
+  const offsetTonnesInput = document.getElementById('offsetTonnesInput');
+  const offsetModal = document.getElementById('offsetReceiptModal');
+  const offsetContent = document.getElementById('offsetReceiptContent');
+  const downloadOffsetJsonBtn = document.getElementById('downloadOffsetReceiptJsonBtn');
+  const closeOffsetBtn = document.getElementById('closeOffsetModalBtn');
+
+  if (generateOffsetBtn) {
+    generateOffsetBtn.addEventListener('click', () => {
+      const projectName = offsetProjectSelect ? offsetProjectSelect.options[offsetProjectSelect.selectedIndex].text : 'Puro.earth Biochar Carbon Removal';
+      const tonnes = offsetTonnesInput ? parseFloat(offsetTonnesInput.value) : 1.0;
+
+      const receipt = window.SelfHealing.ImpactEngine.generateOffsetRetirementReceipt({ projectName, tonnes });
+
+      if (offsetContent) {
+        offsetContent.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+            <span style="color:var(--text-dim);">Receipt Serial:</span>
+            <span style="color:var(--accent-gold); font-weight:800;">${receipt.serialNumber}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+            <span style="color:var(--text-dim);">Project:</span>
+            <span style="color:var(--text-main); font-weight:700;">${receipt.projectName}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+            <span style="color:var(--text-dim);">Tonnes Retired:</span>
+            <span style="color:var(--accent-lime); font-weight:800;">${receipt.tonnesCo2eRetired} Tonnes CO2e</span>
+          </div>
+          <div style="border-top: 1px solid var(--border-glass); padding-top:0.4rem; font-size:0.75rem; word-break:break-all;">
+            <span style="color:var(--text-dim);">Record Hash: </span>
+            <span style="color:var(--accent-cyan);">${receipt.recordHash}</span>
+          </div>
+        `;
+      }
+
+      if (downloadOffsetJsonBtn) {
+        downloadOffsetJsonBtn.onclick = () => {
+          const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receipt, null, 2));
+          const dlAnchor = document.createElement('a');
+          dlAnchor.setAttribute('href', dataStr);
+          dlAnchor.setAttribute('download', `${receipt.receiptId}.json`);
+          document.body.appendChild(dlAnchor);
+          dlAnchor.click();
+          dlAnchor.remove();
+        };
+      }
+
+      if (offsetModal) offsetModal.classList.add('active');
+    });
+  }
+
+  if (closeOffsetBtn && offsetModal) {
+    closeOffsetBtn.onclick = () => offsetModal.classList.remove('active');
+    offsetModal.onclick = (e) => { if (e.target === offsetModal) offsetModal.classList.remove('active'); };
+  }
+
+  function renderImpactTable() {
+    const tableBody = document.getElementById('impactHistoryTableBody');
+    if (!tableBody) return;
+    const history = window.SelfHealing.ImpactEngine.getImpactHistory();
+    tableBody.innerHTML = history.map(item => `
+      <tr>
+        <td style="color: var(--accent-gold); font-weight: 700;">${item.id}</td>
+        <td>${item.domain}</td>
+        <td>${item.action}</td>
+        <td style="color: var(--accent-lime); font-weight: 700;">-${item.co2eAvoidedKg} kg</td>
+        <td style="color: var(--accent-cyan); font-weight: 700;">+${item.impactPointsEarned} pts</td>
+        <td><span class="truth-badge ${item.status === 'VERIFIED' ? 'badge-verified' : 'badge-local'}">${item.status}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  renderImpactTable();
+}
+
+/* 5. VAULT & CONTRACTS PAGE ENGINE (/vault.html) */
 function initVaultPage() {
   if (!window.SelfHealing || !window.SelfHealing.Web3Vault) return;
   const wallet = window.SelfHealing.Web3Vault.getWalletState();
@@ -337,16 +448,12 @@ function initVaultPage() {
 
   if (wallet.isConnected && wallet.address) {
     if (walletAddrEl) walletAddrEl.textContent = wallet.address;
-    if (walletStatusEl) {
-      walletStatusEl.innerHTML = '<span class="truth-badge badge-testnet">CONNECTED (Amoy)</span>';
-    }
+    if (walletStatusEl) walletStatusEl.innerHTML = '<span class="truth-badge badge-testnet">CONNECTED (Amoy)</span>';
     if (connectBtn) connectBtn.style.display = 'none';
     if (disconnectBtn) disconnectBtn.style.display = 'inline-flex';
   } else {
     if (walletAddrEl) walletAddrEl.textContent = 'Not Connected';
-    if (walletStatusEl) {
-      walletStatusEl.innerHTML = '<span class="truth-badge badge-pending">DISCONNECTED</span>';
-    }
+    if (walletStatusEl) walletStatusEl.innerHTML = '<span class="truth-badge badge-pending">DISCONNECTED</span>';
     if (connectBtn) connectBtn.style.display = 'inline-flex';
     if (disconnectBtn) disconnectBtn.style.display = 'none';
   }
@@ -368,7 +475,6 @@ function initVaultPage() {
     };
   }
 
-  // Render Claimable Sessions Table
   const claimsTableBody = document.getElementById('vaultClaimsTableBody');
   if (claimsTableBody) {
     try {
@@ -410,7 +516,6 @@ function initVaultPage() {
     } catch (e) {}
   }
 
-  // Receipt Verifier Tool
   const verifyBtn = document.getElementById('verifyReceiptHashBtn');
   const hashInput = document.getElementById('verifyReceiptHashInput');
   const resultBox = document.getElementById('receiptVerificationResult');
@@ -443,7 +548,7 @@ function initVaultPage() {
   }
 }
 
-/* 5. RELICS & GALLERY PAGE ENGINE (/relics.html) */
+/* 6. RELICS & GALLERY PAGE ENGINE (/relics.html) */
 function initRelicsPage() {
   const grid = document.getElementById('relicsGalleryGrid');
   if (!grid) return;
@@ -469,7 +574,6 @@ function initRelicsPage() {
     grid.appendChild(card);
   }
 
-  // Milestone Badge Forge
   const forgeBtn = document.getElementById('relicForgeBtn');
   const forgeInput = document.getElementById('relicForgeMilestoneInput');
   const forgeStatus = document.getElementById('relicForgeStatus');
@@ -531,7 +635,7 @@ function openRelicLightbox(data) {
   }
 }
 
-/* 6. PROTOCOL DOCUMENTATION TABS ENGINE (/protocol.html) */
+/* 7. PROTOCOL DOCUMENTATION TABS ENGINE (/protocol.html) */
 function initProtocolPage() {
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabPanes = document.querySelectorAll('.tab-pane');
@@ -549,7 +653,7 @@ function initProtocolPage() {
   });
 }
 
-/* 7. SYSTEM DIAGNOSTICS & CLIENT RESET UI */
+/* 8. SYSTEM DIAGNOSTICS & RESET UI */
 function initSystemDiagnosticsUI() {
   const toggleBtn = document.getElementById('diagToggleBtn');
   const modal = document.getElementById('diagModal');
@@ -573,7 +677,7 @@ function initSystemDiagnosticsUI() {
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      if (confirm('Reset local focus session state, rewards, and telemetry cache?')) {
+      if (confirm('Reset local focus session state, rewards, impact, and telemetry cache?')) {
         try {
           localStorage.clear();
           location.reload();

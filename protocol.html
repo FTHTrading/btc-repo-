@@ -31,6 +31,7 @@
       <ul class="nav-links">
         <li><a href="index.html">Focus</a></li>
         <li><a href="rewards.html">Rewards</a></li>
+        <li><a href="impact.html">Impact</a></li>
         <li><a href="vault.html">Vault</a></li>
         <li><a href="relics.html">Relics</a></li>
         <li><a href="protocol.html" class="active">Protocol</a></li>
@@ -46,10 +47,10 @@
 
   <main class="page-container">
     <div class="page-header">
-      <div class="truth-badge badge-testnet" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-book-open"></i> Technical Specification — v3.1</div>
+      <div class="truth-badge badge-testnet" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-book-open"></i> Technical Specification — v3.2</div>
       <h1 class="page-title">Protocol & <span class="cyan-gradient">Scientific Architecture</span></h1>
       <p class="page-desc">
-        Complete mathematical specifications, Solidity contract interfaces, deterministic Rust implementations, and biophysical reference constants.
+        Complete mathematical specifications, Solidity contract interfaces, deterministic Rust implementations, and human-lifecycle impact standards.
       </p>
     </div>
 
@@ -59,7 +60,7 @@
       <button type="button" class="tab-btn" data-tab="tab-rewards">2. Reward Rules</button>
       <button type="button" class="tab-btn" data-tab="tab-privacy">3. Privacy & Proofs</button>
       <button type="button" class="tab-btn" data-tab="tab-contracts">4. Smart Contracts</button>
-      <button type="button" class="tab-btn" data-tab="tab-science">5. Science & Signals</button>
+      <button type="button" class="tab-btn" data-tab="tab-science">5. Carbon & Science</button>
       <button type="button" class="tab-btn" data-tab="tab-dev">6. Developer Docs</button>
     </div>
 
@@ -73,9 +74,9 @@
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
           <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.35rem;">TIER 1 • FOCUS SPRINT</div>
-            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Client-Side Session</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Monotonic countdown timer operating 100% locally in your browser.</p>
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.35rem;">TIER 1 • FOCUS & IMPACT</div>
+            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Client-Side Actions</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Monotonic countdown timer and lifecycle impact calculators operating 100% locally in your browser.</p>
           </div>
 
           <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
@@ -87,7 +88,7 @@
           <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
             <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-gold); font-weight: 800; margin-bottom: 0.35rem;">TIER 3 • REWARDS</div>
             <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem;">Internal Economy</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Closed-loop Focus Points and VTIME credits for unlocking utility.</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Distinct Focus Units, Impact Points, and closed-loop VTIME utility credits.</p>
           </div>
 
           <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
@@ -99,19 +100,62 @@
       </div>
     </div>
 
-    <!-- TAB 2: Reward Rules -->
+    <!-- TAB 2: Reward Rules & Credit Separation -->
     <div class="tab-pane" id="tab-rewards">
       <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="gold-gradient">Mathematical Formula Specification</h2>
-        <div style="background: rgba(0,0,0,0.7); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-glass); font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 1.25rem;">
-          Focus Units = min(Base_Hours × Rate × Severity × Evidence, Event_Cap, Daily_Cap)
+        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="gold-gradient">The 4-Tier Non-Interchangeable Credit Taxonomy</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.25rem;">
+          To ensure ethical incentives, we separate four distinct concepts that must never be conflated:
+        </p>
+
+        <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Unit</th>
+                <th>Represents</th>
+                <th>How Earned</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color: var(--accent-gold); font-weight: 700;">Focus Units</td>
+                <td>Completed intentional work or learning</td>
+                <td>Session completion and self-attestation</td>
+                <td>Local / Browser Account</td>
+              </tr>
+              <tr>
+                <td style="color: var(--accent-lime); font-weight: 700;">Impact Points</td>
+                <td>Verified sustainable or community actions</td>
+                <td>Metered reduction, certified repair, transit check-in</td>
+                <td>Off-chain ledger + signed receipt</td>
+              </tr>
+              <tr>
+                <td style="color: var(--accent-cyan); font-weight: 700;">VTIME Credits</td>
+                <td>Closed-loop ecosystem utility credit</td>
+                <td>Conversion of eligible points under caps</td>
+                <td>Smart contract vault when claimed</td>
+              </tr>
+              <tr>
+                <td style="color: var(--accent-purple); font-weight: 700;">Offset Certificate</td>
+                <td>Retired 3rd-party verified carbon credit</td>
+                <td>Retirement on Puro.earth / Gold Standard / Verra</td>
+                <td>Registry serial + immutable receipt</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;" class="gold-gradient">Reward Formula Specification</h3>
+        <div style="background: rgba(0,0,0,0.7); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-glass); font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 1rem;">
+          Eligible Reward = min(Base_Hours × Rate × Severity × Evidence, Event_Cap, Daily_Cap)
         </div>
         <ul style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; padding-left: 1.25rem;">
           <li><strong>Base_Hours</strong>: Clamped strictly between <code>0.10h</code> (6 minutes) and <code>24.00h</code> (1,440 minutes).</li>
           <li><strong>Rate</strong>: Baseline rate coefficient set to <code>15.00 VTIME / hour</code>.</li>
-          <li><strong>Severity Multiplier</strong>: 10,000 BPS (1.0× Standard), 14,000 BPS (1.4× Architecture), 18,000 BPS (1.8× Synthesis).</li>
-          <li><strong>Evidence Multiplier</strong>: 8,000 BPS (80% Self-Reported), 9,000 BPS (90% Flow), 10,000 BPS (100% Signed Commitment).</li>
-          <li><strong>Event Cap</strong>: Hard ceiling of <code>100.00 VTIME</code> per individual focus session.</li>
+          <li><strong>Verification Multipliers</strong>: Self-Reported (1.00×), Device/Receipt Supported (1.25×), 3rd-Party Verified (1.50×), On-Chain Attested (1.75×).</li>
+          <li><strong>Event Cap</strong>: Hard ceiling of <code>100.00 VTIME</code> per individual action.</li>
           <li><strong>Daily Cap</strong>: Rolling 24-hour ceiling of <code>300.00 VTIME</code> per participant.</li>
         </ul>
       </div>
@@ -120,12 +164,15 @@
     <!-- TAB 3: Privacy & Proofs -->
     <div class="tab-pane" id="tab-privacy">
       <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="cyan-gradient">Privacy & Data Handling Policy</h2>
+        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="cyan-gradient">Privacy & Non-Biological Accounting Policy</h2>
         <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.25rem;">
-          The focus timer and local journal operate with zero server telemetry. No personal data, browsing history, or biometric data is ever collected or sold.
+          The focus timer and impact ledger operate with zero server telemetry. No personal data, browsing history, or biometric data is ever collected or sold.
         </p>
-        <div style="background: rgba(234, 179, 8, 0.08); border-left: 3px solid var(--accent-gold); padding: 1rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted);">
-          <strong class="text-gold">Non-Medical Notice:</strong> ALL COUCH NO CAGE is self-mastery and focus accountability software. It does not diagnose, treat, or monitor clinical health conditions.
+        <div style="background: rgba(234, 179, 8, 0.08); border-left: 3px solid var(--accent-gold); padding: 1rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+          <strong class="text-gold">Non-Biological Policy:</strong> Human essentials (oxygen consumption, exhaled CO2, body weight, disability, medical status, and baseline metabolism) are normal necessities of life and are <strong>strictly excluded</strong> from carbon footprints, offset obligations, and reward calculations.
+        </div>
+        <div style="background: rgba(6, 182, 212, 0.08); border-left: 3px solid var(--accent-cyan); padding: 1rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+          <strong class="text-cyan">Non-Medical Notice:</strong> ALL COUCH NO CAGE is self-mastery, focus accountability, and lifestyle impact software. It does not diagnose, treat, or monitor clinical health conditions.
         </div>
       </div>
     </div>
@@ -163,17 +210,20 @@ function claimReward(RewardClaim calldata claim) external {
       </div>
     </div>
 
-    <!-- TAB 5: Science & Signals -->
+    <!-- TAB 5: Carbon & Science -->
     <div class="tab-pane" id="tab-science">
       <div class="glass-panel" style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="cyan-gradient">Signal Modeling Specifications</h2>
+        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem;" class="cyan-gradient">Carbon Accounting & Emission Factors</h2>
         <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.25rem;">
-          Reference constants modeled in native Rust (<a href="docs/PROTOCOL_OVERVIEW.md" style="color: var(--accent-gold);">biophysical_metrics.rs</a>) to support future client-side biometric integrations.
+          Calculations on <code>/impact</code> follow the transparent equation: <code>Estimated CO2e = Activity Quantity × Published Emission Factor</code>.
         </p>
         <ul style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; padding-left: 1.25rem;">
-          <li><strong>R-R Interval Bounding</strong>: [300 ms, 2000 ms] with slew-rate filter |ΔRR| ≤ 300 ms.</li>
-          <li><strong>EEG Spectral Bands</strong>: Delta (0.5–4 Hz), Theta (4–8 Hz), Alpha (8–12 Hz), Beta (12–30 Hz), Gamma (30–100 Hz).</li>
-          <li><strong>Metabolic Baseline</strong>: 1,200–2,500 kcal/day (~75W thermal power).</li>
+          <li><strong>Home Electricity</strong>: <code>0.385 kg CO2e / kWh</code> (EPA eGRID 2024 US Average).</li>
+          <li><strong>Passenger Vehicle</strong>: <code>0.404 kg CO2e / mile</code> (EPA GHG Emission Factors for Typical Passenger Cars).</li>
+          <li><strong>Public Transit (Bus/Rail)</strong>: <code>0.140 kg CO2e / passenger-mile</code> (DOT FTA National Transit Database).</li>
+          <li><strong>Cloud GPU Workloads</strong>: <code>0.180 kg CO2e / GPU-hour</code> (Cloud Carbon Footprint standard grid factor).</li>
+          <li><strong>Avoided Food Waste</strong>: <code>2.500 kg CO2e saved / kg</code> (EPA WARM v15 Food Waste reduction model).</li>
+          <li><strong>Material Repair & Reuse</strong>: <code>12.000 kg CO2e saved / certified repair unit</code> (EU Circular Economy model).</li>
         </ul>
       </div>
     </div>
@@ -185,6 +235,7 @@ function claimReward(RewardClaim calldata claim) external {
         <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;">
           <div>• Storage Key: <code>acnc_focus_session_timer_v3</code></div>
           <div>• Rewards Key: <code>acnc_reward_economy_v3</code></div>
+          <div>• Impact Key: <code>acnc_impact_history_v3</code></div>
           <div>• Wallet Key: <code>acnc_wallet_state_v3</code></div>
           <div>• Telemetry Key: <code>acnc_diagnostics_log_v3</code></div>
         </div>
@@ -203,7 +254,7 @@ function claimReward(RewardClaim calldata claim) external {
       <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
           <span>Runtime Version:</span>
-          <span class="truth-badge badge-live">v3.1.0-multi-page</span>
+          <span class="truth-badge badge-live">v3.2.0-multi-page</span>
         </div>
         <div style="display: flex; justify-content: space-between;">
           <span>Storage Schema:</span>

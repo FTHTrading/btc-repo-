@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Human-Lifecycle Impact Ledger — ALL COUCH NO CAGE</title>
+  <meta name="description" content="Transparent measurement, verified reductions, and third-party offset retirements across controllable lifecycle domains." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="impact">
+
+  <div class="liquid-orb orb-gold"></div>
+  <div class="liquid-orb orb-cyan"></div>
+
+  <!-- Header Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="images/official_logo.png" alt="All Couch No Cage Logo" class="brand-logo-img" />
+        <div class="brand-text">
+          <span>ALL COUCH NO CAGE</span>
+          <span class="brand-sub">Lifecycle Impact Ledger</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Focus</a></li>
+        <li><a href="rewards.html">Rewards</a></li>
+        <li><a href="impact.html" class="active">Impact</a></li>
+        <li><a href="vault.html">Vault</a></li>
+        <li><a href="relics.html">Relics</a></li>
+        <li><a href="protocol.html">Protocol</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn btn-gold btn-sm" id="globalConnectWalletBtn">
+          <i class="fa-solid fa-wallet"></i> Connect / Enter
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <div class="page-header">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div class="truth-badge badge-live" style="margin-bottom: 0.5rem;"><i class="fa-solid fa-leaf"></i> Lifecycle Accounting — LIVE</div>
+          <h1 class="page-title">Human Essentials & <span class="gold-gradient">Impact Ledger</span></h1>
+          <p class="page-desc">
+            Measure activity emissions, log verified reductions, and retire third-party verified carbon removal credits. Non-biological, transparent, and grounded in published EPA and international standards.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ethical Boundary & Non-Biological Notice Banner -->
+    <div class="glass-panel" style="margin-bottom: 2.5rem; border-left: 3px solid var(--accent-gold);">
+      <div style="display: flex; gap: 1rem; align-items: flex-start;">
+        <div style="color: var(--accent-gold); font-size: 1.5rem; margin-top: 0.15rem;"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+          <strong style="color: var(--text-main); font-family: var(--font-mono);">Ethical Accounting Policy:</strong> We measure and reward controllable activities (home energy, mobility, food waste, repair/reuse, compute efficiency, and service). <strong>No user is ever scored, rewarded, or penalized for oxygen consumption, respiratory CO2, disability, body weight, or bodily existence.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Action Lanes Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem; margin-bottom: 3.5rem;">
+      
+      <!-- LANE 1: MEASURE ACTIVITY EMISSIONS -->
+      <div class="glass-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.2rem; font-weight: 800;"><i class="fa-solid fa-calculator text-cyan"></i> 1. Measure Activity</h3>
+            <span class="truth-badge badge-local">ESTIMATOR</span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Select a domain to calculate estimated CO2e using published regional emissions factors.
+          </p>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+              Activity Domain:
+            </label>
+            <select id="impactDomainSelect" class="intention-input" style="margin-bottom: 0.75rem;">
+              <option value="electricity_kwh" selected>Home Electricity (kWh) — 0.385 kg/kWh</option>
+              <option value="gasoline_car_mile">Gasoline Vehicle Travel (Miles) — 0.404 kg/mi</option>
+              <option value="transit_bus_mile">Public Transit Bus/Rail (Miles) — 0.140 kg/mi</option>
+              <option value="cloud_gpu_hour">Cloud GPU Compute (Hours) — 0.180 kg/hr</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+              Quantity:
+            </label>
+            <input type="number" id="impactQuantityInput" class="intention-input" value="100" min="1" max="10000" />
+          </div>
+
+          <div id="impactEstimateResultBox" style="background: rgba(0,0,0,0.6); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-glass); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+              <span style="color: var(--text-dim);">Estimated CO2e:</span>
+              <span id="estimatedCo2eValue" style="color: var(--accent-cyan); font-weight: 800; font-size: 1.1rem;">38.50 kg</span>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-dim);" id="emissionFactorMeta">Source: EPA eGRID 2024 US Avg • Uncertainty: Low</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LANE 2: LOG VERIFIED REDUCTIONS -->
+      <div class="glass-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.2rem; font-weight: 800;"><i class="fa-solid fa-arrow-down text-lime"></i> 2. Reduce & Earn</h3>
+            <span class="truth-badge badge-live">REWARDABLE</span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Log verified sustainable choices against your personal baseline to earn Impact Points.
+          </p>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+              Reduction Category:
+            </label>
+            <select id="reductionCategorySelect" class="intention-input" style="margin-bottom: 0.75rem;">
+              <option value="transit">Public Transit / Cycling Sprint (+5 pts)</option>
+              <option value="energy">Electricity Tariff / Efficiency Reduction (+15 pts)</option>
+              <option value="food">Avoided Food Waste Batch (+8 pts)</option>
+              <option value="materials">Certified Electronics / Material Repair (+12 pts)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 1.25rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+              Description & Receipt Hash:
+            </label>
+            <input type="text" id="reductionDescriptionInput" class="intention-input" placeholder="e.g., Transit pass check-in or repair receipt" value="Checked in on metro transit pass (18 miles)" />
+          </div>
+        </div>
+
+        <button class="btn btn-gold btn-block" id="logReductionActionBtn">
+          <i class="fa-solid fa-plus"></i> Log Reduction & Claim Points
+        </button>
+      </div>
+
+      <!-- LANE 3: THIRD-PARTY VERIFIED RETIREMENT -->
+      <div class="glass-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.2rem; font-weight: 800;"><i class="fa-solid fa-certificate text-gold"></i> 3. Verified Offset</h3>
+            <span class="truth-badge badge-testnet">REGISTRY RECEIPT</span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Register third-party verified carbon removal certificates (Puro.earth, Gold Standard, Verra).
+          </p>
+
+          <div style="margin-bottom: 0.85rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+              Verified Project:
+            </label>
+            <select id="offsetProjectSelect" class="intention-input" style="margin-bottom: 0.75rem;">
+              <option value="puro_biochar">Puro.earth Biochar Carbon Removal (CORC)</option>
+              <option value="gold_standard_cookstoves">Gold Standard Improved Cookstoves (GS-VER)</option>
+              <option value="verra_reforestation">Verra Afforestation & Reforestation (VCS)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 1.25rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+              Tonnes Retired:
+            </label>
+            <input type="number" id="offsetTonnesInput" class="intention-input" value="1.0" step="0.5" min="0.1" max="100" />
+          </div>
+        </div>
+
+        <button class="btn btn-cyan btn-block" id="generateOffsetReceiptBtn">
+          <i class="fa-solid fa-stamp"></i> Register Retirement Receipt
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Verified Impact Action Ledger Table -->
+    <div class="glass-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 800;"><i class="fa-solid fa-list-check text-cyan"></i> Verified Action History</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Cryptographically signed personal sustainability records.</p>
+        </div>
+        <span class="truth-badge badge-local">LOCAL IMMUTABLE LEDGER</span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Impact ID</th>
+              <th>Domain</th>
+              <th>Action Description</th>
+              <th>Avoided CO2e</th>
+              <th>Points</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="impactHistoryTableBody">
+            <!-- Dynamically populated from localStorage -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Offset Retirement Receipt Modal -->
+  <div class="modal-overlay" id="offsetReceiptModal">
+    <div class="lightbox-card" style="max-width: 620px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-certificate"></i> Verified Carbon Retirement Receipt</h3>
+        <button id="closeOffsetModalBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass); font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.6; margin-bottom: 1.25rem;" id="offsetReceiptContent"></div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button class="btn btn-gold" id="downloadOffsetReceiptJsonBtn" style="flex: 1;">
+          <i class="fa-solid fa-download"></i> Download JSON Certificate
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Diagnostics Modal -->
+  <div class="modal-overlay" id="diagModal">
+    <div class="lightbox-card" style="max-width: 600px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 800;" class="gold-gradient"><i class="fa-solid fa-microchip"></i> System Diagnostics</h3>
+        <button id="closeDiagBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span>Runtime Version:</span>
+          <span class="truth-badge badge-live">v3.2.0-multi-page</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Storage Schema:</span>
+          <span class="text-lime">acnc_session_v3</span>
+        </div>
+      </div>
+
+      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList"></div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-glass btn-sm" id="clearStateBtn">
+          <i class="fa-solid fa-trash-can text-flame"></i> Reset Local State
+        </button>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">Safe Client-Only Reset</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Footer -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <img src="images/official_logo.png" alt="Logo" style="height: 28px;" />
+      <span>ALL COUCH NO CAGE</span>
+    </div>
+    <p class="footer-copy">
+      Self-Mastery, Focus & Biophysical Time Architecture • Powered by Deterministic Rust Math<br />
+      Non-medical utility software • Private by default • Open specification
+    </p>
+    <div style="margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; font-size: 0.8rem; font-family: var(--font-mono);">
+      <a href="docs/PRODUCT_STATUS.md" style="color: var(--text-muted); text-decoration: none;">Product Status</a>
+      <a href="docs/PRIVACY_AND_DATA.md" style="color: var(--text-muted); text-decoration: none;">Privacy & Data</a>
+      <a href="docs/TESTNET_VERIFICATION.md" style="color: var(--text-muted); text-decoration: none;">Testnet Verification</a>
+      <a href="#" id="diagToggleBtn" style="color: var(--accent-gold); text-decoration: none;"><i class="fa-solid fa-terminal"></i> Diagnostics</a>
+    </div>
+  </footer>
+
+  <script src="self_healing_client.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
