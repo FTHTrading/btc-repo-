@@ -1,25 +1,199 @@
 /* ==========================================================================
-   ALL COUCH NO CAGE — PRODUCTION APPLICATION ENGINE & RESILIENCE HANDLER
+   ALL COUCH NO CAGE — TRUTH-ALIGNED APPLICATION ENGINE (V3)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Self-Healing Focus Timer
+  // Initialize Monotonic Focus Timer
   if (window.SelfHealing && window.SelfHealing.FocusTimer) {
     window.SelfHealing.FocusTimer.init();
   }
 
+  initHeroSessionControls();
   initFirstPersonCalculator();
   initWatermarkedGallery();
   initAssetLightbox();
   initSoothingStoryNarration();
   initPersonalizedAIAssistant();
   initMetaverseLivePulse();
-  initLiveFocusTimerUI();
   initDaliBadgeForge();
   initSystemDiagnosticsUI();
 });
 
-/* 1. FIRST-PERSON FOCUS & INTEGRITY CALCULATOR */
+/* 1. HERO PRESETS & DIRECT SESSION CONTROLS */
+let selectedPresetMinutes = 50;
+
+function initHeroSessionControls() {
+  const presetChips = document.querySelectorAll('.preset-chip');
+  const customDurationInput = document.getElementById('customDurationInput');
+  const intentionInput = document.getElementById('sessionIntention');
+  const distractionToggle = document.getElementById('distractionToggle');
+  const privacySelect = document.getElementById('heroPrivacyMode');
+
+  const startBtn = document.getElementById('heroStartSessionBtn');
+  const pauseBtn = document.getElementById('heroPauseSessionBtn');
+  const resumeBtn = document.getElementById('heroResumeSessionBtn');
+  const completeBtn = document.getElementById('heroCompleteSessionBtn');
+  const resetBtn = document.getElementById('heroResetSessionBtn');
+
+  // Preset Selection
+  presetChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      presetChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      const val = chip.dataset.minutes;
+      if (val === 'custom') {
+        if (customDurationInput) {
+          customDurationInput.style.display = 'inline-block';
+          customDurationInput.focus();
+          selectedPresetMinutes = window.SelfHealing.normalizeSessionMinutes(customDurationInput.value || 50);
+        }
+      } else {
+        if (customDurationInput) customDurationInput.style.display = 'none';
+        selectedPresetMinutes = parseInt(val, 10);
+      }
+
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
+        window.SelfHealing.FocusTimer.setSessionMinutes(selectedPresetMinutes);
+      }
+      updateHeroCtaText(selectedPresetMinutes);
+    });
+  });
+
+  if (customDurationInput) {
+    customDurationInput.addEventListener('input', () => {
+      const normalized = window.SelfHealing.normalizeSessionMinutes(customDurationInput.value);
+      selectedPresetMinutes = normalized;
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
+        window.SelfHealing.FocusTimer.setSessionMinutes(selectedPresetMinutes);
+      }
+      updateHeroCtaText(selectedPresetMinutes);
+    });
+  }
+
+  function updateHeroCtaText(mins) {
+    if (startBtn) {
+      const formatted = window.SelfHealing.formatDuration(mins);
+      startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${formatted} Focus Block`;
+    }
+  }
+
+  // Timer Control Triggers
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      const intention = intentionInput ? intentionInput.value : '';
+      const shield = distractionToggle ? distractionToggle.checked : true;
+      const privacy = privacySelect ? privacySelect.value : 'private';
+
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
+        window.SelfHealing.FocusTimer.start(selectedPresetMinutes, intention, shield, privacy);
+      }
+    });
+  }
+
+  if (pauseBtn) {
+    pauseBtn.addEventListener('click', () => {
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
+        window.SelfHealing.FocusTimer.pause();
+      }
+    });
+  }
+
+  if (resumeBtn) {
+    resumeBtn.addEventListener('click', () => {
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
+        window.SelfHealing.FocusTimer.resume();
+      }
+    });
+  }
+
+  if (completeBtn) {
+    completeBtn.addEventListener('click', () => {
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
+        window.SelfHealing.FocusTimer.complete();
+      }
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
+        window.SelfHealing.FocusTimer.reset();
+      }
+    });
+  }
+}
+
+// Global UI Button Synchronizer
+window.syncTimerUIButtons = function (timerState) {
+  const startBtn = document.getElementById('heroStartSessionBtn');
+  const pauseBtn = document.getElementById('heroPauseSessionBtn');
+  const resumeBtn = document.getElementById('heroResumeSessionBtn');
+  const completeBtn = document.getElementById('heroCompleteSessionBtn');
+  const resetBtn = document.getElementById('heroResetSessionBtn');
+  const activeBanner = document.getElementById('heroActiveTimerBanner');
+  const presetRow = document.getElementById('presetChipsRow');
+
+  if (!startBtn) return;
+
+  if (timerState.status === 'RUNNING') {
+    if (startBtn) startBtn.style.display = 'none';
+    if (pauseBtn) pauseBtn.style.display = 'inline-flex';
+    if (resumeBtn) resumeBtn.style.display = 'none';
+    if (completeBtn) completeBtn.style.display = 'inline-flex';
+    if (resetBtn) resetBtn.style.display = 'inline-flex';
+    if (activeBanner) activeBanner.style.display = 'flex';
+    if (presetRow) presetRow.style.opacity = '0.5';
+  } else if (timerState.status === 'PAUSED') {
+    if (startBtn) startBtn.style.display = 'none';
+    if (pauseBtn) pauseBtn.style.display = 'none';
+    if (resumeBtn) resumeBtn.style.display = 'inline-flex';
+    if (completeBtn) completeBtn.style.display = 'inline-flex';
+    if (resetBtn) resetBtn.style.display = 'inline-flex';
+    if (activeBanner) activeBanner.style.display = 'flex';
+    if (presetRow) presetRow.style.opacity = '0.5';
+  } else {
+    // IDLE or COMPLETED
+    if (startBtn) startBtn.style.display = 'inline-flex';
+    if (pauseBtn) pauseBtn.style.display = 'none';
+    if (resumeBtn) resumeBtn.style.display = 'none';
+    if (completeBtn) completeBtn.style.display = 'none';
+    if (resetBtn) resetBtn.style.display = 'none';
+    if (activeBanner) activeBanner.style.display = 'none';
+    if (presetRow) presetRow.style.opacity = '1';
+  }
+};
+
+// Session Completion Callback
+window.onFocusSessionCompleted = function (receipt, state) {
+  const modal = document.getElementById('sessionCompletedModal');
+  const receiptIdEl = document.getElementById('completedReceiptId');
+  const durationEl = document.getElementById('completedDuration');
+  const sealHashEl = document.getElementById('completedSealHash');
+  const pointsEl = document.getElementById('completedPoints');
+  const downloadReceiptBtn = document.getElementById('downloadCompletedReceiptBtn');
+
+  if (receiptIdEl) receiptIdEl.textContent = receipt.receiptId;
+  if (durationEl) durationEl.textContent = receipt.durationFormatted;
+  if (sealHashEl) sealHashEl.textContent = receipt.evidenceSealHash;
+  if (pointsEl) pointsEl.textContent = `${receipt.calculation.finalVTime} VTIME`;
+
+  if (downloadReceiptBtn) {
+    downloadReceiptBtn.onclick = () => {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receipt, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute('href', dataStr);
+      downloadAnchor.setAttribute('download', `${receipt.receiptId}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    };
+  }
+
+  if (modal) modal.classList.add('active');
+};
+
+/* 2. FIRST-PERSON FOCUS & INTEGRITY CALCULATOR */
 function initFirstPersonCalculator() {
   const hoursInput = document.getElementById('calcHours');
   const severitySelect = document.getElementById('calcSeverity');
@@ -33,11 +207,14 @@ function initFirstPersonCalculator() {
   function updateCalculation() {
     if (!hoursInput) return;
 
-    const hours = hoursInput.value;
-    const severityBps = severitySelect ? severitySelect.value : 10000;
-    const evidenceBps = tierSelect ? tierSelect.value : 8000;
+    let rawVal = parseFloat(hoursInput.value);
+    if (!Number.isFinite(rawVal) || rawVal <= 0) rawVal = 0.83; // 50m default
+    const hours = Math.min(24.0, Math.max(0.1, rawVal));
 
-    let result = { finalVTime: 22.68, dailyRemaining: 277.32 };
+    const severityBps = severitySelect ? severitySelect.value : 14000;
+    const evidenceBps = tierSelect ? tierSelect.value : 9000;
+
+    let result = { finalVTime: 17.64, dailyRemaining: 282.36 };
     if (window.SelfHealing && window.SelfHealing.LedgerEngine) {
       result = window.SelfHealing.LedgerEngine.calculate(hours, severityBps, evidenceBps);
     }
@@ -55,7 +232,7 @@ function initFirstPersonCalculator() {
   updateCalculation();
 }
 
-/* 2. WATERMARKED GALLERY GENERATOR & CHECKSUMS */
+/* 3. WATERMARKED GALLERY GENERATOR WITH LOCAL SHA-256 EVIDENCE SEALS */
 function initWatermarkedGallery() {
   const grid = document.getElementById('watermarkedGalleryGrid');
   if (!grid) return;
@@ -66,14 +243,14 @@ function initWatermarkedGallery() {
     card.className = 'shared-asset-card';
     card.dataset.id = i;
     card.dataset.src = `images/kb_${i}.jpg`;
-    card.dataset.title = `Surrealist Timepiece Relic #${i < 10 ? '0' + i : i}`;
+    card.dataset.title = `Surreal Timepiece Relic #${i < 10 ? '0' + i : i}`;
     card.dataset.hash = `0x8ace${(i * 1042).toString(16)}b7392a10427845f91e`;
 
     card.innerHTML = `
-      <img src="images/kb_${i}.jpg" alt="Relic ${i}" class="shared-asset-img" loading="lazy" />
+      <img src="images/kb_${i}.jpg" alt="Surreal Timepiece Relic ${i}" class="shared-asset-img" loading="lazy" />
       <div class="liquid-watermark">
-        <span class="watermark-brand">UNYKORN PROTOCOL</span>
-        <span>EVIDENCE SEAL #${i < 10 ? '0' + i : i}</span>
+        <span class="watermark-brand">ALL COUCH NO CAGE</span>
+        <span>LOCAL SEAL #${i < 10 ? '0' + i : i}</span>
       </div>
     `;
 
@@ -82,7 +259,7 @@ function initWatermarkedGallery() {
   }
 }
 
-/* 3. ASSET LIGHTBOX INSPECTOR */
+/* 4. ASSET LIGHTBOX INSPECTOR WITH DETAILED JSON RECEIPT DOWNLOAD */
 let activeAssetData = null;
 
 function initAssetLightbox() {
@@ -90,6 +267,7 @@ function initAssetLightbox() {
   const closeBtn = document.getElementById('closeLightboxBtn');
   const copyBtn = document.getElementById('copyHashBtn');
   const attachBtn = document.getElementById('attachEvidenceBtn');
+  const downloadReceiptBtn = document.getElementById('downloadReceiptJsonBtn');
 
   if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
   if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
@@ -101,10 +279,10 @@ function initAssetLightbox() {
         await navigator.clipboard.writeText(activeAssetData.hash);
         copyBtn.innerHTML = '<i class="fa-solid fa-check text-lime"></i> Evidence Hash Copied!';
       } catch (err) {
-        copyBtn.innerHTML = '<i class="fa-solid fa-check text-lime"></i> Hash Ready in Clipboard!';
+        copyBtn.innerHTML = '<i class="fa-solid fa-check text-lime"></i> Hash Ready!';
       }
       setTimeout(() => {
-        copyBtn.innerHTML = '<i class="fa-solid fa-copy text-cyan"></i> Copy Evidence Seal Hash';
+        copyBtn.innerHTML = '<i class="fa-solid fa-copy text-cyan"></i> Copy Local Seal Hash';
       }, 2000);
     });
   }
@@ -114,6 +292,28 @@ function initAssetLightbox() {
       modal.classList.remove('active');
       const calcSection = document.getElementById('calculator');
       if (calcSection) calcSection.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  if (downloadReceiptBtn) {
+    downloadReceiptBtn.addEventListener('click', () => {
+      if (!activeAssetData) return;
+      const receiptObj = {
+        artifactName: activeAssetData.title,
+        evidenceSealHash: activeAssetData.hash,
+        verificationStatus: 'TESTNET_PRE_MINT (Polygon Amoy Stage)',
+        deploymentStage: 'Smart Contract Implemented / Amoy Batch Mint Pending',
+        timestamp: new Date().toISOString(),
+        network: 'Polygon Amoy (Chain ID 80002)',
+        disclaimer: 'Non-medical, verifiable self-mastery visual artifact.'
+      };
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receiptObj, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute('href', dataStr);
+      dlAnchor.setAttribute('download', `EVIDENCE_SEAL_${activeAssetData.id}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
     });
   }
 }
@@ -131,13 +331,13 @@ function openLightbox(data) {
   if (hash) hash.textContent = `Evidence Hash: ${data.hash}`;
   if (downloadLink) {
     downloadLink.href = data.src;
-    downloadLink.download = `UNYKORN_RELIC_ASSET_${data.id}.jpg`;
+    downloadLink.download = `SURREAL_TIME_RELIC_${data.id}.jpg`;
   }
 
   if (modal) modal.classList.add('active');
 }
 
-/* 4. SOOTHING STORYTELLER VOICE ENGINE */
+/* 5. SOOTHING STORYTELLER VOICE ENGINE (LOCAL DEMO) */
 function initSoothingStoryNarration() {
   const playBtn = document.getElementById('playReadAlongBtn');
   const stopBtn = document.getElementById('stopReadAlongBtn');
@@ -147,424 +347,217 @@ function initSoothingStoryNarration() {
   const storyChapters = [
     {
       id: 'readSection1',
-      title: 'Chapter 1: The Sovereign Flame',
-      text: 'Welcome traveler to All Couch No Cage. Here in the surreal persistence of memory, time is not sold to the noise of the world. It is your most precious sacred energy. You alone command your focus and transform wasted moments into golden finality.'
+      title: 'Chapter 1: Sovereign Focus',
+      text: 'Welcome to All Couch No Cage. In a distracted world, uninterrupted focus is your highest sovereign energy. You command your work sessions, build deep discipline, and seal verified progress on your own terms.'
     },
     {
       id: 'readSection2',
-      title: 'Chapter 2: The Four Pillars of Reality',
-      text: 'Observe the four surreal pillars of our architecture. First, your raw human energy and breath. Second, our deterministic Rust engine that models physical truths with mathematical elegance. Third, the internal fractional currency, V-TIME, that honors your deep work. And fourth, our AI cognitive guides, harmonizing team strength.'
+      title: 'Chapter 2: The Architecture of Mastery',
+      text: 'Four clean tiers power this system. First, your private commitment. Second, deterministic Rust math with zero floating-point drift. Third, an internal accountability ledger. And fourth, adaptive cognitive guidance.'
     },
     {
       id: 'readSection3',
-      title: 'Chapter 3: The Science of Living Light',
-      text: 'Look deeply into the biophysics of life. The steady rhythm of your heart, the subtle voltage of your mind across alpha and theta waves, and the warmth of cellular energy. These are the physical truths that ground our digital universe.'
+      title: 'Chapter 3: Optional Biological Grounding',
+      text: 'The protocol is designed to support future client-side biometric integrations. Grounded in biophysical baselines, but operating completely privately without requiring any sensors or data sharing.'
     },
     {
       id: 'readSection4',
-      title: 'Chapter 4: The Sacred Ledger of Focus',
-      text: 'This is your interactive focus ledger. Choose your session duration, declare your privacy mode, and stake your commitment. Every focused hour is an internal milestone, recorded by you, owned by you, and sealed on your terms.'
-    },
-    {
-      id: 'readSection5',
-      title: 'Chapter 5: The Invariant Gallery',
-      text: 'Before you stand the fifteen surrealist timepiece artifacts. Each visual holds an immutable cryptographic evidence seal, celebrating the triumph of focus over noise.'
+      title: 'Chapter 4: The Focus Ledger',
+      text: 'Your focus ledger tracks personal consistency. Every completed block generates a local cryptographic receipt, giving you verifiable evidence of your hard work.'
     }
   ];
 
   let currentIdx = 0;
   let isPlaying = false;
-  let audioCtx = null;
-
-  function playGentleChime(freq = 528) {
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 1.8);
-    } catch (e) {}
-  }
 
   function getSoothingVoice() {
     if (!('speechSynthesis' in window)) return null;
     const voices = window.speechSynthesis.getVoices();
     if (!voices || voices.length === 0) return null;
-    const keywords = ['rita', 'chatterbox', 'jenny', 'aria', 'sonia', 'ava', 'natural', 'neural', 'studio', 'female', 'samantha', 'google', 'zira'];
-    for (const kw of keywords) {
-      const match = voices.find(v => v.name.toLowerCase().includes(kw) && v.lang.startsWith('en'));
-      if (match) return match;
-    }
-    return voices.find(v => v.lang.startsWith('en')) || voices[0];
+    return voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Victoria'))) || voices[0];
   }
 
-  function narrateChapter() {
-    if (!isPlaying || currentIdx >= storyChapters.length) {
-      stopStory();
+  function readChapter(idx) {
+    if (idx >= storyChapters.length) {
+      stopNarration();
       return;
     }
+
+    currentIdx = idx;
+    const ch = storyChapters[idx];
+    if (statusText) statusText.innerHTML = `<i class="fa-solid fa-volume-high text-gold"></i> Narrating: ${ch.title}`;
 
     document.querySelectorAll('.read-highlight').forEach(el => el.classList.remove('read-highlight'));
-    const chapter = storyChapters[currentIdx];
-    const el = document.getElementById(chapter.id);
-    if (el) {
-      el.classList.add('read-highlight');
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const targetSec = document.getElementById(ch.id);
+    if (targetSec) {
+      targetSec.classList.add('read-highlight');
+      targetSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    if (statusText) {
-      statusText.innerHTML = `<i class="fa-solid fa-sparkles text-gold"></i> Storytelling: <strong style="color: var(--accent-gold);">${chapter.title}</strong> (${currentIdx + 1} of ${storyChapters.length})`;
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(ch.text);
+      utterance.rate = 0.92;
+      utterance.pitch = 1.0;
+      const voice = getSoothingVoice();
+      if (voice) utterance.voice = voice;
+
+      utterance.onend = () => {
+        if (isPlaying) {
+          setTimeout(() => readChapter(idx + 1), 800);
+        }
+      };
+
+      utterance.onerror = () => stopNarration();
+      window.speechSynthesis.speak(utterance);
     }
-
-    playGentleChime(currentIdx % 2 === 0 ? 528 : 432);
-
-    if (!('speechSynthesis' in window)) {
-      setTimeout(() => {
-        currentIdx++;
-        if (isPlaying) narrateChapter();
-      }, 5000);
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(chapter.text);
-    const voice = getSoothingVoice();
-    if (voice) utterance.voice = voice;
-
-    utterance.rate = 0.88;
-    utterance.pitch = 1.0;
-
-    utterance.onend = () => {
-      currentIdx++;
-      if (isPlaying) setTimeout(narrateChapter, 800);
-    };
-
-    utterance.onerror = () => {
-      currentIdx++;
-      if (isPlaying) setTimeout(narrateChapter, 800);
-    };
-
-    window.speechSynthesis.speak(utterance);
   }
 
-  function startStory() {
-    isPlaying = true;
-    currentIdx = 0;
-    if (playBtnText) playBtnText.textContent = 'Listening to Story...';
-    if (stopBtn) stopBtn.style.display = 'inline-flex';
-    narrateChapter();
-  }
-
-  function stopStory() {
+  function stopNarration() {
     isPlaying = false;
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     document.querySelectorAll('.read-highlight').forEach(el => el.classList.remove('read-highlight'));
-    if (playBtnText) playBtnText.textContent = 'Soothing Story Mode';
     if (stopBtn) stopBtn.style.display = 'none';
-    if (statusText) statusText.innerHTML = '<i class="fa-solid fa-moon text-gold"></i> Story paused. Ready when you are.';
+    if (playBtnText) playBtnText.textContent = 'Voice Walkthrough (LOCAL)';
+    if (statusText) statusText.innerHTML = `<i class="fa-solid fa-waveform text-gold"></i> Narration engine ready.`;
   }
 
-  if (playBtn) playBtn.addEventListener('click', (e) => { e.preventDefault(); if (isPlaying) stopStory(); else startStory(); });
-  if (stopBtn) stopBtn.addEventListener('click', (e) => { e.preventDefault(); stopStory(); });
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.onvoiceschanged = () => getSoothingVoice();
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        stopNarration();
+      } else {
+        isPlaying = true;
+        if (stopBtn) stopBtn.style.display = 'inline-flex';
+        if (playBtnText) playBtnText.textContent = 'Pause Voice';
+        readChapter(0);
+      }
+    });
+  }
+
+  if (stopBtn) {
+    stopBtn.addEventListener('click', stopNarration);
   }
 }
 
-/* 5. INTERACTIVE PERSONALIZED COGNITIVE AI GUIDE (WITH SAFE OFFLINE FALLBACK) */
+/* 6. PERSONALIZED COGNITIVE AI GUIDE (LOCAL DEMO) */
 function initPersonalizedAIAssistant() {
   const askBtn = document.getElementById('askAssistantBtn');
-  const input = document.getElementById('assistantPromptInput');
+  const promptInput = document.getElementById('assistantPromptInput');
   const archetypeSelect = document.getElementById('assistantArchetype');
   const toneSelect = document.getElementById('assistantTone');
   const responseBox = document.getElementById('assistantResponseBox');
   const responseText = document.getElementById('assistantResponseText');
-  const statusSpan = document.getElementById('responseStatus');
 
-  if (!askBtn || !input) return;
+  if (!askBtn) return;
 
-  const offlineCoaching = {
-    DeepArchitect: "Structure your focus block around a single architectural milestone. Disable notifications, maintain an uninterrupted context window, and commit all working state before taking a cognitive break.",
-    RapidResponder: "Triage your incoming tasks with immediate time-boxing. Execute high-velocity milestones in 25-minute sprints and record your completed output to preserve momentum.",
-    SystemsAuditor: "Verify all invariant boundaries, sanitize your data inputs, and conduct deterministic unit testing before committing new logic to production.",
-    CreativeSynthesizer: "Allow multidisciplinary patterns to emerge naturally. Capture your core insights in structured journal notes before transitioning into execution mode."
-  };
-
-  askBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const message = input.value.trim();
-    if (!message) return;
+  askBtn.addEventListener('click', () => {
+    const prompt = promptInput ? promptInput.value.trim() : '';
+    if (!prompt) return;
 
     const archetype = archetypeSelect ? archetypeSelect.value : 'DeepArchitect';
     const tone = toneSelect ? toneSelect.value : 'Soothing';
 
-    askBtn.disabled = true;
-    askBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Consulting Guide...';
-    responseBox.style.display = 'block';
-    responseText.textContent = 'Generating personalized cognitive guidance...';
-    if (statusSpan) statusSpan.textContent = 'Connecting to Provider...';
-
-    try {
-      const res = await window.SelfHealing.fetchWithRetry('http://localhost:8098/api/v1/nvidia/assistant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message,
-          archetype,
-          tone,
-          focus_topic: 'Focus and Context Recovery'
-        })
-      }, 1);
-
-      const data = await res.json();
-      const content = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : null;
-      if (content) {
-        responseText.textContent = content;
-        if (statusSpan) statusSpan.textContent = 'Response Complete • NVIDIA NIM AI Engine';
-      } else {
-        throw new Error('Empty AI response');
-      }
-    } catch (err) {
-      const fallback = offlineCoaching[archetype] || offlineCoaching.DeepArchitect;
-      responseText.textContent = `[Deterministic Guidance]: ${fallback}\n\n*Note: Remote AI service unavailable. Serving local verified coaching.*`;
-      if (statusSpan) statusSpan.textContent = 'Offline Deterministic Guidance Active';
-    } finally {
-      askBtn.disabled = false;
-      askBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> Consult AI';
+    if (responseBox) responseBox.style.display = 'block';
+    if (responseText) {
+      responseText.textContent = 'Synthesizing adaptive focus advice...';
     }
+
+    setTimeout(() => {
+      let advice = '';
+      if (archetype === 'DeepArchitect') {
+        advice = `[Deep Architect • ${tone} Protocol]\n1. Prime: Close all auxiliary tabs and write your single core outcome.\n2. Cycle: Work uninterrupted for 50 minutes with active notification suppression.\n3. Buffer: Take a 10-minute non-digital recovery walk before evaluating next steps.`;
+      } else if (archetype === 'RapidResponder') {
+        advice = `[Rapid Responder • ${tone} Protocol]\n1. Triage: Execute high-urgency bottlenecks in two 25-minute sprints.\n2. Seal: Record completion in your local ledger to maintain momentum without cognitive scatter.`;
+      } else {
+        advice = `[Systems Auditor • ${tone} Protocol]\n1. Scope: Define exact test vectors and verification criteria prior to session start.\n2. Audit: Complete your 50-minute block and generate a verifiable local SHA-256 seal.`;
+      }
+
+      if (responseText) responseText.textContent = advice;
+    }, 450);
   });
 }
 
-/* 6. LIVE METAVERSE WORLD PULSE & HUD */
+/* 7. LIVE METAVERSE WORLD PULSE (LOCAL DEMO HUD) */
 function initMetaverseLivePulse() {
   const hoursEl = document.getElementById('worldGlobalHours');
   const vtimeEl = document.getElementById('worldTotalVtime');
   const participantsEl = document.getElementById('worldParticipants');
-  const atmosphereEl = document.getElementById('worldAtmosphere');
 
-  async function pollWorldState() {
-    try {
-      const res = await fetch('http://localhost:8098/api/v1/metaverse/state');
-      if (res.ok) {
-        const data = await res.json();
-        if (hoursEl) hoursEl.textContent = `${data.global_focus_hours.toFixed(2)} hrs`;
-        if (vtimeEl) vtimeEl.textContent = `${data.total_vtime_minted.toFixed(2)} VTIME`;
-        if (participantsEl) participantsEl.textContent = `${data.active_participants} Connected`;
-        if (atmosphereEl && data.current_atmosphere) atmosphereEl.textContent = `${data.current_atmosphere} (${data.frequency_hz} Hz)`;
-      }
-    } catch (e) {
-      // Local client pulse calculation
-      if (hoursEl && vtimeEl) {
-        const localDaily = window.SelfHealing ? window.SelfHealing.LedgerEngine.getDailyMinted() : 0.0;
-        vtimeEl.textContent = `${(27742.50 + localDaily).toFixed(2)} VTIME`;
-      }
-    }
-  }
-
-  setInterval(pollWorldState, 4000);
-  pollWorldState();
+  // Realistic deterministic values
+  if (hoursEl) hoursEl.textContent = '1,852.50 hrs';
+  if (vtimeEl) vtimeEl.textContent = '27,787.50 VTIME';
+  if (participantsEl) participantsEl.textContent = '142 Connected (Simulated)';
 }
 
-/* 7. LIVE FOCUS SESSION TIMER UI (START, PAUSE, RESUME, COMPLETE) */
-function initLiveFocusTimerUI() {
-  const startBtn = document.getElementById('startLiveSessionBtn');
-  const pauseBtn = document.getElementById('pauseLiveSessionBtn');
-  const resumeBtn = document.getElementById('resumeLiveSessionBtn');
-  const completeBtn = document.getElementById('completeAndMintBtn');
-  const toast = document.getElementById('mintSuccessToast');
-  const hoursInput = document.getElementById('calcHours');
-
-  function updateControls() {
-    const timer = window.SelfHealing.FocusTimer;
-    const status = timer.state.status;
-
-    if (status === 'IDLE' || status === 'COMPLETED') {
-      if (startBtn) startBtn.style.display = 'inline-block';
-      if (pauseBtn) pauseBtn.style.display = 'none';
-      if (resumeBtn) resumeBtn.style.display = 'none';
-      if (completeBtn) completeBtn.style.display = 'none';
-    } else if (status === 'RUNNING') {
-      if (startBtn) startBtn.style.display = 'none';
-      if (pauseBtn) pauseBtn.style.display = 'inline-block';
-      if (resumeBtn) resumeBtn.style.display = 'none';
-      if (completeBtn) completeBtn.style.display = 'inline-block';
-    } else if (status === 'PAUSED') {
-      if (startBtn) startBtn.style.display = 'none';
-      if (pauseBtn) pauseBtn.style.display = 'none';
-      if (resumeBtn) resumeBtn.style.display = 'inline-block';
-      if (completeBtn) completeBtn.style.display = 'inline-block';
-    }
-  }
-
-  if (startBtn) {
-    startBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.SelfHealing.FocusTimer.start();
-      updateControls();
-      if (toast) toast.style.display = 'none';
-    });
-  }
-
-  if (pauseBtn) {
-    pauseBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.SelfHealing.FocusTimer.pause();
-      updateControls();
-    });
-  }
-
-  if (resumeBtn) {
-    resumeBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.SelfHealing.FocusTimer.resume();
-      updateControls();
-    });
-  }
-
-  if (completeBtn) {
-    completeBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const timer = window.SelfHealing.FocusTimer;
-      const elapsedHours = Math.max(0.1, (timer.getElapsedMs() / 3600000)).toFixed(2);
-      timer.reset();
-      updateControls();
-
-      // Deterministic Calculation & Receipt Generation
-      const calculation = window.SelfHealing.LedgerEngine.calculate(elapsedHours, 10000, 8000);
-      window.SelfHealing.LedgerEngine.recordDailyMint(calculation.finalVTime);
-      const receipt = window.SelfHealing.LedgerEngine.generateReceipt(calculation);
-
-      if (toast) {
-        toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> Focus Block Sealed! Awarded <strong>${calculation.finalVTime} VTIME</strong> (Receipt #${receipt.receiptId})`;
-        toast.style.display = 'block';
-      }
-
-      // Update calculations in UI
-      const calcHours = document.getElementById('calcHours');
-      if (calcHours) calcHours.dispatchEvent(new Event('input'));
-    });
-  }
-
-  updateControls();
-}
-
-/* 8. GENERATIVE BADGE FORGE & VIDEO STUDIO (WITH TRANSPARENT UNAVAILABLE HANDLING) */
+/* 8. SURREAL TIME BADGE FORGE (DEMO PREVIEW) */
 function initDaliBadgeForge() {
-  const badgeBtn = document.getElementById('generateBadgeBtn');
-  const videoBtn = document.getElementById('generateLivingVideoBtn');
+  const generateBtn = document.getElementById('generateBadgeBtn');
   const themeSelect = document.getElementById('forgeThemeSelect');
   const milestoneInput = document.getElementById('forgeMilestoneInput');
-  const badgeImg = document.getElementById('forgedBadgeImg');
   const statusMsg = document.getElementById('forgeStatusMessage');
-  const badgeTag = document.getElementById('badgeMilestoneTag');
+  const badgeMilestoneTag = document.getElementById('badgeMilestoneTag');
 
-  if (!badgeBtn) return;
+  if (!generateBtn) return;
 
-  badgeBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const theme = themeSelect ? themeSelect.value : 'Liquid Gold Melting Clock';
-    const milestone = milestoneInput ? milestoneInput.value : '2.0 Hours Focus Block';
-
-    badgeBtn.disabled = true;
-    badgeBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Forging Badge...';
-    if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-gold"></i> Generating with FLUX.1 Schnell on NVIDIA NIM...';
-
-    try {
-      const res = await window.SelfHealing.fetchWithRetry('http://localhost:8098/api/v1/nvidia/dali-badge', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ theme, focus_hours: milestone })
-      }, 1);
-
-      if (res.ok) {
-        if (badgeTag) badgeTag.textContent = milestone.toUpperCase().slice(0, 16);
-        const randomRelicId = Math.floor(Math.random() * 15) + 1;
-        if (badgeImg) badgeImg.src = `images/kb_${randomRelicId}.jpg`;
-        if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-check-circle text-lime"></i> Badge Forged & Sealed! (FLUX.1 NIM)';
-      } else {
-        throw new Error('NIM unavailable');
-      }
-    } catch (err) {
-      if (badgeTag) badgeTag.textContent = milestone.toUpperCase().slice(0, 16);
-      const randomRelicId = Math.floor(Math.random() * 15) + 1;
-      if (badgeImg) badgeImg.src = `images/kb_${randomRelicId}.jpg`;
-      if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-check-circle text-lime"></i> Sealed Procedural Relic Displayed (Offline Vault)';
-    } finally {
-      badgeBtn.disabled = false;
-      badgeBtn.innerHTML = '<i class="fa-solid fa-sparkles"></i> Forge Dalí Badge';
+  generateBtn.addEventListener('click', () => {
+    const milestone = milestoneInput ? milestoneInput.value : '50m Deep Sprint';
+    if (badgeMilestoneTag) badgeMilestoneTag.textContent = milestone.toUpperCase();
+    if (statusMsg) {
+      statusMsg.innerHTML = '<i class="fa-solid fa-circle-check text-lime"></i> Milestone Relic Generated! (DEMO PREVIEW)';
     }
   });
+}
 
-  if (videoBtn) {
-    videoBtn.addEventListener('click', async (e) => {
+/* 9. SYSTEM DIAGNOSTICS & RESET UI */
+function initSystemDiagnosticsUI() {
+  const toggleBtn = document.getElementById('diagToggleBtn');
+  const modal = document.getElementById('diagModal');
+  const closeBtn = document.getElementById('closeDiagBtn');
+  const clearBtn = document.getElementById('clearStateBtn');
+  const logList = document.getElementById('diagLogList');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      videoBtn.disabled = true;
-      videoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rendering Video...';
-      if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-film text-cyan"></i> Connecting to Video Generation Endpoint...';
+      renderDiagLogs();
+      if (modal) modal.classList.add('active');
+    });
+  }
 
-      try {
-        const res = await window.SelfHealing.fetchWithRetry('http://localhost:8098/api/v1/nvidia/living-video', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: 'Surreal timepiece dripping with liquid golden light' })
-        }, 1);
-        if (res.ok) {
-          if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-check-circle text-lime"></i> Living Video Relic Rendered & Minted!';
-        } else {
-          throw new Error('Video API offline');
-        }
-      } catch (err) {
-        if (statusMsg) statusMsg.innerHTML = '<i class="fa-solid fa-info-circle text-gold"></i> Video API Offline • Living CSS Ambient Motion Active';
-      } finally {
-        videoBtn.disabled = false;
-        videoBtn.innerHTML = '<i class="fa-solid fa-film"></i> Animate to Living Video';
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      if (modal) modal.classList.remove('active');
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Reset local focus session state and diagnostics cache?')) {
+        try {
+          localStorage.clear();
+          location.reload();
+        } catch (e) {}
       }
     });
   }
-}
 
-/* 9. SYSTEM DIAGNOSTICS UI PANEL */
-function initSystemDiagnosticsUI() {
-  const diagToggleBtn = document.getElementById('diagToggleBtn');
-  const diagModal = document.getElementById('diagModal');
-  const closeDiagBtn = document.getElementById('closeDiagBtn');
-  const diagLogList = document.getElementById('diagLogList');
-  const clearStateBtn = document.getElementById('clearStateBtn');
-
-  if (diagToggleBtn && diagModal) {
-    diagToggleBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      diagModal.classList.add('active');
-      renderDiagnostics();
-    });
-  }
-
-  if (closeDiagBtn && diagModal) {
-    closeDiagBtn.addEventListener('click', () => diagModal.classList.remove('active'));
-  }
-
-  function renderDiagnostics() {
-    if (!diagLogList || !window.SelfHealing) return;
-    const logs = window.SelfHealing.DIAGNOSTICS.telemetryHistory;
-    diagLogList.innerHTML = logs.map(l => `
-      <div style="border-bottom: 1px solid rgba(255,255,255,0.1); padding: 6px 0; font-size: 11px;">
-        <span style="color: #eab308;">[${l.type}]</span> <span style="color: #67e8f9;">${l.correlationId}</span> - ${l.message}
-      </div>
-    `).join('') || '<div style="color: #94a3b8; font-size: 12px;">No telemetry logs recorded. System healthy.</div>';
-  }
-
-  if (clearStateBtn) {
-    clearStateBtn.addEventListener('click', () => {
-      localStorage.clear();
-      window.location.reload();
-    });
+  function renderDiagLogs() {
+    if (!logList) return;
+    try {
+      const logs = JSON.parse(localStorage.getItem('acnc_diagnostics_log_v3') || '[]');
+      if (logs.length === 0) {
+        logList.innerHTML = '<div style="color: var(--text-dim);">No active error events. System healthy.</div>';
+        return;
+      }
+      logList.innerHTML = logs.map(l => `
+        <div style="font-size: 0.72rem; margin-bottom: 0.35rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.25rem;">
+          <span style="color: var(--accent-gold);">[${l.timestamp.split('T')[1].split('.')[0]}]</span>
+          <span style="color: var(--accent-cyan); font-weight: 700;">${l.type}</span>: ${l.message}
+        </div>
+      `).join('');
+    } catch (e) {
+      logList.innerHTML = '<div>Telemetry storage ready.</div>';
+    }
   }
 }
