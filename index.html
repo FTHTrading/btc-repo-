@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ALL COUCH NO CAGE — Self-Mastery, Focus & Biophysical Time Architecture</title>
-  <meta name="description" content="Protect your best work hours. Private focus sessions, adaptive cognitive guidance, and optional verifiable proof of progress powered by deterministic math." />
+  <title>ALL COUCH NO CAGE — Focus & Deep Work Engine</title>
+  <meta name="description" content="Protect your best work hours with private focus sessions, adaptive guidance, and verifiable progress." />
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,84 +17,64 @@
   <!-- Liquid Glassmorphism Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-page="focus">
 
   <!-- Ambient Light Orbs -->
   <div class="liquid-orb orb-gold"></div>
   <div class="liquid-orb orb-cyan"></div>
   <div class="liquid-orb orb-purple"></div>
 
-  <!-- Header Navigation -->
+  <!-- Shared Header Navigation -->
   <header class="navbar">
     <div class="nav-container">
-      <a href="#overview" class="brand">
+      <a href="index.html" class="brand">
         <img src="images/official_logo.png" alt="All Couch No Cage Logo" class="brand-logo-img" />
         <div class="brand-text">
           <span>ALL COUCH NO CAGE</span>
-          <span class="brand-sub">Self-Mastery & Focus Architecture • <span class="truth-badge badge-live">LIVE</span></span>
+          <span class="brand-sub">Sovereign Focus Architecture</span>
         </div>
       </a>
 
       <ul class="nav-links">
-        <li><a href="#overview" class="active">Focus Session</a></li>
-        <li><a href="#architecture">How It Works</a></li>
-        <li><a href="#biometrics">Science & Math</a></li>
-        <li><a href="#gallery">Visual Relics</a></li>
-        <li><a href="#calculator">Ledger</a></li>
+        <li><a href="index.html" class="active">Focus</a></li>
+        <li><a href="rewards.html">Rewards</a></li>
+        <li><a href="vault.html">Vault</a></li>
+        <li><a href="relics.html">Relics</a></li>
+        <li><a href="protocol.html">Protocol</a></li>
       </ul>
 
       <div class="nav-actions">
-        <a href="#overview" class="btn btn-gold btn-sm">
-          <i class="fa-solid fa-fire"></i> Start Session
-        </a>
+        <button class="btn btn-gold btn-sm" id="globalConnectWalletBtn">
+          <i class="fa-solid fa-wallet"></i> Connect / Enter
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- Interactive AI Read-Along & Narration Bar -->
-  <div style="position: sticky; top: 62px; z-index: 95; background: rgba(14, 17, 24, 0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-glass); padding: 0.6rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-size: 0.85rem;">
-    <div style="display: flex; align-items: center; gap: 0.75rem;">
-      <button class="btn btn-glass btn-sm" id="playReadAlongBtn">
-        <i class="fa-solid fa-volume-high text-gold" id="playIcon"></i> <span id="playBtnText">Voice Walkthrough (LOCAL)</span>
-      </button>
-      <button class="btn btn-glass btn-sm" id="stopReadAlongBtn" style="display: none;">
-        <i class="fa-solid fa-stop text-cyan"></i> Stop
-      </button>
-    </div>
-    <div style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 600px;" id="narrationStatusText">
-      <i class="fa-solid fa-waveform text-gold"></i> Ready to guide your focus session walkthrough.
-    </div>
-    <div>
-      <span class="truth-badge badge-local">LOCAL DEMO</span>
-    </div>
-  </div>
-
-  <!-- Hero Section: Focused First-Screen Launchpad -->
-  <section class="hero-section" id="overview">
-    <div class="hero-grid">
-      <div class="hero-content" id="readSection1">
-        <div class="hero-tag">
-          <i class="fa-solid fa-shield-halved"></i> Private by Default • Non-Medical • Proof is Optional
+  <!-- Main Focus Container -->
+  <main class="page-container">
+    <div class="focus-grid">
+      
+      <!-- Primary Focus Engine Card -->
+      <div class="focus-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div class="truth-badge badge-live"><i class="fa-solid fa-bolt"></i> Focus Engine — LIVE</div>
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-dim);">Private by default</div>
         </div>
 
-        <h1 class="hero-title">
-          PROTECT YOUR <span class="gold-gradient">BEST WORK HOURS</span>.
+        <h1 style="font-size: 2.2rem; font-weight: 900; line-height: 1.15; margin-bottom: 0.75rem;">
+          PROTECT YOUR <span class="gold-gradient">BEST HOURS</span>.
         </h1>
 
-        <p class="hero-desc">
-          Private focus sessions, adaptive cognitive guidance, and optional verifiable proof of progress. Powered by deterministic integer math with zero floating-point drift.
+        <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.5; margin-bottom: 1.5rem;">
+          Lock in an uninterrupted sprint. Earn verifiable reward points upon completion with zero floating-point drift.
         </p>
 
-        <!-- Direct Focus Launchpad Card -->
-        <div class="focus-launchpad-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-gold); font-weight: 800; text-transform: uppercase;">
-              <i class="fa-solid fa-stopwatch"></i> Choose Duration:
-            </span>
-            <span class="truth-badge badge-live">Focus Timer — LIVE</span>
-          </div>
-
-          <!-- Preset Chips Row -->
+        <!-- Session Duration Presets -->
+        <div style="margin-bottom: 0.6rem;">
+          <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.4rem;">
+            Select Duration:
+          </label>
           <div class="preset-chips-row" id="presetChipsRow">
             <button type="button" class="preset-chip" data-minutes="25">25m Sprint</button>
             <button type="button" class="preset-chip active" data-minutes="50">50m Deep Block</button>
@@ -102,429 +82,125 @@
             <button type="button" class="preset-chip" data-minutes="custom">Custom</button>
             <input type="number" id="customDurationInput" class="custom-minutes-input" placeholder="Minutes" min="6" max="1440" value="50" />
           </div>
-
-          <!-- Intention Input -->
-          <div class="intention-group">
-            <input type="text" id="sessionIntention" class="intention-input" placeholder="What must be complete when this ends? (e.g., Finalize smart contract audit)" />
-          </div>
-
-          <!-- Distraction Shield & Privacy Toggle -->
-          <div class="toggle-group">
-            <label class="toggle-label">
-              <input type="checkbox" id="distractionToggle" checked style="accent-color: var(--accent-gold);" />
-              <span>Shield notifications & track zero-interruption flow</span>
-            </label>
-
-            <select id="heroPrivacyMode" style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); color: var(--text-muted); font-size: 0.78rem; padding: 0.35rem 0.65rem; border-radius: 6px; outline: none;">
-              <option value="private" selected>Private Journal (LOCAL)</option>
-              <option value="proof">Proof Receipt (TESTNET / Amoy)</option>
-              <option value="zk">Selective ZK (TESTNET)</option>
-            </select>
-          </div>
-
-          <!-- Active Countdown Banner -->
-          <div class="active-countdown-banner" id="heroActiveTimerBanner">
-            <div>
-              <div style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);">TIME REMAINING</div>
-              <div class="countdown-digits" id="heroTimerCountdown">00:50:00</div>
-            </div>
-            <div style="text-align: right;">
-              <span class="truth-badge badge-live">BLOCK ACTIVE</span>
-            </div>
-          </div>
-
-          <!-- Timer Action Triggers -->
-          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-            <button class="btn btn-gold btn-lg" id="heroStartSessionBtn" style="flex: 1.5;">
-              <i class="fa-solid fa-play"></i> Start 50m Focus Block
-            </button>
-            <button class="btn btn-glass" id="heroPauseSessionBtn" style="display: none; flex: 1;">
-              <i class="fa-solid fa-pause"></i> Pause
-            </button>
-            <button class="btn btn-gold" id="heroResumeSessionBtn" style="display: none; flex: 1;">
-              <i class="fa-solid fa-play"></i> Resume
-            </button>
-            <button class="btn btn-cyan" id="heroCompleteSessionBtn" style="display: none; flex: 1.2;">
-              <i class="fa-solid fa-check"></i> Complete & Seal
-            </button>
-            <button class="btn btn-glass" id="heroResetSessionBtn" style="display: none; padding: 0.75rem 1rem;">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
-          </div>
         </div>
 
-        <div style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.5;">
-          <i class="fa-solid fa-circle-info text-cyan"></i> The focus timer runs 100% locally in your browser. No biometric hardware, wallet connection, or network requests are required to track focus.
-        </div>
-      </div>
-
-      <!-- Surreal Time Visual Visualizer -->
-      <div class="hero-art-box">
-        <img src="images/dali_clock.jpg" alt="Surreal Timepiece — Liquid Chronology" class="hero-art-img" />
-        <div class="liquid-watermark">
-          <span class="watermark-brand">ALL COUCH NO CAGE</span>
-          <span>DETERMINISTIC RUST MATH • LOCAL PROOF</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- System Architecture & How It Works -->
-  <section class="section section-alt" id="architecture">
-    <div class="section-container">
-      <div class="section-header" id="readSection2">
-        <div class="pill-tag gold-pill"><i class="fa-solid fa-sitemap"></i> System Infrastructure</div>
-        <h2>How the Ecosystem Works</h2>
-        <p>A transparent 4-tier pipeline connecting your private focus commitment to deterministic Rust engines and optional verifiable receipts.</p>
-      </div>
-
-      <div class="arch-flow-grid">
-        <div class="arch-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">TIER 1</span>
-            <span class="truth-badge badge-live">LIVE</span>
-          </div>
-          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-cyan);">Private Focus Sessions</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-            Track work blocks with monotonic integer countdowns. Runs entirely offline in your browser with zero external telemetry requirements.
-          </p>
+        <!-- Session Intention -->
+        <div>
+          <label style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.4rem;">
+            Core Outcome:
+          </label>
+          <input type="text" id="sessionIntention" class="intention-input" placeholder="What must be complete when this ends? (e.g., Finalize API callback integration)" />
         </div>
 
-        <div class="arch-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">TIER 2</span>
-            <span class="truth-badge badge-local">LOCAL REFERENCE</span>
-          </div>
-          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-flame);">Deterministic Rust Engine</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-            Processes session calculations in native Rust using integer basis points (BPS) and quadratic predicates with zero floating-point drift.
-          </p>
+        <!-- Reward Estimate Pill -->
+        <div class="reward-estimate-pill">
+          <span><i class="fa-solid fa-gift"></i> <span id="rewardEstimateText">Earn ~12 Focus Points & 1.2 VTIME upon verified completion</span></span>
+          <a href="rewards.html" style="color: var(--accent-gold); font-size: 0.75rem; text-decoration: underline;">View Utility</a>
         </div>
 
-        <div class="arch-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">TIER 3</span>
-            <span class="truth-badge badge-local">LOCAL LEDGER</span>
-          </div>
-          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-gold);">Internal Focus Units ($VTIME)</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-            Internal non-monetary utility points awarded for completed milestones. Non-transferable with zero cash value.
-          </p>
+        <!-- Distraction & Privacy Settings -->
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="distractionToggle" checked style="accent-color: var(--accent-gold);" />
+            <span>Shield notifications & track flow</span>
+          </label>
+
+          <select id="focusPrivacyMode" style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); color: var(--text-muted); font-size: 0.78rem; padding: 0.35rem 0.65rem; border-radius: 6px; outline: none;">
+            <option value="private" selected>Private Journal (LOCAL)</option>
+            <option value="proof">Proof Receipt (TESTNET / Amoy)</option>
+            <option value="zk">Selective ZK (TESTNET)</option>
+          </select>
         </div>
 
-        <div class="arch-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">TIER 4</span>
-            <span class="truth-badge badge-testnet">TESTNET STAGE</span>
-          </div>
-          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-purple);">Cryptographic Verification</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-            Generates local SHA-256 evidence seals with optional smart contract anchoring on Polygon Amoy (Chain ID 80002).
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Science & Biophysical Reference (Non-Medical) -->
-  <section class="section" id="biometrics">
-    <div class="section-container">
-      <div class="section-header" id="readSection3">
-        <div class="pill-tag cyan-pill"><i class="fa-solid fa-atom"></i> Reference Biophysics</div>
-        <h2>Biophysical Baselines & Signal Models</h2>
-        <p>Reference constants used by the Rust math engine. Designed to support optional future device integrations. <strong class="text-gold">Non-medical.</strong></p>
-      </div>
-
-      <div class="glass-panel" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-        <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="color: var(--accent-gold); font-weight: 800; font-family: var(--font-mono);">
-              <i class="fa-solid fa-heart-pulse"></i> Cardiac / HRV Baselines
-            </span>
-            <span class="truth-badge badge-local">SPECIFICATION</span>
-          </div>
-          <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-            R-R intervals bounded in Rust specifications to [300 ms, 2000 ms]. Slew-rate filtering model enforces |ΔRR| ≤ 300 ms for artifact filtering.
-          </p>
-        </div>
-
-        <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="color: var(--accent-cyan); font-weight: 800; font-family: var(--font-mono);">
-              <i class="fa-solid fa-brain"></i> Neural & EEG Frequency Bands
-            </span>
-            <span class="truth-badge badge-local">SPECIFICATION</span>
-          </div>
-          <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-            Delta (0.5–4 Hz), Theta (4–8 Hz), Alpha (8–12 Hz), Beta (12–30 Hz), Gamma (30–100 Hz). Reference math modeled in integer fixed-point.
-          </p>
-        </div>
-
-        <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="color: var(--accent-purple); font-weight: 800; font-family: var(--font-mono);">
-              <i class="fa-solid fa-fire-flame-curved"></i> Metabolic & Thermal Modeling
-            </span>
-            <span class="truth-badge badge-local">SPECIFICATION</span>
-          </div>
-          <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-            Basal Metabolic Rate bounds (1,200–2,500 kcal/day, ~75W continuous thermal power). Provides energy grounding for cognitive recovery cycles.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Surreal Timepiece Relic Gallery & Proof Inspector -->
-  <section class="section section-alt" id="gallery">
-    <div class="section-container">
-      <div class="section-header" id="readSection5">
-        <div class="pill-tag gold-pill"><i class="fa-solid fa-images"></i> Visual Relics & Local Seals</div>
-        <h2>Surreal Timepiece Relic Inspector</h2>
-        <p>Click any artifact to inspect local SHA-256 evidence hashes and download watermarked relics with structured JSON verification receipts.</p>
-      </div>
-
-      <!-- Live Pre-Mint Testnet Status Banner -->
-      <div class="glass-panel" style="margin-bottom: 2rem; border-color: rgba(234, 179, 8, 0.35);">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+        <!-- Active Timer Countdown Banner -->
+        <div class="active-countdown-banner" id="heroActiveTimerBanner">
           <div>
-            <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-gold); font-weight: 800;">COLLECTION STATUS:</span>
-            <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-main); margin-left: 0.5rem;">Source Implemented • Pre-Mint Stage</span>
+            <div style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);">TIME REMAINING</div>
+            <div class="countdown-digits" id="heroTimerCountdown">00:50:00</div>
           </div>
           <div>
-            <span class="truth-badge badge-testnet">TESTNET (Amoy) / Pre-Mint</span>
+            <span class="truth-badge badge-live">SPRINT RUNNING</span>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; font-size: 0.82rem; font-family: var(--font-mono);">
-          <div style="background: rgba(0,0,0,0.6); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-glass);">
-            <div style="color: var(--text-dim); margin-bottom: 0.3rem;">CATALOGED ASSETS</div>
-            <div style="color: var(--text-main); font-weight: 700;">15 Visual Artifacts</div>
-            <div style="color: var(--accent-lime); font-size: 0.75rem; margin-top: 0.25rem;"><i class="fa-solid fa-check"></i> Local SHA-256 Sealed</div>
-          </div>
-          <div style="background: rgba(0,0,0,0.6); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-glass);">
-            <div style="color: var(--text-dim); margin-bottom: 0.3rem;">ON-CHAIN NFTS MINTED</div>
-            <div style="color: var(--accent-gold); font-weight: 700;">0 / 15 (Pre-Mint Stage)</div>
-            <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">Awaiting Polygon Amoy Batch Script</div>
-          </div>
-          <div style="background: rgba(0,0,0,0.6); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-glass);">
-            <div style="color: var(--text-dim); margin-bottom: 0.3rem;">TARGET NETWORK</div>
-            <div style="color: var(--text-main); font-weight: 700;">Polygon Amoy (80002)</div>
-            <div style="color: var(--accent-cyan); font-size: 0.75rem; margin-top: 0.25rem;">Contracts in testnet verification</div>
-          </div>
+        <!-- Timer Control Action Triggers -->
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-gold btn-lg" id="heroStartSessionBtn" style="flex: 1.5;">
+            <i class="fa-solid fa-play"></i> Start 50m Focus Block
+          </button>
+          <button class="btn btn-glass" id="heroPauseSessionBtn" style="display: none; flex: 1;">
+            <i class="fa-solid fa-pause"></i> Pause
+          </button>
+          <button class="btn btn-gold" id="heroResumeSessionBtn" style="display: none; flex: 1;">
+            <i class="fa-solid fa-play"></i> Resume
+          </button>
+          <button class="btn btn-cyan" id="heroCompleteSessionBtn" style="display: none; flex: 1.2;">
+            <i class="fa-solid fa-check"></i> Complete & Seal
+          </button>
+          <button class="btn btn-glass" id="heroResetSessionBtn" style="display: none; padding: 0.75rem 1rem;">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
         </div>
       </div>
 
-      <div class="shared-images-grid" id="watermarkedGalleryGrid">
-        <!-- 15 Relic Cards dynamically injected -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Personal Focus Accounting & Integrity Calculator -->
-  <section class="section" id="calculator">
-    <div class="section-container">
-      <div class="section-header" id="readSection4">
-        <div class="pill-tag purple-pill"><i class="fa-solid fa-calculator"></i> Interactive Focus Ledger</div>
-        <h2>Personal Focus & Value Ledger</h2>
-        <p>Deterministic formula: <code>Units = min(Hours × BaseRate × Severity × Evidence, EventCap, DailyCap)</code></p>
-      </div>
-
-      <div class="glass-panel calc-grid">
-        <div class="calc-inputs">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3 style="font-size: 1.1rem; font-weight: 800;"><i class="fa-solid fa-sliders text-cyan"></i> Session Accounting Parameters</h3>
-            <span class="truth-badge badge-local">LOCAL JOURNAL</span>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Duration (Hours, 0.1 to 24):</label>
-              <input type="number" id="calcHours" value="0.83" step="0.1" min="0.1" max="24" />
-            </div>
-            <div class="form-group">
-              <label>Proof & Privacy Mode:</label>
-              <select id="privacyModeSelect">
-                <option value="private" selected>Private Journal (LOCAL)</option>
-                <option value="proof">Proof Receipt (TESTNET / Amoy)</option>
-                <option value="zk">Selective ZK (TESTNET)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Focus Complexity Tier:</label>
-              <select id="calcSeverity">
-                <option value="10000">1.0× (Standard Flow)</option>
-                <option value="12000">1.2× (Context Shift Management)</option>
-                <option value="14000" selected>1.4× (Deep Architecture Sprint)</option>
-                <option value="18000">1.8× (High Complexity Synthesis)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Integrity & Flow Status:</label>
-              <select id="calcEvidenceTier">
-                <option value="8000">80% (Self-Reported Completed Session)</option>
-                <option value="9000" selected>90% (Zero-Interruption Flow)</option>
-                <option value="10000">100% (Signed Session Commitment)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Voluntary Session Stake (VTIME):</label>
-            <input type="number" id="voluntaryStakeInput" value="10" min="0" max="100" />
-          </div>
-        </div>
-
-        <div class="calc-results-box">
-          <div class="impact-display-box">
-            <div class="impact-val-item">
-              <span>Personal Focus Units:</span>
-              <span id="impactScoreBps" class="val-highlight gold-gradient">17.64 Units</span>
-            </div>
-            <div class="impact-val-item">
-              <span>Internal Utility Points:</span>
-              <span id="impactCentsVal" class="val-highlight cyan-gradient">17.64 VTIME</span>
-            </div>
-            <div class="impact-val-item">
-              <span>Remaining Daily Credit Cap:</span>
-              <span id="confidenceDisplay" class="text-muted">282.36 / 300 VTIME</span>
-            </div>
-          </div>
-
-          <p class="text-dim" style="font-size: 0.78rem; margin-top: 1rem; line-height: 1.5;">
-            * Internal utility points ($VTIME) awarded through verified focus consistency. Non-medical • Non-transferable • No cash value.
+      <!-- Right Column: Visual Anchor & Quiet Inspiration -->
+      <div>
+        <div class="glass-panel" style="margin-bottom: 1.5rem; text-align: center;">
+          <img src="images/dali_clock.jpg" alt="Surreal Timepiece Relic" style="width: 100%; height: 230px; object-fit: cover; border-radius: 10px; margin-bottom: 1rem; border: 1px solid var(--border-glass);" />
+          <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem;" class="gold-gradient">Surreal Time Invariance</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+            "Time is your sacred sovereign resource. Turn wasted moments into immutable focus milestones."
           </p>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Interactive AI Guide (LOCAL DEMO) -->
-  <section class="section section-alt" id="ai-assistant">
-    <div class="section-container">
-      <div class="section-header">
-        <div class="pill-tag purple-pill"><i class="fa-solid fa-microchip"></i> Cognitive Guidance</div>
-        <h2>Adaptive Focus Assistant</h2>
-        <p>Tailor your focus protocols to your cognitive archetype and preferred coaching style.</p>
-      </div>
-
-      <div class="glass-panel" style="max-width: 800px; margin: 0 auto;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-purple); font-weight: 700;">COGNITIVE TUNING</span>
-          <span class="truth-badge badge-demo">LOCAL DEMO</span>
-        </div>
-
-        <div class="form-row" style="margin-bottom: 1rem;">
-          <div class="form-group">
-            <label>Cognitive Archetype:</label>
-            <select id="assistantArchetype">
-              <option value="DeepArchitect" selected>Deep Architect (Systems & Deep Focus)</option>
-              <option value="RapidResponder">Rapid Responder (High Flow & Triage)</option>
-              <option value="SystemsAuditor">Systems Auditor (Precision & Verification)</option>
-            </select>
+        <div class="glass-panel" style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.6;">
+          <div style="color: var(--accent-cyan); font-weight: 800; font-family: var(--font-mono); margin-bottom: 0.35rem;">
+            <i class="fa-solid fa-circle-check"></i> Non-Medical & Private
           </div>
-          <div class="form-group">
-            <label>Guidance Tone:</label>
-            <select id="assistantTone">
-              <option value="Soothing" selected>Calm & Methodical</option>
-              <option value="Direct">Direct & Action-Oriented</option>
-              <option value="Analytical">Analytical & Structured</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Ask for focus advice:</label>
-          <div style="display: flex; gap: 0.75rem;">
-            <input type="text" id="assistantPromptInput" value="How can I optimize my energy for a 50-minute deep programming sprint?" style="flex: 1;" />
-            <button class="btn btn-gold" id="askAssistantBtn">
-              <i class="fa-solid fa-sparkles"></i> Consult Guide
-            </button>
-          </div>
-        </div>
-
-        <div id="assistantResponseBox" style="margin-top: 1.25rem; background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-glass); font-size: 0.88rem; line-height: 1.6; display: none;">
-          <p id="assistantResponseText" style="white-space: pre-wrap; margin: 0;"></p>
+          Runs 100% locally in your browser. No biometric sensors, wallet connections, or network tracking required to log focus.
         </div>
       </div>
+
     </div>
-  </section>
-
-  <!-- Asset Inspection Lightbox Modal -->
-  <div class="modal-overlay" id="assetLightboxModal">
-    <div class="lightbox-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem;">
-        <h3 id="lightboxTitle" style="font-size: 1.15rem; font-weight: 800;" class="gold-gradient">Visual Asset Inspector</h3>
-        <button id="closeLightboxBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
-      </div>
-
-      <div class="lightbox-img-box">
-        <div style="position: absolute; top: 12px; right: 12px; background: rgba(234, 179, 8, 0.9); color: #000; padding: 0.35rem 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; border-radius: 4px; text-transform: uppercase;">
-          LOCAL SHA-256 SEAL GENERATED
-        </div>
-        <img id="lightboxImg" src="images/dali_clock.jpg" alt="Asset Preview" />
-      </div>
-
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
-        <span>Format: High-Res Artifact</span>
-        <span id="lightboxHash" class="text-cyan">Evidence Hash: 0x8ace92e41b7392a...</span>
-        <span class="truth-badge badge-testnet">TESTNET PRE-MINT</span>
-      </div>
-
-      <div class="lightbox-actions">
-        <a id="downloadAssetBtn" href="images/dali_clock.jpg" download="SURREAL_TIME_RELIC.jpg" class="btn btn-gold">
-          <i class="fa-solid fa-download"></i> Download Image
-        </a>
-        <button class="btn btn-glass" id="copyHashBtn">
-          <i class="fa-solid fa-copy text-cyan"></i> Copy Seal Hash
-        </button>
-        <button class="btn btn-cyan" id="downloadReceiptJsonBtn">
-          <i class="fa-solid fa-file-code"></i> Download JSON Receipt
-        </button>
-      </div>
-    </div>
-  </div>
+  </main>
 
   <!-- Session Completed Modal -->
   <div class="modal-overlay" id="sessionCompletedModal">
-    <div class="lightbox-card" style="max-width: 580px;">
+    <div class="lightbox-card" style="max-width: 560px;">
       <div style="text-align: center; margin-bottom: 1.25rem;">
-        <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; background: rgba(132, 204, 22, 0.15); border: 2px solid var(--accent-lime); margin-bottom: 1rem; color: var(--accent-lime); font-size: 1.75rem;">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(132, 204, 22, 0.15); border: 2px solid var(--accent-lime); margin-bottom: 0.75rem; color: var(--accent-lime); font-size: 1.6rem;">
           <i class="fa-solid fa-check"></i>
         </div>
-        <h2 style="font-size: 1.5rem; font-weight: 900;" class="gold-gradient">Focus Session Completed!</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Your focus block was completed and sealed to your local ledger.</p>
+        <h2 style="font-size: 1.45rem; font-weight: 900;" class="gold-gradient">Session Completed!</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 0.25rem;">Your focus block was completed and added to your local ledger.</p>
       </div>
 
-      <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass); font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 1.5rem;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-          <span style="color: var(--text-dim);">Receipt ID:</span>
-          <span id="completedReceiptId" style="color: var(--accent-gold); font-weight: 700;">RCPT-8ACE92E4</span>
+      <div style="background: rgba(0,0,0,0.6); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-glass); font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+          <span style="color: var(--text-dim);">Points Earned:</span>
+          <span id="completedPointsEarned" style="color: var(--accent-gold); font-weight: 800;">+12 Points</span>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+          <span style="color: var(--text-dim);">VTIME Credits:</span>
+          <span id="completedVTimeEarned" style="color: var(--accent-cyan); font-weight: 800;">+1.2 VTIME (Pending)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
           <span style="color: var(--text-dim);">Duration:</span>
-          <span id="completedDuration" style="color: var(--text-main);">50m</span>
+          <span id="completedDurationText" style="color: var(--text-main);">50m</span>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-          <span style="color: var(--text-dim);">Points Awarded:</span>
-          <span id="completedPoints" style="color: var(--accent-cyan); font-weight: 700;">17.64 VTIME</span>
-        </div>
-        <div style="border-top: 1px solid var(--border-glass); padding-top: 0.5rem; margin-top: 0.5rem; font-size: 0.75rem; word-break: break-all;">
-          <span style="color: var(--text-dim);">Evidence Seal: </span>
-          <span id="completedSealHash" style="color: var(--accent-lime);">0x8ace...</span>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-dim);">Receipt ID:</span>
+          <span id="completedReceiptIdText" style="color: var(--accent-lime);">RCPT-8ACE92E4</span>
         </div>
       </div>
 
-      <div style="display: flex; gap: 0.75rem;">
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
         <button class="btn btn-gold" id="downloadCompletedReceiptBtn" style="flex: 1;">
           <i class="fa-solid fa-download"></i> Download JSON Receipt
         </button>
-        <button class="btn btn-glass" onclick="document.getElementById('sessionCompletedModal').classList.remove('active')" style="flex: 1;">
-          Close
-        </button>
+        <a href="rewards.html" class="btn btn-cyan" style="flex: 1;">
+          <i class="fa-solid fa-gift"></i> View Rewards
+        </a>
       </div>
     </div>
   </div>
@@ -540,17 +216,15 @@
       <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-main); margin-bottom: 1rem;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
           <span>Runtime Version:</span>
-          <span class="truth-badge badge-live">v3.0.0-truth-aligned</span>
+          <span class="truth-badge badge-live">v3.1.0-multi-page</span>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+        <div style="display: flex; justify-content: space-between;">
           <span>Storage Schema:</span>
-          <span class="text-lime">acnc_session_v3 (Integer-Monotonic)</span>
+          <span class="text-lime">acnc_session_v3 (Integer Monotonic)</span>
         </div>
       </div>
 
-      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList">
-        <!-- Diagnostics logs rendered here -->
-      </div>
+      <div style="background: rgba(0,0,0,0.7); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.75rem; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); margin-bottom: 1rem;" id="diagLogList"></div>
 
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <button class="btn btn-glass btn-sm" id="clearStateBtn">
@@ -561,10 +235,10 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- Shared Footer -->
   <footer class="footer">
     <div class="footer-brand">
-      <img src="images/official_logo.png" alt="Logo" style="height: 30px;" />
+      <img src="images/official_logo.png" alt="Logo" style="height: 28px;" />
       <span>ALL COUCH NO CAGE</span>
     </div>
     <p class="footer-copy">
@@ -579,7 +253,6 @@
     </div>
   </footer>
 
-  <!-- Self-Healing Layer & Application Engine -->
   <script src="self_healing_client.js"></script>
   <script src="app.js"></script>
 </body>

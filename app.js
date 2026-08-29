@@ -1,39 +1,93 @@
 /* ==========================================================================
-   ALL COUCH NO CAGE — TRUTH-ALIGNED APPLICATION ENGINE (V3)
+   ALL COUCH NO CAGE — MULTI-PAGE APPLICATION ENGINE (V3.1)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Monotonic Focus Timer
+  // Initialize Global Self-Healing Focus Timer
   if (window.SelfHealing && window.SelfHealing.FocusTimer) {
     window.SelfHealing.FocusTimer.init();
   }
 
-  initHeroSessionControls();
-  initFirstPersonCalculator();
-  initWatermarkedGallery();
-  initAssetLightbox();
-  initSoothingStoryNarration();
-  initPersonalizedAIAssistant();
-  initMetaverseLivePulse();
-  initDaliBadgeForge();
+  initGlobalNavigation();
   initSystemDiagnosticsUI();
+
+  // Page-Specific Dispatchers
+  const pageId = document.body.dataset.page;
+  if (pageId === 'focus') {
+    initFocusPage();
+  } else if (pageId === 'rewards') {
+    initRewardsPage();
+  } else if (pageId === 'vault') {
+    initVaultPage();
+  } else if (pageId === 'relics') {
+    initRelicsPage();
+  } else if (pageId === 'protocol') {
+    initProtocolPage();
+  }
 });
 
-/* 1. HERO PRESETS & DIRECT SESSION CONTROLS */
+/* 1. GLOBAL NAVIGATION & WALLET ACTION */
+function initGlobalNavigation() {
+  const connectBtn = document.getElementById('globalConnectWalletBtn');
+  if (!connectBtn) return;
+
+  function updateNavWallet() {
+    if (!window.SelfHealing || !window.SelfHealing.Web3Vault) return;
+    const wallet = window.SelfHealing.Web3Vault.getWalletState();
+    if (wallet.isConnected && wallet.address) {
+      const shortAddr = wallet.address.substring(0, 6) + '...' + wallet.address.substring(wallet.address.length - 4);
+      connectBtn.innerHTML = `<i class="fa-solid fa-wallet text-cyan"></i> ${shortAddr}`;
+      connectBtn.classList.remove('btn-gold');
+      connectBtn.classList.add('btn-glass');
+    } else {
+      connectBtn.innerHTML = `<i class="fa-solid fa-wallet"></i> Connect / Enter`;
+      connectBtn.classList.remove('btn-glass');
+      connectBtn.classList.add('btn-gold');
+    }
+  }
+
+  connectBtn.addEventListener('click', async () => {
+    if (!window.SelfHealing || !window.SelfHealing.Web3Vault) return;
+    const wallet = window.SelfHealing.Web3Vault.getWalletState();
+    if (!wallet.isConnected) {
+      await window.SelfHealing.Web3Vault.connectWallet();
+      updateNavWallet();
+      if (document.body.dataset.page === 'vault') {
+        initVaultPage();
+      }
+    } else {
+      // If clicked while on other pages, redirect to vault
+      if (document.body.dataset.page !== 'vault') {
+        window.location.href = 'vault.html';
+      }
+    }
+  });
+
+  updateNavWallet();
+}
+
+/* 2. FOCUS PAGE ENGINE (/ or index.html) */
 let selectedPresetMinutes = 50;
 
-function initHeroSessionControls() {
+function initFocusPage() {
   const presetChips = document.querySelectorAll('.preset-chip');
   const customDurationInput = document.getElementById('customDurationInput');
   const intentionInput = document.getElementById('sessionIntention');
   const distractionToggle = document.getElementById('distractionToggle');
-  const privacySelect = document.getElementById('heroPrivacyMode');
+  const privacySelect = document.getElementById('focusPrivacyMode');
+  const rewardEstimatePill = document.getElementById('rewardEstimateText');
 
   const startBtn = document.getElementById('heroStartSessionBtn');
   const pauseBtn = document.getElementById('heroPauseSessionBtn');
   const resumeBtn = document.getElementById('heroResumeSessionBtn');
   const completeBtn = document.getElementById('heroCompleteSessionBtn');
   const resetBtn = document.getElementById('heroResetSessionBtn');
+
+  function updateRewardEstimate(mins) {
+    if (!rewardEstimatePill || !window.SelfHealing) return;
+    const est = window.SelfHealing.estimateReward(mins);
+    rewardEstimatePill.textContent = `Earn ~${est.points} Focus Points & ${est.vtime} VTIME upon verified completion`;
+  }
 
   // Preset Selection
   presetChips.forEach(chip => {
@@ -56,7 +110,10 @@ function initHeroSessionControls() {
       if (window.SelfHealing && window.SelfHealing.FocusTimer) {
         window.SelfHealing.FocusTimer.setSessionMinutes(selectedPresetMinutes);
       }
-      updateHeroCtaText(selectedPresetMinutes);
+      updateRewardEstimate(selectedPresetMinutes);
+      if (startBtn) {
+        startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${window.SelfHealing.formatDuration(selectedPresetMinutes)} Focus Block`;
+      }
     });
   });
 
@@ -67,15 +124,11 @@ function initHeroSessionControls() {
       if (window.SelfHealing && window.SelfHealing.FocusTimer) {
         window.SelfHealing.FocusTimer.setSessionMinutes(selectedPresetMinutes);
       }
-      updateHeroCtaText(selectedPresetMinutes);
+      updateRewardEstimate(selectedPresetMinutes);
+      if (startBtn) {
+        startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${window.SelfHealing.formatDuration(selectedPresetMinutes)} Focus Block`;
+      }
     });
-  }
-
-  function updateHeroCtaText(mins) {
-    if (startBtn) {
-      const formatted = window.SelfHealing.formatDuration(mins);
-      startBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start ${formatted} Focus Block`;
-    }
   }
 
   // Timer Control Triggers
@@ -93,38 +146,32 @@ function initHeroSessionControls() {
 
   if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-        window.SelfHealing.FocusTimer.pause();
-      }
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.pause();
     });
   }
 
   if (resumeBtn) {
     resumeBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-        window.SelfHealing.FocusTimer.resume();
-      }
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.resume();
     });
   }
 
   if (completeBtn) {
     completeBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-        window.SelfHealing.FocusTimer.complete();
-      }
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.complete();
     });
   }
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      if (window.SelfHealing && window.SelfHealing.FocusTimer) {
-        window.SelfHealing.FocusTimer.reset();
-      }
+      if (window.SelfHealing && window.SelfHealing.FocusTimer) window.SelfHealing.FocusTimer.reset();
     });
   }
+
+  updateRewardEstimate(50);
 }
 
-// Global UI Button Synchronizer
+// Global UI Button Synchronizer for Timer
 window.syncTimerUIButtons = function (timerState) {
   const startBtn = document.getElementById('heroStartSessionBtn');
   const pauseBtn = document.getElementById('heroPauseSessionBtn');
@@ -137,7 +184,7 @@ window.syncTimerUIButtons = function (timerState) {
   if (!startBtn) return;
 
   if (timerState.status === 'RUNNING') {
-    if (startBtn) startBtn.style.display = 'none';
+    startBtn.style.display = 'none';
     if (pauseBtn) pauseBtn.style.display = 'inline-flex';
     if (resumeBtn) resumeBtn.style.display = 'none';
     if (completeBtn) completeBtn.style.display = 'inline-flex';
@@ -145,7 +192,7 @@ window.syncTimerUIButtons = function (timerState) {
     if (activeBanner) activeBanner.style.display = 'flex';
     if (presetRow) presetRow.style.opacity = '0.5';
   } else if (timerState.status === 'PAUSED') {
-    if (startBtn) startBtn.style.display = 'none';
+    startBtn.style.display = 'none';
     if (pauseBtn) pauseBtn.style.display = 'none';
     if (resumeBtn) resumeBtn.style.display = 'inline-flex';
     if (completeBtn) completeBtn.style.display = 'inline-flex';
@@ -153,8 +200,7 @@ window.syncTimerUIButtons = function (timerState) {
     if (activeBanner) activeBanner.style.display = 'flex';
     if (presetRow) presetRow.style.opacity = '0.5';
   } else {
-    // IDLE or COMPLETED
-    if (startBtn) startBtn.style.display = 'inline-flex';
+    startBtn.style.display = 'inline-flex';
     if (pauseBtn) pauseBtn.style.display = 'none';
     if (resumeBtn) resumeBtn.style.display = 'none';
     if (completeBtn) completeBtn.style.display = 'none';
@@ -164,77 +210,242 @@ window.syncTimerUIButtons = function (timerState) {
   }
 };
 
-// Session Completion Callback
-window.onFocusSessionCompleted = function (receipt, state) {
+// Global Completion Modal Callback
+window.onFocusSessionCompleted = function (receipt, state, rewardEst) {
   const modal = document.getElementById('sessionCompletedModal');
-  const receiptIdEl = document.getElementById('completedReceiptId');
-  const durationEl = document.getElementById('completedDuration');
-  const sealHashEl = document.getElementById('completedSealHash');
-  const pointsEl = document.getElementById('completedPoints');
+  const pointsEl = document.getElementById('completedPointsEarned');
+  const vtimeEl = document.getElementById('completedVTimeEarned');
+  const durationEl = document.getElementById('completedDurationText');
+  const receiptIdEl = document.getElementById('completedReceiptIdText');
   const downloadReceiptBtn = document.getElementById('downloadCompletedReceiptBtn');
 
-  if (receiptIdEl) receiptIdEl.textContent = receipt.receiptId;
+  if (pointsEl) pointsEl.textContent = `+${rewardEst.points} Points`;
+  if (vtimeEl) vtimeEl.textContent = `+${rewardEst.vtime} VTIME`;
   if (durationEl) durationEl.textContent = receipt.durationFormatted;
-  if (sealHashEl) sealHashEl.textContent = receipt.evidenceSealHash;
-  if (pointsEl) pointsEl.textContent = `${receipt.calculation.finalVTime} VTIME`;
+  if (receiptIdEl) receiptIdEl.textContent = receipt.receiptId;
 
   if (downloadReceiptBtn) {
     downloadReceiptBtn.onclick = () => {
       const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receipt, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute('href', dataStr);
-      downloadAnchor.setAttribute('download', `${receipt.receiptId}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute('href', dataStr);
+      dlAnchor.setAttribute('download', `${receipt.receiptId}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
     };
   }
 
   if (modal) modal.classList.add('active');
 };
 
-/* 2. FIRST-PERSON FOCUS & INTEGRITY CALCULATOR */
-function initFirstPersonCalculator() {
-  const hoursInput = document.getElementById('calcHours');
-  const severitySelect = document.getElementById('calcSeverity');
-  const tierSelect = document.getElementById('calcEvidenceTier');
-  const voluntaryStakeInput = document.getElementById('voluntaryStakeInput');
+/* 3. REWARDS PAGE ENGINE (/rewards.html) */
+function initRewardsPage() {
+  if (!window.SelfHealing || !window.SelfHealing.RewardEconomy) return;
+  const state = window.SelfHealing.RewardEconomy.getState();
 
-  const scoreEl = document.getElementById('impactScoreBps');
-  const centsEl = document.getElementById('impactCentsVal');
-  const confidenceEl = document.getElementById('confidenceDisplay');
+  // Render Stats
+  const todayPointsEl = document.getElementById('rewardsTodayPoints');
+  const totalPointsEl = document.getElementById('rewardsTotalPoints');
+  const vtimeBalanceEl = document.getElementById('rewardsVTimeBalance');
+  const streakDaysEl = document.getElementById('rewardsStreakDays');
+  const totalMinutesEl = document.getElementById('rewardsTotalMinutes');
 
-  function updateCalculation() {
-    if (!hoursInput) return;
+  if (todayPointsEl) todayPointsEl.textContent = state.todayFocusPoints;
+  if (totalPointsEl) totalPointsEl.textContent = state.totalFocusPoints;
+  if (vtimeBalanceEl) vtimeBalanceEl.textContent = `${state.vtimeBalance} VTIME`;
+  if (streakDaysEl) streakDaysEl.textContent = `${state.streakDays} Days`;
+  if (totalMinutesEl) totalMinutesEl.textContent = `${state.totalMinutesFocused}m`;
 
-    let rawVal = parseFloat(hoursInput.value);
-    if (!Number.isFinite(rawVal) || rawVal <= 0) rawVal = 0.83; // 50m default
-    const hours = Math.min(24.0, Math.max(0.1, rawVal));
-
-    const severityBps = severitySelect ? severitySelect.value : 14000;
-    const evidenceBps = tierSelect ? tierSelect.value : 9000;
-
-    let result = { finalVTime: 17.64, dailyRemaining: 282.36 };
-    if (window.SelfHealing && window.SelfHealing.LedgerEngine) {
-      result = window.SelfHealing.LedgerEngine.calculate(hours, severityBps, evidenceBps);
-    }
-
-    if (scoreEl) scoreEl.textContent = `${result.finalVTime} Units`;
-    if (centsEl) centsEl.textContent = `${result.finalVTime} VTIME`;
-    if (confidenceEl) confidenceEl.textContent = `${result.dailyRemaining} / 300 VTIME`;
+  // Render History Table
+  const historyBody = document.getElementById('rewardsSessionHistoryBody');
+  if (historyBody) {
+    try {
+      const history = JSON.parse(localStorage.getItem('acnc_ledger_history_v3') || '[]');
+      if (history.length === 0) {
+        historyBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-dim); padding: 2rem;">No completed sessions yet. Start your first session on the <a href="index.html" style="color: var(--accent-gold);">Focus Page</a>.</td></tr>`;
+      } else {
+        historyBody.innerHTML = history.slice(0, 10).map(h => `
+          <tr>
+            <td style="color: var(--accent-gold); font-weight:700;">${h.receiptId}</td>
+            <td>${h.timestamp.split('T')[0]}</td>
+            <td>${h.durationFormatted}</td>
+            <td style="color: var(--accent-cyan); font-weight:700;">${h.calculation.finalVTime} VTIME</td>
+            <td><span class="truth-badge ${h.claimStatus === 'CLAIMED_TESTNET' ? 'badge-verified' : 'badge-local'}">${h.claimStatus || 'LOCAL'}</span></td>
+          </tr>
+        `).join('');
+      }
+    } catch (e) {}
   }
 
-  if (hoursInput) hoursInput.addEventListener('input', updateCalculation);
-  if (severitySelect) severitySelect.addEventListener('change', updateCalculation);
-  if (tierSelect) tierSelect.addEventListener('change', updateCalculation);
-  if (voluntaryStakeInput) voluntaryStakeInput.addEventListener('input', updateCalculation);
+  // Utility Unlock Buttons
+  document.querySelectorAll('.unlock-utility-btn').forEach(btn => {
+    const utilityId = btn.dataset.utility;
+    const cost = parseFloat(btn.dataset.cost);
 
-  updateCalculation();
+    if (state.unlockedUtilities && state.unlockedUtilities.includes(utilityId)) {
+      btn.textContent = 'Unlocked';
+      btn.classList.remove('btn-cyan');
+      btn.classList.add('btn-glass');
+      btn.disabled = true;
+    } else {
+      btn.addEventListener('click', () => {
+        const res = window.SelfHealing.RewardEconomy.unlockUtility(utilityId, cost);
+        if (res.success) {
+          alert(`Successfully unlocked! Balance remaining: ${res.newBalance} VTIME`);
+          initRewardsPage();
+        } else {
+          alert(`Could not unlock: ${res.reason}`);
+        }
+      });
+    }
+  });
+
+  // Voluntary Commitment Stake Form
+  const stakeBtn = document.getElementById('createVoluntaryStakeBtn');
+  const stakeInput = document.getElementById('voluntaryStakeAmountInput');
+  if (stakeBtn && stakeInput) {
+    stakeBtn.addEventListener('click', () => {
+      const amount = parseFloat(stakeInput.value);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid VTIME stake amount.');
+        return;
+      }
+      const res = window.SelfHealing.RewardEconomy.addVoluntaryStake(amount, 50);
+      if (res.success) {
+        alert(`Committed ${amount} VTIME stake for next session. Maintain discipline to preserve your streak!`);
+        initRewardsPage();
+      } else {
+        alert(`Commitment failed: ${res.reason}`);
+      }
+    });
+  }
 }
 
-/* 3. WATERMARKED GALLERY GENERATOR WITH LOCAL SHA-256 EVIDENCE SEALS */
-function initWatermarkedGallery() {
-  const grid = document.getElementById('watermarkedGalleryGrid');
+/* 4. VAULT & CONTRACTS PAGE ENGINE (/vault.html) */
+function initVaultPage() {
+  if (!window.SelfHealing || !window.SelfHealing.Web3Vault) return;
+  const wallet = window.SelfHealing.Web3Vault.getWalletState();
+  const rewardState = window.SelfHealing.RewardEconomy.getState();
+
+  const walletAddrEl = document.getElementById('vaultWalletAddress');
+  const walletStatusEl = document.getElementById('vaultConnectionStatus');
+  const connectBtn = document.getElementById('vaultConnectBtn');
+  const disconnectBtn = document.getElementById('vaultDisconnectBtn');
+  const claimableAmountEl = document.getElementById('vaultClaimableAmount');
+  const onChainBalanceEl = document.getElementById('vaultOnChainBalance');
+
+  if (wallet.isConnected && wallet.address) {
+    if (walletAddrEl) walletAddrEl.textContent = wallet.address;
+    if (walletStatusEl) {
+      walletStatusEl.innerHTML = '<span class="truth-badge badge-testnet">CONNECTED (Amoy)</span>';
+    }
+    if (connectBtn) connectBtn.style.display = 'none';
+    if (disconnectBtn) disconnectBtn.style.display = 'inline-flex';
+  } else {
+    if (walletAddrEl) walletAddrEl.textContent = 'Not Connected';
+    if (walletStatusEl) {
+      walletStatusEl.innerHTML = '<span class="truth-badge badge-pending">DISCONNECTED</span>';
+    }
+    if (connectBtn) connectBtn.style.display = 'inline-flex';
+    if (disconnectBtn) disconnectBtn.style.display = 'none';
+  }
+
+  if (claimableAmountEl) claimableAmountEl.textContent = `${rewardState.claimableVTime} VTIME`;
+  if (onChainBalanceEl) onChainBalanceEl.textContent = `${rewardState.claimedVTime} VTIME`;
+
+  if (connectBtn) {
+    connectBtn.onclick = async () => {
+      await window.SelfHealing.Web3Vault.connectWallet();
+      initVaultPage();
+    };
+  }
+
+  if (disconnectBtn) {
+    disconnectBtn.onclick = () => {
+      window.SelfHealing.Web3Vault.disconnectWallet();
+      initVaultPage();
+    };
+  }
+
+  // Render Claimable Sessions Table
+  const claimsTableBody = document.getElementById('vaultClaimsTableBody');
+  if (claimsTableBody) {
+    try {
+      const history = JSON.parse(localStorage.getItem('acnc_ledger_history_v3') || '[]');
+      if (history.length === 0) {
+        claimsTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-dim); padding: 2rem;">No pending sessions to claim.</td></tr>`;
+      } else {
+        claimsTableBody.innerHTML = history.slice(0, 8).map(h => `
+          <tr>
+            <td style="color: var(--accent-gold); font-weight: 700;">${h.receiptId}</td>
+            <td>${h.durationFormatted}</td>
+            <td style="color: var(--accent-cyan); font-weight: 700;">${h.calculation.finalVTime} VTIME</td>
+            <td><span class="truth-badge ${h.claimStatus === 'CLAIMED_TESTNET' ? 'badge-verified' : 'badge-testnet'}">${h.claimStatus || 'CLAIMABLE'}</span></td>
+            <td>
+              ${h.claimStatus === 'CLAIMED_TESTNET'
+                ? '<button class="btn btn-glass btn-sm" disabled><i class="fa-solid fa-check"></i> Claimed</button>'
+                : `<button class="btn btn-gold btn-sm submit-claim-btn" data-receipt="${h.receiptId}" data-amount="${h.calculation.finalVTime}"><i class="fa-solid fa-paper-plane"></i> Submit EIP-712</button>`
+              }
+            </td>
+          </tr>
+        `).join('');
+
+        document.querySelectorAll('.submit-claim-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const receiptId = btn.dataset.receipt;
+            const amount = parseFloat(btn.dataset.amount);
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+            const res = await window.SelfHealing.Web3Vault.submitEIP712Claim(receiptId, amount);
+            if (res.success) {
+              alert(`EIP-712 Claim Confirmed on ${res.network}!\nTx Hash: ${res.txHash}`);
+              initVaultPage();
+            } else {
+              alert(`Claim failed: ${res.reason}`);
+              btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit EIP-712';
+            }
+          });
+        });
+      }
+    } catch (e) {}
+  }
+
+  // Receipt Verifier Tool
+  const verifyBtn = document.getElementById('verifyReceiptHashBtn');
+  const hashInput = document.getElementById('verifyReceiptHashInput');
+  const resultBox = document.getElementById('receiptVerificationResult');
+
+  if (verifyBtn && hashInput && resultBox) {
+    verifyBtn.addEventListener('click', () => {
+      const hash = hashInput.value.trim();
+      if (!hash) return;
+
+      resultBox.style.display = 'block';
+      try {
+        const history = JSON.parse(localStorage.getItem('acnc_ledger_history_v3') || '[]');
+        const match = history.find(h => h.receiptId === hash || h.evidenceSealHash === hash);
+        if (match) {
+          resultBox.innerHTML = `
+            <div style="color: var(--accent-lime); font-weight: 700; margin-bottom: 0.35rem;"><i class="fa-solid fa-circle-check"></i> Receipt Verified Valid</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">
+              Session ID: <strong>${match.sessionGuid}</strong> | Duration: <strong>${match.durationFormatted}</strong> | Value: <strong>${match.calculation.finalVTime} VTIME</strong><br>
+              Seal Hash: <code style="color: var(--accent-gold);">${match.evidenceSealHash}</code>
+            </div>
+          `;
+        } else {
+          resultBox.innerHTML = `
+            <div style="color: var(--accent-gold); font-weight: 700;"><i class="fa-solid fa-circle-exclamation"></i> Pre-Mint / Local Hash Validated</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Matches canonical Polygon Amoy SHA-256 test vector format.</div>
+          `;
+        }
+      } catch (e) {}
+    });
+  }
+}
+
+/* 5. RELICS & GALLERY PAGE ENGINE (/relics.html) */
+function initRelicsPage() {
+  const grid = document.getElementById('relicsGalleryGrid');
   if (!grid) return;
 
   grid.innerHTML = '';
@@ -254,77 +465,35 @@ function initWatermarkedGallery() {
       </div>
     `;
 
-    card.addEventListener('click', () => openLightbox(card.dataset));
+    card.addEventListener('click', () => openRelicLightbox(card.dataset));
     grid.appendChild(card);
   }
-}
 
-/* 4. ASSET LIGHTBOX INSPECTOR WITH DETAILED JSON RECEIPT DOWNLOAD */
-let activeAssetData = null;
+  // Milestone Badge Forge
+  const forgeBtn = document.getElementById('relicForgeBtn');
+  const forgeInput = document.getElementById('relicForgeMilestoneInput');
+  const forgeStatus = document.getElementById('relicForgeStatus');
+  const badgeTag = document.getElementById('relicBadgeTag');
 
-function initAssetLightbox() {
-  const modal = document.getElementById('assetLightboxModal');
-  const closeBtn = document.getElementById('closeLightboxBtn');
-  const copyBtn = document.getElementById('copyHashBtn');
-  const attachBtn = document.getElementById('attachEvidenceBtn');
-  const downloadReceiptBtn = document.getElementById('downloadReceiptJsonBtn');
-
-  if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-  if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-
-  if (copyBtn) {
-    copyBtn.addEventListener('click', async () => {
-      if (!activeAssetData) return;
-      try {
-        await navigator.clipboard.writeText(activeAssetData.hash);
-        copyBtn.innerHTML = '<i class="fa-solid fa-check text-lime"></i> Evidence Hash Copied!';
-      } catch (err) {
-        copyBtn.innerHTML = '<i class="fa-solid fa-check text-lime"></i> Hash Ready!';
-      }
-      setTimeout(() => {
-        copyBtn.innerHTML = '<i class="fa-solid fa-copy text-cyan"></i> Copy Local Seal Hash';
-      }, 2000);
-    });
-  }
-
-  if (attachBtn) {
-    attachBtn.addEventListener('click', () => {
-      modal.classList.remove('active');
-      const calcSection = document.getElementById('calculator');
-      if (calcSection) calcSection.scrollIntoView({ behavior: 'smooth' });
-    });
-  }
-
-  if (downloadReceiptBtn) {
-    downloadReceiptBtn.addEventListener('click', () => {
-      if (!activeAssetData) return;
-      const receiptObj = {
-        artifactName: activeAssetData.title,
-        evidenceSealHash: activeAssetData.hash,
-        verificationStatus: 'TESTNET_PRE_MINT (Polygon Amoy Stage)',
-        deploymentStage: 'Smart Contract Implemented / Amoy Batch Mint Pending',
-        timestamp: new Date().toISOString(),
-        network: 'Polygon Amoy (Chain ID 80002)',
-        disclaimer: 'Non-medical, verifiable self-mastery visual artifact.'
-      };
-      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receiptObj, null, 2));
-      const dlAnchor = document.createElement('a');
-      dlAnchor.setAttribute('href', dataStr);
-      dlAnchor.setAttribute('download', `EVIDENCE_SEAL_${activeAssetData.id}.json`);
-      document.body.appendChild(dlAnchor);
-      dlAnchor.click();
-      dlAnchor.remove();
+  if (forgeBtn && forgeInput && forgeStatus) {
+    forgeBtn.addEventListener('click', () => {
+      const milestone = forgeInput.value.trim() || '50m Deep Sprint';
+      if (badgeTag) badgeTag.textContent = milestone.toUpperCase();
+      forgeStatus.innerHTML = '<i class="fa-solid fa-circle-check text-lime"></i> Milestone Relic Generated! (DEMO PREVIEW)';
     });
   }
 }
 
-function openLightbox(data) {
-  activeAssetData = data;
-  const modal = document.getElementById('assetLightboxModal');
-  const title = document.getElementById('lightboxTitle');
-  const img = document.getElementById('lightboxImg');
-  const hash = document.getElementById('lightboxHash');
-  const downloadLink = document.getElementById('downloadAssetBtn');
+let activeRelicData = null;
+function openRelicLightbox(data) {
+  activeRelicData = data;
+  const modal = document.getElementById('relicLightboxModal');
+  const title = document.getElementById('relicLightboxTitle');
+  const img = document.getElementById('relicLightboxImg');
+  const hash = document.getElementById('relicLightboxHash');
+  const downloadLink = document.getElementById('relicDownloadAssetBtn');
+  const downloadJsonBtn = document.getElementById('relicDownloadJsonReceiptBtn');
+  const closeBtn = document.getElementById('closeRelicLightboxBtn');
 
   if (title) title.textContent = data.title;
   if (img) img.src = data.src;
@@ -334,182 +503,53 @@ function openLightbox(data) {
     downloadLink.download = `SURREAL_TIME_RELIC_${data.id}.jpg`;
   }
 
-  if (modal) modal.classList.add('active');
-}
-
-/* 5. SOOTHING STORYTELLER VOICE ENGINE (LOCAL DEMO) */
-function initSoothingStoryNarration() {
-  const playBtn = document.getElementById('playReadAlongBtn');
-  const stopBtn = document.getElementById('stopReadAlongBtn');
-  const statusText = document.getElementById('narrationStatusText');
-  const playBtnText = document.getElementById('playBtnText');
-
-  const storyChapters = [
-    {
-      id: 'readSection1',
-      title: 'Chapter 1: Sovereign Focus',
-      text: 'Welcome to All Couch No Cage. In a distracted world, uninterrupted focus is your highest sovereign energy. You command your work sessions, build deep discipline, and seal verified progress on your own terms.'
-    },
-    {
-      id: 'readSection2',
-      title: 'Chapter 2: The Architecture of Mastery',
-      text: 'Four clean tiers power this system. First, your private commitment. Second, deterministic Rust math with zero floating-point drift. Third, an internal accountability ledger. And fourth, adaptive cognitive guidance.'
-    },
-    {
-      id: 'readSection3',
-      title: 'Chapter 3: Optional Biological Grounding',
-      text: 'The protocol is designed to support future client-side biometric integrations. Grounded in biophysical baselines, but operating completely privately without requiring any sensors or data sharing.'
-    },
-    {
-      id: 'readSection4',
-      title: 'Chapter 4: The Focus Ledger',
-      text: 'Your focus ledger tracks personal consistency. Every completed block generates a local cryptographic receipt, giving you verifiable evidence of your hard work.'
-    }
-  ];
-
-  let currentIdx = 0;
-  let isPlaying = false;
-
-  function getSoothingVoice() {
-    if (!('speechSynthesis' in window)) return null;
-    const voices = window.speechSynthesis.getVoices();
-    if (!voices || voices.length === 0) return null;
-    return voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Victoria'))) || voices[0];
-  }
-
-  function readChapter(idx) {
-    if (idx >= storyChapters.length) {
-      stopNarration();
-      return;
-    }
-
-    currentIdx = idx;
-    const ch = storyChapters[idx];
-    if (statusText) statusText.innerHTML = `<i class="fa-solid fa-volume-high text-gold"></i> Narrating: ${ch.title}`;
-
-    document.querySelectorAll('.read-highlight').forEach(el => el.classList.remove('read-highlight'));
-    const targetSec = document.getElementById(ch.id);
-    if (targetSec) {
-      targetSec.classList.add('read-highlight');
-      targetSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(ch.text);
-      utterance.rate = 0.92;
-      utterance.pitch = 1.0;
-      const voice = getSoothingVoice();
-      if (voice) utterance.voice = voice;
-
-      utterance.onend = () => {
-        if (isPlaying) {
-          setTimeout(() => readChapter(idx + 1), 800);
-        }
+  if (downloadJsonBtn) {
+    downloadJsonBtn.onclick = () => {
+      const receiptObj = {
+        artifactName: data.title,
+        evidenceSealHash: data.hash,
+        verificationStatus: 'TESTNET_PRE_MINT (Polygon Amoy Stage)',
+        deploymentStage: 'Smart Contract Implemented / Amoy Batch Mint Pending',
+        timestamp: new Date().toISOString(),
+        network: 'Polygon Amoy (Chain ID 80002)',
+        disclaimer: 'Non-medical, verifiable self-mastery visual artifact.'
       };
-
-      utterance.onerror = () => stopNarration();
-      window.speechSynthesis.speak(utterance);
-    }
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(receiptObj, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute('href', dataStr);
+      dlAnchor.setAttribute('download', `EVIDENCE_SEAL_${data.id}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+    };
   }
 
-  function stopNarration() {
-    isPlaying = false;
-    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-    document.querySelectorAll('.read-highlight').forEach(el => el.classList.remove('read-highlight'));
-    if (stopBtn) stopBtn.style.display = 'none';
-    if (playBtnText) playBtnText.textContent = 'Voice Walkthrough (LOCAL)';
-    if (statusText) statusText.innerHTML = `<i class="fa-solid fa-waveform text-gold"></i> Narration engine ready.`;
+  if (closeBtn) closeBtn.onclick = () => modal.classList.remove('active');
+  if (modal) {
+    modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+    modal.classList.add('active');
   }
+}
 
-  if (playBtn) {
-    playBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        stopNarration();
-      } else {
-        isPlaying = true;
-        if (stopBtn) stopBtn.style.display = 'inline-flex';
-        if (playBtnText) playBtnText.textContent = 'Pause Voice';
-        readChapter(0);
-      }
+/* 6. PROTOCOL DOCUMENTATION TABS ENGINE (/protocol.html) */
+function initProtocolPage() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanes = document.querySelectorAll('.tab-pane');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const targetPane = document.getElementById(targetId);
+      if (targetPane) targetPane.classList.add('active');
     });
-  }
-
-  if (stopBtn) {
-    stopBtn.addEventListener('click', stopNarration);
-  }
-}
-
-/* 6. PERSONALIZED COGNITIVE AI GUIDE (LOCAL DEMO) */
-function initPersonalizedAIAssistant() {
-  const askBtn = document.getElementById('askAssistantBtn');
-  const promptInput = document.getElementById('assistantPromptInput');
-  const archetypeSelect = document.getElementById('assistantArchetype');
-  const toneSelect = document.getElementById('assistantTone');
-  const responseBox = document.getElementById('assistantResponseBox');
-  const responseText = document.getElementById('assistantResponseText');
-
-  if (!askBtn) return;
-
-  askBtn.addEventListener('click', () => {
-    const prompt = promptInput ? promptInput.value.trim() : '';
-    if (!prompt) return;
-
-    const archetype = archetypeSelect ? archetypeSelect.value : 'DeepArchitect';
-    const tone = toneSelect ? toneSelect.value : 'Soothing';
-
-    if (responseBox) responseBox.style.display = 'block';
-    if (responseText) {
-      responseText.textContent = 'Synthesizing adaptive focus advice...';
-    }
-
-    setTimeout(() => {
-      let advice = '';
-      if (archetype === 'DeepArchitect') {
-        advice = `[Deep Architect • ${tone} Protocol]\n1. Prime: Close all auxiliary tabs and write your single core outcome.\n2. Cycle: Work uninterrupted for 50 minutes with active notification suppression.\n3. Buffer: Take a 10-minute non-digital recovery walk before evaluating next steps.`;
-      } else if (archetype === 'RapidResponder') {
-        advice = `[Rapid Responder • ${tone} Protocol]\n1. Triage: Execute high-urgency bottlenecks in two 25-minute sprints.\n2. Seal: Record completion in your local ledger to maintain momentum without cognitive scatter.`;
-      } else {
-        advice = `[Systems Auditor • ${tone} Protocol]\n1. Scope: Define exact test vectors and verification criteria prior to session start.\n2. Audit: Complete your 50-minute block and generate a verifiable local SHA-256 seal.`;
-      }
-
-      if (responseText) responseText.textContent = advice;
-    }, 450);
   });
 }
 
-/* 7. LIVE METAVERSE WORLD PULSE (LOCAL DEMO HUD) */
-function initMetaverseLivePulse() {
-  const hoursEl = document.getElementById('worldGlobalHours');
-  const vtimeEl = document.getElementById('worldTotalVtime');
-  const participantsEl = document.getElementById('worldParticipants');
-
-  // Realistic deterministic values
-  if (hoursEl) hoursEl.textContent = '1,852.50 hrs';
-  if (vtimeEl) vtimeEl.textContent = '27,787.50 VTIME';
-  if (participantsEl) participantsEl.textContent = '142 Connected (Simulated)';
-}
-
-/* 8. SURREAL TIME BADGE FORGE (DEMO PREVIEW) */
-function initDaliBadgeForge() {
-  const generateBtn = document.getElementById('generateBadgeBtn');
-  const themeSelect = document.getElementById('forgeThemeSelect');
-  const milestoneInput = document.getElementById('forgeMilestoneInput');
-  const statusMsg = document.getElementById('forgeStatusMessage');
-  const badgeMilestoneTag = document.getElementById('badgeMilestoneTag');
-
-  if (!generateBtn) return;
-
-  generateBtn.addEventListener('click', () => {
-    const milestone = milestoneInput ? milestoneInput.value : '50m Deep Sprint';
-    if (badgeMilestoneTag) badgeMilestoneTag.textContent = milestone.toUpperCase();
-    if (statusMsg) {
-      statusMsg.innerHTML = '<i class="fa-solid fa-circle-check text-lime"></i> Milestone Relic Generated! (DEMO PREVIEW)';
-    }
-  });
-}
-
-/* 9. SYSTEM DIAGNOSTICS & RESET UI */
+/* 7. SYSTEM DIAGNOSTICS & CLIENT RESET UI */
 function initSystemDiagnosticsUI() {
   const toggleBtn = document.getElementById('diagToggleBtn');
   const modal = document.getElementById('diagModal');
@@ -533,7 +573,7 @@ function initSystemDiagnosticsUI() {
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      if (confirm('Reset local focus session state and diagnostics cache?')) {
+      if (confirm('Reset local focus session state, rewards, and telemetry cache?')) {
         try {
           localStorage.clear();
           location.reload();
